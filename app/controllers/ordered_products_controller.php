@@ -3,6 +3,12 @@ class OrderedProductsController extends AppController {
 
 	var $name = 'OrderedProducts';
 
+    function beforeFilter()
+    {
+        $this->set('activemenu_for_layout', 'orders');
+        return parent::beforeFilter();
+    }
+
 	function index() {
 		$this->OrderedProduct->recursive = 0;
 		$this->set('orderedProducts', $this->paginate());

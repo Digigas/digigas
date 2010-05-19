@@ -3,6 +3,12 @@ class MoneyBoxesController extends AppController {
 
 	var $name = 'MoneyBoxes';
 
+    function beforeFilter()
+    {
+        $this->set('activemenu_for_layout', 'users');
+        return parent::beforeFilter();
+    }
+
 	function index() {
 		$this->MoneyBox->recursive = 0;
 		$this->set('moneyBoxes', $this->paginate());

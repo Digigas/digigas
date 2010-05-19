@@ -10,6 +10,9 @@
 
 		echo $this->Html->css('cake.generic');
         echo $this->Html->css('cake.admin');
+        echo $this->Html->css('jquery.lightbox');
+        echo $this->Html->css('digigas/jquery.treeTable');
+        echo $this->Html->css('jquery-ui-themeroller');
 
 	?>
 </head>
@@ -25,10 +28,12 @@
         </div>
         <div id="navigation">
             <ul>
-                <li><?php echo $this->Html->link('Prodotti', '/'); ?></li>
-                <li><?php echo $this->Html->link('Panieri', '/'); ?></li>
-                <li><?php echo $this->Html->link('Ordini', '/'); ?></li>
-                <li><?php echo $this->Html->link('Utenti', '/'); ?></li>
+                <li class="products"><?php echo $this->Html->link('Prodotti', array('controller' => 'products')); ?></li>
+                <li class="hampers"><?php echo $this->Html->link('Panieri', array('controller' => 'hampers')); ?></li>
+                <li class="orders"><?php echo $this->Html->link('Ordini', array('controller' => 'ordered_products')); ?></li>
+                <li class="users"><?php echo $this->Html->link('Utenti', array('controller' => 'users')); ?></li>
+                <li class="website"><?php echo $this->Html->link('Sito web', array('controller' => 'pages')); ?></li>
+                <li class="tools"><?php echo $this->Html->link('Strumenti', array('controller' => 'filemanager')); ?></li>
             </ul>
         </div>
 		<div id="content">
@@ -50,10 +55,16 @@
     <?php
 
         echo $this->Javascript->link('jquery-1.4.2.min');
+        echo $this->Javascript->link('jquery.ui');
         echo $this->Javascript->link('ckeditor/ckeditor');
         echo $this->Javascript->link('ckeditor/adapters/jquery');
+        echo $this->Javascript->link('jquery.lightbox');
+        echo $this->Javascript->link('jquery.treeTable.min');
+        echo $this->Javascript->link('jquery.asmselect');
 
 		echo $scripts_for_layout;
+
+        $layout->output($js_for_layout);
 
     ?>
 
@@ -69,6 +80,40 @@
                     filebrowserWindowHeight : '100%'
                 };
             $('textarea[class!=plaintext]').ckeditor(CKconfig);
+
+            //calendar
+            $('input.calendar').datepicker({
+                showOn: "button",
+                dateFormat: "yy-mm-dd"
+            });
+
+            //tree table
+            $('#tree-table').treeTable({
+                clickableNodeNames: true,
+                expandable: true,
+                initialState: "expanded"
+                });
+
+            // multiple select
+            //$("select[multiple]").asmSelect({highlight: true, animate: true});
+
+            //accordion
+            $('.expander:eq(0)').addClass('open');
+            $('div.accordion:eq(0)').addClass('open');
+            $('div.accordion:gt(0)').hide();
+            $('.expander').click(function(){
+                $(this).toggleClass('open').next('div.accordion').toggleClass('open').slideToggle();
+            })
+
+            //active menu item
+            <?php
+            if(isset($activemenu_for_layout)) {
+                echo '$(".'.$activemenu_for_layout.'").find("a").addClass("active");';
+            }
+            ?>
+            <?php
+            $layout->output($js_on_load_for_layout);
+            ?>
         });
     //]]>
     </script>

@@ -1,10 +1,11 @@
 <?php
-echo $html->css('admin/filemanager.css');
-echo $javascript->link('jquery.jeditable');
-echo $javascript->link('swfupload/swfupload_fp10/swfupload');
-echo $javascript->link('swfupload/jquery.swfupload');
-?>
+echo $html->css('digigas/filemanager.css', false);
+echo $javascript->link('jquery.jeditable', false);
+echo $javascript->link('swfupload/swfupload_fp10/swfupload', false);
+echo $javascript->link('swfupload/jquery.swfupload', false);
 
+$this->Layout->blockStart('js');
+?>
 <script type="text/javascript">
     //<![CDATA[
     $(function(){
@@ -30,7 +31,7 @@ echo $javascript->link('swfupload/jquery.swfupload');
     function jeditable_init()
     {
 
-        $('.item_name').editable('<?php echo $html->url(array('controller'=>'filemanager', 'action'=>'rename', $dir)) ?>', {
+        $('.item_name').editable('<?php echo $this->Html->url(array('controller'=>'filemanager', 'action'=>'rename', $dir)) ?>', {
             indicator : 'Saving...',
             tooltip   : 'Click to edit',
             callback : function(value, settings) {
@@ -70,7 +71,7 @@ echo $javascript->link('swfupload/jquery.swfupload');
     //swfupload
     $('#swfupload').swfupload({
         // Backend Settings
-        upload_url: "<?php echo $html->url(array('controller'=>'filemanager', 'action'=>'swfupload', 'session'=>$session->id(), $dir)); ?>",    // Relative to the SWF file (or you can use absolute paths)
+        upload_url: "<?php echo $this->Html->url(array('controller'=>'filemanager', 'action'=>'swfupload', 'session'=>$session->id(), $dir)); ?>",    // Relative to the SWF file (or you can use absolute paths)
 
         // File Upload Settings
         file_size_limit : "102400", // 100MB
@@ -80,13 +81,13 @@ echo $javascript->link('swfupload/jquery.swfupload');
         file_queue_limit : "0",
 
         // Button Settings
-        button_image_url : "<?php echo $html->url('/js/swfupload/swfupload_fp10/') ?>button.png", // Relative to the SWF file
+        button_image_url : "<?php echo $this->Html->url('/js/swfupload/swfupload_fp10/') ?>button.png", // Relative to the SWF file
         button_placeholder_id : "swfbutton",
         button_width: 61,
         button_height: 22,
 
         // Flash Settings
-        flash_url : "<?php echo $html->url('/js/swfupload/swfupload_fp10/') ?>swfupload.swf"
+        flash_url : "<?php echo $this->Html->url('/js/swfupload/swfupload_fp10/') ?>swfupload.swf"
 
     });
     // assign our event handlers
@@ -119,6 +120,7 @@ echo $javascript->link('swfupload/jquery.swfupload');
 
     //]]>
 </script>
+<?php $this->Layout->blockEnd(); ?>
 
 <div class="filemanager index">
     <h2>File manager</h2>

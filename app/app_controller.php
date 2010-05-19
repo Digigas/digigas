@@ -9,7 +9,9 @@ class AppController extends Controller {
         'Session',
         'Html',
         'Form',
-        'Javascript'
+        'Javascript',
+        'Layout',
+        'Image'
     );
     var $layout = 'digigas';
 

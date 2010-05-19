@@ -1,23 +1,18 @@
 <div class="productCategories form">
 <?php echo $this->Form->create('ProductCategory');?>
 	<fieldset>
- 		<legend><?php printf(__('Admin Add %s', true), __('Product Category', true)); ?></legend>
+ 		<h2><?php __('Nuova categoria di prdotti'); ?></h2>
 	<?php
-		echo $this->Form->input('name');
-		echo $this->Form->input('text');
-		echo $this->Form->input('parent_id');
-		echo $this->Form->input('lft');
-		echo $this->Form->input('rght');
+		echo $this->Form->input('parent_id', array('label' => __('&Egrave; sottocategoria di', true)));
+		echo $this->Form->input('name', array('label' => __('Nome', true)));
+		echo $this->Form->input('text', array('label' => __('Descrizione', true)));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
+<?php echo $this->Form->end(__('Salva', true));?>
 </div>
 <div class="actions">
-	<h3><?php __('Actions'); ?></h3>
+	<h3><?php __('Azioni'); ?></h3>
 	<ul>
-
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Product Categories', true)), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('controller' => 'products', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product', true)), array('controller' => 'products', 'action' => 'add')); ?> </li>
+        <li><?php echo $this->Html->link(__('Torna a categorie', true), array('action' => 'index'));?></li>
 	</ul>
 </div>
