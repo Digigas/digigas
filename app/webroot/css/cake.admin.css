@@ -52,7 +52,8 @@ body
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
 }
-#navigation a:hover
+#navigation a:hover,
+#navigation a.active
 {
     color:#333;
     background:#fff;    
@@ -128,31 +129,37 @@ div.actions ul ul
     font-size:12px;
 }
 
+table td a,
 table td.actions a
 {
     display:block;
     float:left;
     padding:1px 10px;
+    text-decoration:none;
 }
-td.actions a:hover {
+td a:hover,
+td.actions a:hover
+{
     background: -moz-linear-gradient(center top , #f5f5f5, #ccc) repeat scroll 0 0 #f5f5f5;
     background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ccc));
     text-decoration:none;
     padding:0 9px;
     border:1px solid #333;
+    color:#333;
 }
 
 input[type="submit"],
 div.actions ul li a,
 td.actions a
 {
+    position:relative;
+    left:-8px;
     -moz-border-radius:0;
     background:none;
     border:none;
     color:#333;
     font-weight:normal;
     min-width:0;
-    margin-right:1px;
     padding:4px 8px;
     text-decoration:none;
     text-shadow:0 1px 0 #fff;
@@ -164,11 +171,11 @@ div.actions ul li a:hover {
         text-decoration:none;
         padding:3px 7px;
         border:1px solid #333;
-        border-right:none;
 }
 div.actions li
 {
     margin:0;
+    padding-left:8px;
 }
 
 div.actions h3
@@ -224,11 +231,22 @@ form .input label
     display:block;
     font-size:115%;
 }
+
+form .datetime span
+{
+    margin-left:10px;
+    margin-right:5px;
+}
+
 input, textarea
 {
     font-size:12px;
     padding:5px;
     border:1px solid #ccc;
+}
+input.calendar
+{
+    width:auto;
 }
 .select label
 {
@@ -252,4 +270,79 @@ h2
 .submit input
 {
     border:1px solid #333;
+}
+
+h3.expander
+{
+    cursor:pointer;
+    clear:left;
+    background-image:url(../img/tree_table/toggle-expand-dark.png);
+    background-repeat:no-repeat;
+    background-position:5px 5px;
+    padding-left:25px;
+    color: #777;
+    border-bottom:1px dotted #999;
+}
+h3.expander.open
+{
+    background-image:url(../img/tree_table/toggle-collapse-dark.png);
+}
+div.accordion
+{
+    clear:left;
+    overflow: hidden;
+    width: 100%;
+    padding:0;
+}
+
+div.accordion h3.expander
+{
+    font-size:13px;
+    color:#666;
+    padding:4px;
+    padding-left:25px;
+}
+
+span.expander
+{
+    background-image:url(../img/tree_table/toggle-expand-dark.png);
+    background-repeat:no-repeat;
+    background-position:5px 5px;
+    padding-left:25px;
+}
+#tree-table td.first
+{
+    padding-left: 19px;
+}
+
+.product-item
+{
+    display:block;
+    width:122px;
+    height:165px;
+    overflow:hidden;
+    float:left;
+    clear:none;
+    padding:10px;
+    border:1px solid #999;
+    margin-right:10px;
+    margin-bottom:10px;
+    cursor:pointer;
+}
+.product-item.hover
+{
+    background:#ccc;
+}
+.product-item.checked
+{
+    background:#f90;
+}
+.product-item div
+{
+    margin:5px 0 0 0;
+    padding:0;
+}
+.product-item img
+{
+    border:1px solid #666;
 }

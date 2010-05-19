@@ -1,38 +1,28 @@
 <div class="productCategories index">
-	<h2><?php __('Product Categories');?></h2>
-	<table cellpadding="0" cellspacing="0">
+	<h2><?php __('Categorie di prodotti');?></h2>
+	<table cellpadding="0" cellspacing="0" id="tree-table">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('text');?></th>
-			<th><?php echo $this->Paginator->sort('parent_id');?></th>
-			<th><?php echo $this->Paginator->sort('lft');?></th>
-			<th><?php echo $this->Paginator->sort('rght');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php __('Actions');?></th>
+			<th><?php __('Nome'); ?></th>
+			<th class="actions"><?php __('Azioni');?></th>
 	</tr>
 	<?php
 	$i = 0;
 	foreach ($productCategories as $productCategory):
-		$class = null;
+		$class = '';
+        if($productCategory['ProductCategory']['parent_id'] > 0) {
+            $class .= 'child-of-node-'.$productCategory['ProductCategory']['parent_id'].' ';
+        }
 		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
+			$class .= 'altrow';
 		}
+
+        $class = ' class="'.$class.'"';
 	?>
-	<tr<?php echo $class;?>>
-		<td><?php echo $productCategory['ProductCategory']['id']; ?>&nbsp;</td>
-		<td><?php echo $productCategory['ProductCategory']['name']; ?>&nbsp;</td>
-		<td><?php echo $productCategory['ProductCategory']['text']; ?>&nbsp;</td>
-		<td><?php echo $productCategory['ProductCategory']['parent_id']; ?>&nbsp;</td>
-		<td><?php echo $productCategory['ProductCategory']['lft']; ?>&nbsp;</td>
-		<td><?php echo $productCategory['ProductCategory']['rght']; ?>&nbsp;</td>
-		<td><?php echo $productCategory['ProductCategory']['created']; ?>&nbsp;</td>
-		<td><?php echo $productCategory['ProductCategory']['modified']; ?>&nbsp;</td>
+	<tr<?php echo $class;?> id="node-<?php echo $productCategory['ProductCategory']['id'] ?>">
+		<td class="first"><?php echo $productCategory['ProductCategory']['name']; ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $productCategory['ProductCategory']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $productCategory['ProductCategory']['id'])); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $productCategory['ProductCategory']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $productCategory['ProductCategory']['id'])); ?>
+			<?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $productCategory['ProductCategory']['id'])); ?>
+			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $productCategory['ProductCategory']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $productCategory['ProductCategory']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -54,8 +44,7 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product Category', true)), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('controller' => 'products', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product', true)), array('controller' => 'products', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Nuova categoria', true), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Torna a prodotti', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
 	</ul>
 </div>

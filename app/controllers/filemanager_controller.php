@@ -20,11 +20,12 @@ class FilemanagerController extends AppController
             $this->Session->start();
         }
 
+        $this->set('activemenu_for_layout', 'tools');
+
         parent::beforeFilter();
 
     }
-
-
+    
     function admin_index($dir = '')
     {
         if(!empty($dir))

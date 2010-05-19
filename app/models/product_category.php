@@ -20,7 +20,7 @@ class ProductCategory extends AppModel {
 		)
 	);
 
-    var $actsAs = array('Tree');
+    var $actsAs = array('Tree', 'Containable');
 
 }
 ?>
