@@ -3,6 +3,12 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 
+    function beforeFilter()
+    {
+        $this->set('activemenu_for_layout', 'users');
+        return parent::beforeFilter();
+    }
+
     //di fatto questa è la funzione view…
 	function index($id = null) {
 		if (!$id) {
@@ -49,6 +55,11 @@ class UsersController extends AppController {
             $this->paginate = array('conditions' => array('role' => $role));
             $this->set('role', Configure::read('roles.'.$role));
         }
+
+        if(isset($this->params['named']['active'])) {
+            $this->paginate = am($this->paginate, array('conditions' => array('active' => $this->params['named']['active'])));
+        }
+
 		$this->set('users', $this->paginate());
 	}
 

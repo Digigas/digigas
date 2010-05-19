@@ -39,5 +39,33 @@ class Hamper extends AppModel {
         'end_date' => array('rule' => 'notEmpty', 'on' => 'create')
     );
 
+    var $actsAs = array('Containable');
+
+    function formatDates($data) {
+        $dateTimeFields = array();
+        foreach($this->_schema as $field => $type) {
+            if($type['type'] == 'datetime') {
+                $dateTimeFields[] = $field;
+            }
+        }
+
+        foreach($dateTimeFields as $field) {
+            if(isset($data[$this->alias][$field])
+                && isset($data[$this->alias][$field]['date']))
+            {
+                $year = date('Y', strtotime($data[$this->alias][$field]['date']));
+                $month = date('m', strtotime($data[$this->alias][$field]['date']));
+                $day = date('d', strtotime($data[$this->alias][$field]['date']));
+
+                $data[$this->alias][$field]['year'] = $year;
+                $data[$this->alias][$field]['month'] = $month;
+                $data[$this->alias][$field]['day'] = $day;
+                
+                //unset($data[$this->alias][$field]['date']);
+            }
+        }
+
+        return $data;
+    }
 }
 ?>

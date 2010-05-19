@@ -52,6 +52,8 @@
         <li>Filtra
             <ul>
                 <li><?php echo $this->Html->link(__('Tutti gli utenti', true), array('action' => 'index')); ?></li>
+                <li><?php echo $this->Html->link(__('Solo attivi', true), array('active' => 1)); ?></li>
+                <li><?php echo $this->Html->link(__('Solo disattivati', true), array('active' => 0)); ?></li>
                 <?php foreach(Configure::read('roles') as $n => $_role): ?>
                 <li><?php echo $this->Html->link(__('Solo ', true).$_role, array('action' => 'index', $n)); ?></li>
                 <?php endforeach; ?>

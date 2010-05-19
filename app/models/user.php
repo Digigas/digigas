@@ -66,12 +66,28 @@ class User extends AppModel {
         'email'         => array('rule' => 'notEmpty', 'on' => 'create')
     );
 
+    var $actsAs = array('Containable');
+
     function beforeSave() {
         if(isset($this->data['User']['password']) && empty($this->data['User']['password'])) {
             unset($this->data['User']['password']);
         }
 
         return parent::beforeSave();
+    }
+
+    function getSellers($options = null) {
+
+        $_options = array(
+            'conditions' => array('role' => 2),
+            'fields' => array('id', 'first_name', 'last_name', 'username'),
+            'contain' => array());
+
+        $options = am($_options, $options);
+
+        $sellers = $this->find('all', $options);
+
+        return $sellers;
     }
 
 }

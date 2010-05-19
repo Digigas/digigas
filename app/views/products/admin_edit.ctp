@@ -1,36 +1,25 @@
 <div class="products form">
-<?php echo $this->Form->create('Product');?>
+<?php echo $this->Form->create('Product', array('type' => 'file'));?>
 	<fieldset>
- 		<legend><?php printf(__('Admin Edit %s', true), __('Product', true)); ?></legend>
+ 		<h2><?php __('Modifica scheda prodotto'); ?></h2>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('product_category_id');
-		echo $this->Form->input('seller_id');
-		echo $this->Form->input('name');
-		echo $this->Form->input('text');
-		echo $this->Form->input('packing');
-		echo $this->Form->input('image');
-		echo $this->Form->input('weight');
-		echo $this->Form->input('number');
-		echo $this->Form->input('value');
-		echo $this->Form->input('Hamper');
+		echo $this->Form->input('product_category_id', array('label' => __('Appartiene alla categoria', true)));
+		echo $this->Form->input('seller_id', array('label' => __('Produttore', true)));
+		echo $this->Form->input('name', array('label' => __('Nome del prodotto', true)));
+		echo $this->Form->input('text', array('label' => __('Descrizione', true)));
+		echo $this->Form->input('packing', array('label' => __('Descrizione dell\'imballaggio', true)));
+		echo $this->Form->input('image', array('type' => 'file', 'label' => __('Immagine', true)));
+		echo $this->Form->input('weight', array('label' => __('Peso (specifica unità di misura)', true)));
+		echo $this->Form->input('number', array('label' => __('Numero di pezzi per collo', true)));
+		echo $this->Form->input('value', array('label' => __('Prezzo &euro; per collo', true)));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
+<?php echo $this->Form->end(__('Salva', true));?>
 </div>
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-
-		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Product.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Product.id'))); ?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Product Categories', true)), array('controller' => 'product_categories', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product Category', true)), array('controller' => 'product_categories', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Users', true)), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('User', true)), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Ordered Products', true)), array('controller' => 'ordered_products', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Ordered Product', true)), array('controller' => 'ordered_products', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Hampers', true)), array('controller' => 'hampers', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Hamper', true)), array('controller' => 'hampers', 'action' => 'add')); ?> </li>
-	</ul>
+        <li><?php echo $this->Html->link(__('Torna a prodotti', true), array('action' => 'index'));?></li>
+    </ul>
 </div>
