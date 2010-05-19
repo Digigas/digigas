@@ -1,0 +1,255 @@
+body
+{
+    background:#444;
+    font-size:12px;
+}
+#header h1
+{
+    background:none;
+    margin:0;
+    padding:0;
+    font-size:26px;
+}
+#header h1 a,
+#header h1 a:hover
+{
+    background:none;
+}
+
+#tools
+{
+    position:absolute;
+    top:15px;
+    right:10px;
+}
+
+#navigation
+{
+    margin-left:15px;
+}
+
+#tools ul,
+#navigation ul,
+#content-tools ul
+{
+    margin:0;
+    padding:0;
+    list-style-type:none;
+}
+
+#navigation a
+{
+    display:block;
+    float:left;
+    position:relative;
+    top:3px;
+    margin-right:4px;
+    padding:4px 12px;
+    color:#fff;
+    background:#222;
+    text-decoration:none;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+#navigation a:hover
+{
+    color:#333;
+    background:#fff;    
+}
+
+#tools a
+{
+    display:block;
+    float:left;
+    position:relative;
+    top:2px;
+    padding:5px 8px;
+    color:#fff;
+    text-decoration:none;
+}
+#tools a:hover
+{
+    color:#333;
+    background:#fff;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+#navigation ul li
+{
+    margin:0;
+}
+
+#tools li
+{
+    float:left;
+}
+
+#navigation li
+{
+    float:left;
+}
+
+#content
+{
+    border-top:3px solid #111;
+    border-bottom:3px solid #111;
+    padding:0;
+}
+
+fieldset
+{
+    border:none;
+    margin:0;
+    padding:0;
+}
+
+div.form,
+div.index,
+div.view {
+	float:left;
+	width:76%;
+	border-right:1px solid #666;
+	padding:10px 2%;
+        overflow:auto;
+}
+
+div.actions
+{
+    float:right;
+    padding:15px 0;
+    width:19%;
+    font-size:14px;
+}
+div.actions ul ul
+{
+    margin-left:10px;
+    font-size:12px;
+}
+
+table td.actions a
+{
+    display:block;
+    float:left;
+    padding:1px 10px;
+}
+td.actions a:hover {
+    background: -moz-linear-gradient(center top , #f5f5f5, #ccc) repeat scroll 0 0 #f5f5f5;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ccc));
+    text-decoration:none;
+    padding:0 9px;
+    border:1px solid #333;
+}
+
+input[type="submit"],
+div.actions ul li a,
+td.actions a
+{
+    -moz-border-radius:0;
+    background:none;
+    border:none;
+    color:#333;
+    font-weight:normal;
+    min-width:0;
+    margin-right:1px;
+    padding:4px 8px;
+    text-decoration:none;
+    text-shadow:0 1px 0 #fff;
+}
+
+div.actions ul li a:hover {
+	background: -moz-linear-gradient(center top , #f5f5f5, #ccc) repeat scroll 0 0 #f5f5f5;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ccc));
+        text-decoration:none;
+        padding:3px 7px;
+        border:1px solid #333;
+        border-right:none;
+}
+div.actions li
+{
+    margin:0;
+}
+
+div.actions h3
+{
+    display:none;
+}
+
+
+.search
+{
+    position:relative;
+    float:right;
+    top:-10px;
+    background: #222;
+    padding:15px;
+    width:250px;
+    border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
+}
+.search form .text
+{
+    position:relative;
+    width:200px;
+    margin:0;
+    padding:0;
+}
+.search form .submit
+{
+    position:absolute;
+    top:15px;
+    left:215px;
+    width:50px;
+    margin:0;
+    padding:0;
+}
+.search form .submit input
+{
+    width:100%;
+    height:25px;
+}
+.search form input
+{
+    padding:0;
+    font-size:10px;
+    border:none;
+    height:25px;
+}
+
+form .input label
+{
+    color:#666666;
+    display:block;
+    font-size:115%;
+}
+input, textarea
+{
+    font-size:12px;
+    padding:5px;
+    border:1px solid #ccc;
+}
+.select label
+{
+    display:block;
+    float:left;
+    padding-right:10px;
+}
+select
+{
+    font-size:12px;
+}
+h2
+{
+    display:block;
+    border-bottom:1px solid #ccc;
+}
+.submit
+{
+    text-align:right;
+}
+.submit input
+{
+    border:1px solid #333;
+}

@@ -1,0 +1,107 @@
+/* stile per filemanager */
+
+#filemanager_content .breadcrumbs
+{
+    background-color:#333;
+    color:#fff;
+    padding:5px;
+}
+#filemanager_content .breadcrumbs a
+{
+    color:#ccc;
+}
+.filemanager_form
+{
+    overflow: hidden;
+    width: 100%;
+}
+
+#filemanager_content #filemanager_actions
+{
+    background:#eee;
+    background-image:url(../../img/admin/bg_content_top.png);
+    background-position:center top;
+    background-repeat:repeat-x;
+    border-bottom:1px solid #333;
+    padding:5px;
+}
+#filemanager_content #filemanager_actions ul
+{
+    list-style-type:none;
+}
+#filemanager_content #filemanager_actions ul li
+{
+    display:block;
+    float:left;
+}
+#filemanager_content #filemanager_actions ul li a
+{
+    display:block;
+    float:left;
+    margin-right:20px;
+}
+#filemanager_content #filemanager_actions div
+{
+    clear:left;
+}
+
+#filemanager_content .item_res
+{
+    position:relative;
+    float:left;
+    width:128px;
+    height:160px;
+    padding:10px;
+    margin-right:10px;
+    margin-top:10px;
+    background:#666;
+    border:2px solid #333;
+    overflow:hidden;
+    color:#fff;
+}
+
+#filemanager_content .item_img
+{
+}
+#filemanager_content .item_res a
+{
+    color:#fff;
+}
+#filemanager_content .item_name
+{
+    width:128px;
+    overflow:hidden;
+    text-align:center;
+    margin-top:10px;
+}
+#filemanager_content .item_name form input
+{
+    width:126px;
+    padding:0;
+    margin:0;
+    border:none;
+    text-align:center;
+}
+#filemanager_content .item_actions
+{
+    position:absolute;
+    top:0;
+    right:0;
+}
+#filemanager_content .item_actions a
+{
+
+}
+
+#filemanager_content #tree ul li
+{
+    float:none;
+}
+#filemanager_content #tree ul li a
+{
+    float:none;
+    padding-left:20px;
+    background-image: url(../../img/oxygen/16x16/filesystems/folder.png);
+    background-position:left;
+    background-repeat:no-repeat;
+}
