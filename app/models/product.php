@@ -13,7 +13,7 @@ class Product extends AppModel {
                 'order' => ''
         ),
         'Seller' => array(
-                'className' => 'User',
+                'className' => 'Seller',
                 'foreignKey' => 'seller_id',
                 'conditions' => '',
                 'fields' => '',

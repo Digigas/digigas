@@ -9,6 +9,14 @@ class UsersController extends AppController {
         return parent::beforeFilter();
     }
 
+    function login() {
+    }
+
+    function logout() {
+        $this->redirect($this->Auth->logout());
+    }
+
+
     //di fatto questa è la funzione view…
 	function index($id = null) {
 		if (!$id) {
@@ -68,7 +76,7 @@ class UsersController extends AppController {
 			$this->User->create();
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
-				$this->redirect(array('action' => 'index'));
+                $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
 			}
@@ -77,6 +85,18 @@ class UsersController extends AppController {
         $roles = Configure::read('roles');
 
         $this->set('roles', $roles);
+	}
+
+    function admin_addseller() {
+		if (!empty($this->data)) {
+			$this->User->create();
+			if ($this->User->save($this->data)) {
+				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
+                $this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
+			}
+		}
 	}
 
 	function admin_edit($id = null) {
@@ -94,6 +114,9 @@ class UsersController extends AppController {
 		}
 		if (empty($this->data)) {
 			$this->data = $this->User->read(null, $id);
+            if($this->data['User']['role'] == 2) {
+                $this->render('admin_editseller');
+            }
 		}
 
         $roles = Configure::read('roles');

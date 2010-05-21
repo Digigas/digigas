@@ -32,7 +32,6 @@ class PagesController extends AppController {
         $page = $this->Page->find('first', array(
             'conditions'=>array('Page.active'=>1),
             'order'=>'lft asc'));
-        $page = $this->Page->translate($page);
         $this->pageTitle = $page['Page']['title'];
         $this->metatags_for_layout = array(
             'description' => $page['Page']['meta_description'],
@@ -102,9 +101,6 @@ class PagesController extends AppController {
         {
             $this->redirect($page['Page']['link_to_front']);
         }
-
-        //translate
-        $page = $this->Page->translate($page);
 
         $this->pageTitle = $page['Page']['title'];
         $this->metatags_for_layout = array(
