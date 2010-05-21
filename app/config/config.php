@@ -10,6 +10,6 @@ $config = array(
          *
          * - puoi modificare i nomi qui sotto come preferisci, ma mantieni lo stesso ordine
          */
-        'root', 'admin', 'fonritore', 'utente'
+        'root', 'admin', 'fornitore', 'utente'
     )
 );
