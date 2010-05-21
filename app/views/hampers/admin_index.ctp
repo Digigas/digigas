@@ -52,6 +52,7 @@
             <ul>
                 <li><?php echo $this->Html->link(__('Tutti', true), array('action' => 'index')); ?></li>
                 <li><?php echo $this->Html->link(__('Solo panieri aperti', true), array('actives' => 1)); ?></li>
+                <li><?php echo $this->Html->link(__('Solo i modelli', true), array('templates' => 1)); ?></li>
             </ul>
         </li>
         <li><?php __('Visualizza per produttore'); ?>
@@ -61,6 +62,6 @@
                 <li><?php echo $this->Html->link($seller['User']['first_name'].' '.$seller['User']['last_name'], array('seller' => $seller['User']['id'])); ?></li>
                 <?php endforeach; ?>
             </ul>
-        </li>
+        </li>        
 	</ul>
 </div>

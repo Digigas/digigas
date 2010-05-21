@@ -2,7 +2,7 @@
 class HampersController extends AppController {
 
 	var $name = 'Hampers';
-
+    
     function beforeFilter()
     {
         $this->set('activemenu_for_layout', 'hampers');
@@ -26,14 +26,18 @@ class HampersController extends AppController {
 		$this->Hamper->recursive = 0;
 
         if(isset($this->params['named']['seller'])) {
-            $this->paginate = am($this->paginate, array('conditions' => array('seller_id' => $this->params['named']['seller'])));
+            $this->paginate = array_merge_recursive($this->paginate, array('conditions' => array('Hamper.seller_id' => $this->params['named']['seller'])));
         }
 
         if(isset($this->params['named']['actives'])) {
-            $this->paginate = am($this->paginate, array('conditions' => array(
+            $this->paginate = array_merge_recursive($this->paginate, array('conditions' => array(
                 'start_date <' => date('Y-m-d H:m:s'),
                 'end_date >' => date('Y-m-d H:m:s')
                 )));
+        }
+
+        if(isset($this->params['named']['templates'])) {
+            $this->paginate = array_merge_recursive($this->paginate, array('conditions' => array('Hamper.is_template' => $this->params['named']['templates'])));
         }
 
         //query per trovare i sellers (utile per filtrare i panieri)
@@ -54,6 +58,7 @@ class HampersController extends AppController {
 				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'hamper'));
 			}
 		}
+
 		$sellers = $this->Hamper->User->find('list', array('conditions' => array('role' => 2)));
         $productCategories = $this->Hamper->Product->ProductCategory->find('all', array(
             'order' => 'ProductCategory.lft asc',

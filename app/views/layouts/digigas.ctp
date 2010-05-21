@@ -28,7 +28,7 @@
         </div>
         <div id="navigation">
             <ul>
-                <li class="products"><?php echo $this->Html->link('Prodotti', array('controller' => 'products')); ?></li>
+                <li class="products"><?php echo $this->Html->link('Produttori e prodotti', array('controller' => 'sellers')); ?></li>
                 <li class="hampers"><?php echo $this->Html->link('Panieri', array('controller' => 'hampers')); ?></li>
                 <li class="orders"><?php echo $this->Html->link('Ordini', array('controller' => 'ordered_products')); ?></li>
                 <li class="users"><?php echo $this->Html->link('Utenti', array('controller' => 'users')); ?></li>

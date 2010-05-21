@@ -28,11 +28,15 @@ class ProductsController extends AppController {
         //aggiungo filtro per categoria
         if(isset($this->params['named']['category'])) {
             $this->paginate = am($this->paginate, array('conditions' => array('product_category_id' => $this->params['named']['category'])));
+            $categoryName = $this->Product->ProductCategory->field('name', array('id' => $this->params['named']['category']));
+            $this->set('categoryName', $categoryName);
         }
         
         //aggiungo filtro per produttore
         if(isset($this->params['named']['seller'])) {
             $this->paginate = am($this->paginate, array('conditions' => array('seller_id' => $this->params['named']['seller'])));
+            $sellerName = $this->Product->Seller->field('name',  array('id' => $this->params['named']['seller']));
+            $this->set('sellerName', $sellerName);
         }
 
 		$this->set('products', $this->paginate());

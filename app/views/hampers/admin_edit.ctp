@@ -7,6 +7,7 @@
         <div class="accordion">
             <?php
             echo $this->Form->input('id');
+            
             echo $this->Form->input('name', array('label' => __('Nome', true)));
             echo $this->Form->input('seller_id', array('label' => __('Produttore', true)));
             
@@ -17,6 +18,7 @@
             echo $this->element('admin/datetimeselect', array('field' => 'delivery_date_off', 'label' => __('Termine massimo per la consegna', true)));
 
             echo $this->Form->input('delivery_position', array('type' => 'text', 'label' => __('Luogo di consegna', true)));
+            echo $this->Form->input('is_template', array('label' => __('Salva come modello', true)));
             ?>
         </div>
 
@@ -70,7 +72,6 @@ echo <<<JS
 
 //selezione prodotti
 $('.product-item', '#products')
-    .has('input[checked="checked"]').addClass('checked')
     .hover(
         function(){
             $(this).addClass('hover');
@@ -88,7 +89,8 @@ $('.product-item', '#products')
             checkbox.attr('checked', 'checked');
             $(this).addClass('checked');
         }
-    });
+    })
+    .has('input[checked="checked"]').addClass('checked');
 JS;
 
 $this->Layout->blockEnd();

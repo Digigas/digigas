@@ -1,5 +1,15 @@
 <div class="products index">
-	<h2><?php __('Archivio prodotti');?></h2>
+	<h2>
+    <?php
+    __('Archivio prodotti');
+    if(isset($categoryName)) {
+        echo ' '.__('nella categoria', true).' '.$categoryName;
+    }
+    if(isset($sellerName)) {
+        echo ' '.__('del produttore', true).' '.$sellerName;
+    }
+    ?>
+    </h2>
     
 	<table cellpadding="0" cellspacing="0">
 	<tr>
@@ -22,7 +32,7 @@
 		</td>		
 		<td><?php echo $product['Product']['name']; ?>&nbsp;</td>
         <td>
-			<?php echo $this->Html->link($product['Seller']['username'], array('seller' => $product['Seller']['id']), array('title' => __('Visualizza solo prodotti di questo produttore', true))); ?>
+			<?php echo $this->Html->link($product['Seller']['name'], array('seller' => $product['Seller']['id']), array('title' => __('Visualizza solo prodotti di questo produttore', true))); ?>
 		</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $product['Product']['id'])); ?>
@@ -47,10 +57,10 @@
 </div>
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
-	<ul>
+	<ul>        
         <li><?php echo $this->Html->link(__('Nuovo prodotto', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('Gestisci le categorie', true), array('controller' => 'product_categories', 'action' => 'index')); ?> </li>
-		<li>
+		<li><?php echo $this->Html->link(__('Gestisci i produttori', true), array('controller' => 'sellers', 'action' => 'index')); ?> </li>
+        <li>
             Visualizza per categoria
             <ul>
                 <li><?php echo $this->Html->link('Tutte le categorie', array('action' => 'index')) ?></li>
@@ -63,5 +73,6 @@
                 ?>
             </ul>
         </li>
+        <li><?php echo $this->Html->link(__('Gestisci le categorie', true), array('controller' => 'product_categories', 'action' => 'index')); ?> </li>
 	</ul>
 </div>
