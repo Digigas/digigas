@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 19 mag, 2010 at 08:16 PM
+-- Generato il: 21 mag, 2010 at 12:58 PM
 -- Versione MySQL: 5.1.37
 -- Versione PHP: 5.2.10
 
@@ -46,6 +46,7 @@ CREATE TABLE `hampers` (
   `delivery_date_on` datetime DEFAULT NULL,
   `delivery_date_off` datetime DEFAULT NULL,
   `delivery_position` text COLLATE utf8_unicode_ci NOT NULL,
+  `is_template` tinyint(1) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -214,6 +215,29 @@ CREATE TABLE `product_categories` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `sellers`
+--
+
+CREATE TABLE `sellers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `business_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `mobile` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `fax` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `website` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `notes` text COLLATE utf8_unicode_ci NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `created` date NOT NULL,
+  `modified` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `usergroups`
 --
 
@@ -240,6 +264,7 @@ CREATE TABLE `users` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `role` tinyint(4) NOT NULL,
   `usergroup_id` int(11) DEFAULT NULL,
+  `seller_id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `created` date NOT NULL,
   `modified` date NOT NULL,
