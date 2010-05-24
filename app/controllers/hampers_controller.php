@@ -1,29 +1,61 @@
 <?php
 class HampersController extends AppController {
 
-	var $name = 'Hampers';
-    
-    function beforeFilter()
-    {
+    var $name = 'Hampers';
+
+    function beforeFilter() {
+        parent::beforeFilter();
+
         $this->set('activemenu_for_layout', 'hampers');
-        return parent::beforeFilter();
+
+        if(!isset($this->params['admin'])) {
+            $userOrder = $this->Hamper->OrderedProduct->getUserOrder($this->Auth->user());
+            $this->set('userOrder', $userOrder);
+        }
+
+        $this->Auth->deny($this->methods);
     }
 
-	function index() {
-		$this->Hamper->recursive = 0;
-		$this->set('hampers', $this->paginate());
-	}
+    function index() {
+        $this->paginate = array('conditions' => $this->Hamper->getActiveConditions(), 'order' => array('Hamper.end_date asc'));
+        $this->Hamper->recursive = 0;
+        $this->set('hampers', $this->paginate());
+    }
 
-	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->set('hamper', $this->Hamper->read(null, $id));
-	}
+    function view($id = null) {
+        if (!$id) {
+            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
+            $this->redirect(array('action' => 'index'));
+        }
+        $this->set('hamper', $this->Hamper->read(null, $id));
+    }
 
-	function admin_index() {
-		$this->Hamper->recursive = 0;
+    function add($id = false) {
+        if(!$id) {
+            $this->Session->setFlash(__('Non hai selezionato un paniere!', true));
+            $this->redirect($this->referer());
+        }
+
+        $user = $this->Auth->user();
+        if(empty($user)) {
+            $this->Session->setFlash(__('Devi fare login per ordinare', true));
+            $this->redirect(array('controller' => 'users', 'action' => 'login'));
+        }
+
+        if(!$this->Hamper->isActive($id)) {
+            $this->Session->setFlash(__('Non puoi acquistare questo paniere, l\'ordine è chiuso', true));
+            $this->redirect($this->referer());
+        }
+
+        if($this->Hamper->buy($id, $this->Auth->user())) {
+            $this->Session->setFlash(__('Il tuo ordine è stato processato correttamente. Grazie!', true));
+            $this->redirect($this->referer());
+        }
+    }
+
+    function admin_index() {
+        $this->Hamper->recursive = 0;
+        $this->paginate = array('order' => array('Hamper.id desc'));
 
         if(isset($this->params['named']['seller'])) {
             $this->paginate = array_merge_recursive($this->paginate, array('conditions' => array('Hamper.seller_id' => $this->params['named']['seller'])));
@@ -31,9 +63,9 @@ class HampersController extends AppController {
 
         if(isset($this->params['named']['actives'])) {
             $this->paginate = array_merge_recursive($this->paginate, array('conditions' => array(
-                'start_date <' => date('Y-m-d H:m:s'),
-                'end_date >' => date('Y-m-d H:m:s')
-                )));
+                    'start_date <' => date('Y-m-d H:m:s'),
+                    'end_date >' => date('Y-m-d H:m:s')
+            )));
         }
 
         if(isset($this->params['named']['templates'])) {
@@ -41,25 +73,53 @@ class HampersController extends AppController {
         }
 
         //query per trovare i sellers (utile per filtrare i panieri)
-        $sellers = $this->Hamper->User->getSellers();
+        $sellers = $this->Hamper->Seller->getSellers();
 
-		$this->set('hampers', $this->paginate());
+        $this->set('hampers', $this->paginate());
         $this->set(compact('sellers'));
-	}
+    }
 
-	function admin_add() {
-		if (!empty($this->data)) {
+    function admin_index_templates() {
+        $this->Hamper->recursive = 0;
+        $this->paginate = array('conditions' => array('is_template' => 1), 'order' => array('Hamper.id desc'));
+
+        if(isset($this->params['named']['seller'])) {
+            $this->paginate = array_merge_recursive($this->paginate, array('conditions' => array('Hamper.seller_id' => $this->params['named']['seller'])));
+        }
+
+        //query per trovare i sellers (utile per filtrare i panieri)
+        $sellers = $this->Hamper->Seller->getSellers();
+
+        $this->set('hampers', $this->paginate());
+        $this->set(compact('sellers'));
+    }
+
+    function admin_copy($id) {
+        if (!$id) {
+            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
+            $this->redirect(array('action' => 'index'));
+        }
+
+        $newId = $this->Hamper->copy($id);
+        if($newId) {
+            $this->redirect(array('controller' => 'hampers', 'action' => 'edit', $newId));
+        }
+
+    }
+
+    function admin_add() {
+        if (!empty($this->data)) {
             $this->data = $this->Hamper->formatDates($this->data);
             $this->Hamper->create();
-			if ($this->Hamper->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'hamper'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'hamper'));
-			}
-		}
+            if ($this->Hamper->save($this->data)) {
+                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'hamper'));
+                $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'hamper'));
+            }
+        }
 
-		$sellers = $this->Hamper->User->find('list', array('conditions' => array('role' => 2)));
+        $sellers = $this->Hamper->Seller->find('list', array('conditions' => array('active' => 1)));
         $productCategories = $this->Hamper->Product->ProductCategory->find('all', array(
             'order' => 'ProductCategory.lft asc',
             'fields' => array(
@@ -69,28 +129,28 @@ class HampersController extends AppController {
                 'Product.id', 'Product.name', 'Product.image'
             )
         ));
-		$this->set(compact('sellers', 'productCategories'));
-	}
+        $this->set(compact('sellers', 'productCategories'));
+    }
 
-	function admin_edit($id = null) {
-		if (!$id && empty($this->data)) {
+    function admin_edit($id = null) {
+        if (!$id && empty($this->data)) {
             $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
-			$this->redirect(array('action' => 'index'));
-		}
-		if (!empty($this->data)) {
-			$this->data = $this->Hamper->formatDates($this->data);
-			if ($this->Hamper->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'hamper'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'hamper'));
-			}
-		}
-		if (empty($this->data)) {
-			$this->data = $this->Hamper->read(null, $id);
-		}
-		$sellers = $this->Hamper->User->find('list', array('conditions' => array('role' => 2)));
-		$productCategories = $this->Hamper->Product->ProductCategory->find('all', array(
+            $this->redirect(array('action' => 'index'));
+        }
+        if (!empty($this->data)) {
+            $this->data = $this->Hamper->formatDates($this->data);
+            if ($this->Hamper->save($this->data)) {
+                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'hamper'));
+                $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'hamper'));
+            }
+        }
+        if (empty($this->data)) {
+            $this->data = $this->Hamper->read(null, $id);
+        }
+        $sellers = $this->Hamper->Seller->find('list', array('conditions' => array('active' => 1)));
+        $productCategories = $this->Hamper->Product->ProductCategory->find('all', array(
             'order' => 'ProductCategory.lft asc',
             'fields' => array(
                 'id', 'name', 'parent_id', 'lft', 'rght'
@@ -100,20 +160,20 @@ class HampersController extends AppController {
             )
         ));
         $relatedProducts = Set::extract('/Product/id', $this->data);
-		$this->set(compact('sellers', 'productCategories', 'relatedProducts'));
-	}
+        $this->set(compact('sellers', 'productCategories', 'relatedProducts'));
+    }
 
-	function admin_delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'hamper'));
-			$this->redirect(array('action'=>'index'));
-		}
-		if ($this->Hamper->delete($id)) {
-			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Hamper'));
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Hamper'));
-		$this->redirect(array('action' => 'index'));
-	}
+    function admin_delete($id = null) {
+        if (!$id) {
+            $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'hamper'));
+            $this->redirect(array('action'=>'index'));
+        }
+        if ($this->Hamper->delete($id)) {
+            $this->Session->setFlash(sprintf(__('%s deleted', true), 'Hamper'));
+            $this->redirect(array('action'=>'index'));
+        }
+        $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Hamper'));
+        $this->redirect(array('action' => 'index'));
+    }
 }
 ?>

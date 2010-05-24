@@ -30,7 +30,7 @@
             foreach($productCategories as $category):
             ?>
             <h3 class="expander"><?php echo $category['ProductCategory']['name']; ?></h3>
-            <div class="accordion" id="products">
+            <div class="accordion">
                 <?php
                 //elenco dei prodotti nella categoria
                 foreach($category['Product'] as $product):
@@ -61,6 +61,7 @@
     <h3><?php __('Actions'); ?></h3>
     <ul>
         <li><?php echo $this->Html->link(__('Torna a panieri', true), array('action' => 'index'));?></li>
+        <li><?php echo $this->Html->link(__('Torna a modelli di paniere', true), array('action' => 'index_templates'));?></li>
     </ul>
 </div>
 
@@ -71,7 +72,7 @@ $this->Layout->blockStart('js_on_load');
 echo <<<JS
 
 //selezione prodotti
-$('.product-item', '#products')
+$('.product-item')
     .hover(
         function(){
             $(this).addClass('hover');

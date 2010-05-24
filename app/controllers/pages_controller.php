@@ -7,11 +7,16 @@ class PagesController extends AppController {
     var $paginate = array(
             'limit' => 50,
             'order' => 'Page.lft asc');
+    var $allowedActions = array('index', 'homepage', 'view', 'display');
 
     function beforeFilter()
     {
-        $this->set('activemenu_for_layout', 'website');
-        return parent::beforeFilter();
+        parent::beforeFilter();
+
+        if(isset($this->params['admin']) && $this->params['admin']) {
+            $this->set('activemenu_for_layout', 'website');
+        }
+
     }
 
     /*
@@ -38,8 +43,9 @@ class PagesController extends AppController {
             'keywords' => $page['Page']['meta_keywords']
             );
         $this->set('page', $page);
+        $this->set('pageSlug', $page['Page']['slug']);
         
-        $this->render('homepage', 'homepage');
+        $this->render('homepage');
     }
 
     /*
@@ -108,6 +114,7 @@ class PagesController extends AppController {
             'keywords' => $page['Page']['meta_keywords']
             );
         $this->set('page', $page);
+        $this->set('pageSlug', $page['Page']['slug']);
     }
 
     function display() {

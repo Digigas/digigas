@@ -6,8 +6,9 @@ class ProductCategoriesController extends AppController {
 
     function beforeFilter()
     {
+        parent::beforeFilter();
+
         $this->set('activemenu_for_layout', 'products');
-        return parent::beforeFilter();
     }
 
 	function index() {
@@ -20,7 +21,7 @@ class ProductCategoriesController extends AppController {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product category'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('productCategory', $this->ProductCategory->read(null, $id));
+        $this->redirect(array('controller' => 'products', 'action' => 'index', $id));
 	}
 
 	
@@ -28,7 +29,6 @@ class ProductCategoriesController extends AppController {
 		$this->ProductCategory->recursive = 0;
 		$this->set('productCategories', $this->paginate());
 	}
-
 
 	function admin_add() {
 		if (!empty($this->data)) {

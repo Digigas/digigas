@@ -5,8 +5,8 @@ class Hamper extends AppModel {
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $belongsTo = array(
-		'User' => array(
-			'className' => 'User',
+		'Seller' => array(
+			'className' => 'Seller',
 			'foreignKey' => 'seller_id',
 			'conditions' => '',
 			'fields' => '',
@@ -19,7 +19,7 @@ class Hamper extends AppModel {
 	var $hasAndBelongsToMany = array(
 		'Product' => array(
 			'className' => 'Product',
-			'joinTable' => 'products_hampers',
+			'joinTable' => 'hampers_products',
 			'foreignKey' => 'hamper_id',
 			'associationForeignKey' => 'product_id',
 			'unique' => true,
@@ -67,5 +67,81 @@ class Hamper extends AppModel {
 
         return $data;
     }
+
+    function getActiveConditions() {
+        $now = date('Y:m:d H:i');
+        $conditions = array(
+            'Hamper.start_date < ' => $now,
+            'Hamper.end_date > ' => $now);
+        return $conditions;
+    }
+
+    function isActive($id) {
+        if($id != $this->id) {
+            $this->id = $id;
+        }
+
+        $this->recursive = -1;
+        $data = $this->findById($id);
+
+        $return = false;
+
+        switch($data['Hamper']['start_date']) {
+            case '0000-00-00 00:00:00':
+                $return = false;
+                break;
+            case ($data['Hamper']['start_date'] < date('Y-m-d H:m:s')):
+                $return = true;
+        }
+
+        switch($data['Hamper']['end_date']) {
+            case '0000-00-00 00:00:00':
+                $return = false;
+                break;
+            case ($data['Hamper']['end_date'] > date('Y-m-d H:m:s')):
+                $return = true;
+        }
+
+        $sellerIsActive = $this->Seller->field('active', array('id' => $data['Hamper']['seller_id']));
+        if(!$sellerIsActive) {
+            $return = false;
+        }
+
+        return $return;
+    }
+
+    function copy($id) {
+        $template = $this->find('first', array(
+            'conditions' => array('Hamper.id' => $id),
+            'fields' => array(
+                'name',
+                'seller_id',
+                'delivery_position'),
+            'contain' => array(
+                'Product.id'
+            )
+            ));
+
+        if(!empty($template)) {
+
+            //rimuovo id
+            unset($template['Hamper']['id']);
+            
+            //imposto il formato corretto per i prodotti correlati
+            $products = Set::extract('/Product/id', $template);
+            unset($template['Product']);
+            $template['Product'] = $products;
+        } else {
+            return false;
+        }
+
+        $this->create();
+        if($this->save($template)) {
+            return $this->id;
+        } else {
+            return false;
+        }
+    }
+
 }
 ?>

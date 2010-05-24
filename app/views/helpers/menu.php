@@ -157,7 +157,7 @@ class MenuHelper extends AppHelper {
     }
 
     /*
-     * metodo principale con cui viene chiamato questo helper, fa tutto lei: setup, query e render
+     * metodo principale con cui viene chiamato questo helper, fa tutto lui: setup, query e render
     */
     function render($options = array()) {
 
@@ -251,10 +251,9 @@ class MenuHelper extends AppHelper {
         // la vera query ---------------------------------
         $elements = $this->Page->find('threaded', array(
             'conditions'=>$this->activeConditions,
-            'fields' => array('parent_id', 'slug', 'menu', 'link_to_front'), 'order' => 'lft ASC',
-            'contain' => array('PagesI18n' => array('fields'=>array('menu', 'local'), 'conditions'=>array('local'=>Configure::read('Config.language'))))
-        ));
-        $elements = $this->Page->translate($elements);
+            'fields' => array('id', 'parent_id', 'slug', 'menu', 'link_to_front'),
+            'order' => 'lft ASC'
+            ));
         // -----------------------------------------------
 
         // imposto il link home, se c'è nelle opzioni

@@ -65,20 +65,5 @@ class User extends AppModel {
 
         return parent::beforeSave();
     }
-
-    function getSellers($options = null) {
-
-        $_options = array(
-            'conditions' => array('role' => 2),
-            'fields' => array('id', 'first_name', 'last_name', 'username'),
-            'contain' => array());
-
-        $options = am($_options, $options);
-
-        $sellers = $this->find('all', $options);
-
-        return $sellers;
-    }
-
 }
 ?>

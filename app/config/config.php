@@ -1,5 +1,8 @@
 <?php
 $config = array(
+    'language' => array('it'),
+    'default_language' => 'it',
+    'date.format' => 'D j M Y, H:i',
     'roles' => array(
         /*
          * -  prefix map

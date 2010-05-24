@@ -63,7 +63,7 @@ $this->Layout->blockStart('js_on_load');
 echo <<<JS
 
 //selezione prodotti
-$('.product-item', '#products')
+$('.product-item')
     .hover(
         function(){
             $(this).addClass('hover');

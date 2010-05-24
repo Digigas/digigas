@@ -4,21 +4,12 @@
     $layout->blockEnd()
 ?>
 
-<?php
-    $layout->blockStart('foto');
-    echo $imagesList->show(array('images_array' => $page['Image']));
-    $layout->blockEnd();
-?>
-
 <!-- contenuto -->
 <div id="cont">
 
     <h1><?php echo $page['Page']['title']; ?></h1>
     <div class="content">
-    <?php echo $tag2element->replace($page['Page']['summary']); ?>
-    </div>
-    <div class="content">
-    <?php echo $tag2element->replace($page['Page']['text']); ?>
+    <?php echo $page['Page']['text']; ?>
     </div>
 
 </div>

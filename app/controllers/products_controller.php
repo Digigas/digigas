@@ -5,11 +5,24 @@ class ProductsController extends AppController {
 
     function beforeFilter()
     {
+        parent::beforeFilter();
+
         $this->set('activemenu_for_layout', 'products');
-        return parent::beforeFilter();
     }
 
-	function index() {
+	function index($product_category_id = false) {
+        if($product_category_id) {
+            $thisCategory = $this->Product->ProductCategory->read(array('id', 'lft', 'rght'), $product_category_id);
+            $categories = $this->Product->ProductCategory->find('list', array(
+                'conditions' => array(
+                    'ProductCategory.lft >= ' => $thisCategory['ProductCategory']['lft'],
+                    'ProductCategory.rght <= ' => $thisCategory['ProductCategory']['rght']
+                    ),
+                'fields' => array('id')
+            ));
+            $this->paginate = array('conditions' => array('Product.product_category_id' => $categories));
+        }
+
 		$this->Product->recursive = 0;
 		$this->set('products', $this->paginate());
 	}
@@ -19,7 +32,9 @@ class ProductsController extends AppController {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('product', $this->Product->read(null, $id));
+
+        $product = $this->Product->read(null, $id);
+		$this->set('product', $product);
 	}
 
 	function admin_index() {

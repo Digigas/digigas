@@ -1,0 +1,146 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: date\n"
+"POT-Creation-Date: 2010-03-04 13:21+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: alessandro falezza <alefalezza@yahoo.it>\n"
+"Language-Team: ideaedi <info@ideaedi.it>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: /functions.php:30
+msgid "Mon"
+msgstr "Lun"
+
+#: /functions.php:32
+msgid "Tue"
+msgstr "Mar"
+
+#: /functions.php:34
+msgid "Wed"
+msgstr "Mer"
+
+#: /functions.php:36
+msgid "Thu"
+msgstr "Gio"
+
+#: /functions.php:38
+msgid "Fri"
+msgstr "Ven"
+
+#: /functions.php:40
+msgid "Sat"
+msgstr "Sab"
+
+#: /functions.php:42
+msgid "Sun"
+msgstr "Dom"
+
+#: /functions.php:47
+msgid "Monday"
+msgstr "Lunedì"
+
+#: /functions.php:49
+msgid "Tuesday"
+msgstr "Martedì"
+
+#: /functions.php:51
+msgid "Wednesday"
+msgstr "Mercoledì"
+
+#: /functions.php:53
+msgid "Thursday"
+msgstr "Giovedì"
+
+#: /functions.php:55
+msgid "Friday"
+msgstr "Venerdì"
+
+#: /functions.php:57
+msgid "Saturday"
+msgstr "Sabato"
+
+#: /functions.php:59
+msgid "Sunday"
+msgstr "Domenica"
+
+#: /functions.php:64
+msgid "Jan"
+msgstr "Gen"
+
+#: /functions.php:67;94
+msgid "May"
+msgstr "Maggio"
+
+#: /functions.php:70
+msgid "Jun"
+msgstr "Giu"
+
+#: /functions.php:72
+msgid "Jul"
+msgstr "Lug"
+
+#: /functions.php:74
+msgid "Aug"
+msgstr "Ago"
+
+#: /functions.php:76
+msgid "Sep"
+msgstr "Set"
+
+#: /functions.php:78
+msgid "Oct"
+msgstr "Ott"
+
+#: /functions.php:80
+msgid "Dec"
+msgstr "Dic"
+
+#: /functions.php:85
+msgid "January"
+msgstr "Gennaio"
+
+#: /functions.php:87
+msgid "February"
+msgstr "Febbraio"
+
+#: /functions.php:89
+msgid "March"
+msgstr "Marzo"
+
+#: /functions.php:91
+msgid "April"
+msgstr "Aprile"
+
+#: /functions.php:97
+msgid "June"
+msgstr "Giugno"
+
+#: /functions.php:99
+msgid "July"
+msgstr "Luglio"
+
+#: /functions.php:101
+msgid "August"
+msgstr "Agosto"
+
+#: /functions.php:103
+msgid "September"
+msgstr "Settembre"
+
+#: /functions.php:105
+msgid "October"
+msgstr "Ottobre"
+
+#: /functions.php:107
+msgid "November"
+msgstr "Novembre"
+
+#: /functions.php:109
+msgid "December"
+msgstr "Dicembre"
+

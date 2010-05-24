@@ -5,8 +5,11 @@ class UsergroupsController extends AppController {
 
     function beforeFilter()
     {
+        parent::beforeFilter();
+
         $this->set('activemenu_for_layout', 'users');
-        return parent::beforeFilter();
+
+        $this->Auth->deny($this->methods);
     }
 
 	function admin_index() {

@@ -10,6 +10,7 @@
 
 		echo $this->Html->css('cake.generic');
         echo $this->Html->css('cake.admin');
+        echo $this->Html->css('cake.website');
         echo $this->Html->css('jquery.lightbox');
         echo $this->Html->css('digigas/jquery.treeTable');
         echo $this->Html->css('jquery-ui-themeroller');
@@ -25,16 +26,21 @@
             <?php echo $this->element('login_link'); ?>
         </div>
         <div id="navigation">
-            <ul>
-                <li class="products"><?php echo $this->Html->link('Produttori e prodotti', array('controller' => 'sellers')); ?></li>
-                <li class="hampers"><?php echo $this->Html->link('Panieri', array('controller' => 'hampers')); ?></li>
-                <li class="orders"><?php echo $this->Html->link('Ordini', array('controller' => 'ordered_products')); ?></li>
-                <li class="users"><?php echo $this->Html->link('Utenti', array('controller' => 'users')); ?></li>
-                <li class="website"><?php echo $this->Html->link('Sito web', array('controller' => 'pages')); ?></li>
-                <li class="tools"><?php echo $this->Html->link('Strumenti', array('controller' => 'filemanager')); ?></li>
-            </ul>
+            <?php
+            echo $this->Menu->render(array('levels' => 1));
+            ?>
         </div>
 		<div id="content">
+
+            <?php 
+            if(isset($pageSlug)) {
+                echo $this->Html->div('navigation', 
+                    $this->Menu->render(array(
+                        'startPage' => $pageSlug,
+                        'startDepth' => 1
+                        )));
+            }
+            ?>
 
 			<?php echo $this->Session->flash(); ?>
 			<?php echo $content_for_layout; ?>
@@ -109,11 +115,12 @@
                 echo '$(".'.$activemenu_for_layout.'").find("a").addClass("active");';
             }
             ?>
+
+            $('#flashMessage').delay('1500').slideUp('slow');
+
             <?php
             $layout->output($js_on_load_for_layout);
             ?>
-
-            $('#flashMessage').delay('1500').slideUp('slow');
         });
     //]]>
     </script>
