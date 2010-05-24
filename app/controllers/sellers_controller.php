@@ -5,12 +5,15 @@ class SellersController extends AppController {
 
     function beforeFilter()
     {
+        parent::beforeFilter();
+
         $this->set('activemenu_for_layout', 'products');
-        return parent::beforeFilter();
+
+        $this->Auth->deny($this->methods);
     }
 
 	function index() {
-		$this->Seller->recursive = 0;
+		$this->paginate = array('conditions' => array('Seller.active' => 1), 'order' => 'Seller.name asc');
 		$this->set('sellers', $this->paginate());
 	}
 
@@ -19,7 +22,12 @@ class SellersController extends AppController {
 			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'seller'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('seller', $this->Seller->read(null, $id));
+
+        $seller = $this->Seller->find('first', array(
+            'conditions' => array('Seller.id' => $id),
+            'contain' => array('Product')));
+
+		$this->set('seller', $seller);
 	}
     
 	function admin_index() {

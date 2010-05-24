@@ -50,4 +50,7 @@
  */
 
 Configure::load('config');
+
+include_once('date_functions.php');
+
 ?>

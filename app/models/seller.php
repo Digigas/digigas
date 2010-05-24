@@ -69,5 +69,19 @@ class Seller extends AppModel {
         return parent::afterSave($created);
     }
 
+    function getSellers($options = null) {
+
+        $_options = array(
+            'conditions' => array('active' => 1),
+            'fields' => array('id', 'name'),
+            'contain' => array());
+
+        $options = am($_options, $options);
+
+        $sellers = $this->find('all', $options);
+
+        return $sellers;
+    }
+
 }
 ?>

@@ -29,7 +29,7 @@
 			<?php echo $this->Html->link($orderedProduct['User']['username'], array('controller' => 'users', 'action' => 'view', $orderedProduct['User']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($orderedProduct['Seller']['name'], array('controller' => 'users', 'action' => 'view', $orderedProduct['Seller']['id'])); ?>
+			<?php echo $this->Html->link($orderedProduct['Seller']['username'], array('controller' => 'users', 'action' => 'view', $orderedProduct['Seller']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'])); ?>
@@ -75,5 +75,7 @@
 		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product', true)), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Hampers', true)), array('controller' => 'hampers', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Hamper', true)), array('controller' => 'hampers', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Payments', true)), array('controller' => 'payments', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Payment', true)), array('controller' => 'payments', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

@@ -26,7 +26,7 @@ class Product extends AppModel {
     var $hasAndBelongsToMany = array(
         'Hamper' => array(
                 'className' => 'Hamper',
-                'joinTable' => 'products_hampers',
+                'joinTable' => 'hampers_products',
                 'foreignKey' => 'product_id',
                 'associationForeignKey' => 'hamper_id',
                 'unique' => true,

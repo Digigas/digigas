@@ -11,9 +11,9 @@ class AppController extends Controller {
         'Form',
         'Javascript',
         'Layout',
-        'Image'
+        'Image',
+        'Menu'
     );
-    var $layout = 'digigas';
     var $allowedActions = array();
 
     function beforeFilter() {
@@ -23,24 +23,20 @@ class AppController extends Controller {
         $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login', 'admin' => false);
         
         if(isset($this->params['admin']) && $this->params['admin']) {
-            $this->Auth->deny('*');
+            $this->layout = 'digigas';
         } else {
-            $this->Auth->allow($this->allowedActions());
+            $this->Auth->allow('*');
         }
         //$this->Auth->allow('*'); //temporaneo, da disabilitare
         
     }
 
-    function isAuthorized() {
-        return true;
+    function beforeRender() {
+        $this->set('referer', $this->referer());
     }
 
-    function allowedActions() {
-        if(empty($this->Auth->allowedActions)) {
-            return '*';
-        } else {
-            return $this->Auth->allowedActions;
-        }
+    function isAuthorized() {
+        return true;
     }
 
 }
