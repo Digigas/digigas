@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 21 mag, 2010 at 12:58 PM
+-- Generato il: 24 mag, 2010 at 10:59 PM
 -- Versione MySQL: 5.1.37
 -- Versione PHP: 5.2.10
 
@@ -51,6 +51,17 @@ CREATE TABLE `hampers` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='paniere dei prodotti';
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `hampers_products`
+--
+
+CREATE TABLE `hampers_products` (
+  `product_id` int(11) NOT NULL,
+  `hamper_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -129,7 +140,7 @@ CREATE TABLE `ordered_products` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='carrello degli acquisti';
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='carrello degli acquisti';
 
 -- --------------------------------------------------------
 
@@ -182,17 +193,6 @@ CREATE TABLE `products` (
   `modified` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='schede prodotto';
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `products_hampers`
---
-
-CREATE TABLE `products_hampers` (
-  `product_id` int(11) NOT NULL,
-  `hamper_id` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
