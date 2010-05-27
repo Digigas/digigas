@@ -10,21 +10,13 @@ class ProductsController extends AppController {
         $this->set('activemenu_for_layout', 'products');
     }
 
-	function index($product_category_id = false) {
-        if($product_category_id) {
-            $thisCategory = $this->Product->ProductCategory->read(array('id', 'lft', 'rght'), $product_category_id);
-            $categories = $this->Product->ProductCategory->find('list', array(
-                'conditions' => array(
-                    'ProductCategory.lft >= ' => $thisCategory['ProductCategory']['lft'],
-                    'ProductCategory.rght <= ' => $thisCategory['ProductCategory']['rght']
-                    ),
-                'fields' => array('id')
-            ));
-            $this->paginate = array('conditions' => array('Product.product_category_id' => $categories));
+    //rimando a un'altra pagina, bah…
+	function index($seller_id = false) {
+        if(!$seller_id) {
+            $this->redirect(array('controller' => 'hampers', 'action' => 'index'));
+        } else {
+            $this->redirect(array('controller' => 'sellers', 'action' => 'view', $seller_id));
         }
-
-		$this->Product->recursive = 0;
-		$this->set('products', $this->paginate());
 	}
 
 	function view($id = null) {

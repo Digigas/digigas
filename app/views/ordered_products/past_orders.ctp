@@ -1,19 +1,14 @@
 <div class="orderedProducts index">
-	<h2><?php __('Ordered Products');?></h2>
+	<h2><?php __('Storico dei miei ordini');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('user_id');?></th>
-			<th><?php echo $this->Paginator->sort('seller_id');?></th>
-			<th><?php echo $this->Paginator->sort('product_id');?></th>
-			<th><?php echo $this->Paginator->sort('hamper_id');?></th>
-			<th><?php echo $this->Paginator->sort('quantity');?></th>
-			<th><?php echo $this->Paginator->sort('value');?></th>
-			<th><?php echo $this->Paginator->sort('paid');?></th>
-			<th><?php echo $this->Paginator->sort('retired');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php __('Actions');?></th>
+            <th><?php echo $this->Paginator->sort(__('Data dell\' ordine', true), 'created');?></th>
+			<th><?php echo $this->Paginator->sort(__('Produttore', true), 'seller_id');?></th>
+			<th><?php echo $this->Paginator->sort(__('Prodotto', true), 'product_id');?></th>
+			<th><?php echo $this->Paginator->sort(__('Quantità', true), 'quantity');?></th>
+			<th><?php echo $this->Paginator->sort(__('Prezzo totale', true), 'value');?></th>
+			<th><?php echo $this->Paginator->sort(__('Pagato', true), 'paid');?></th>
+			<th><?php echo $this->Paginator->sort(__('Ritirato', true), 'retired');?></th>
 	</tr>
 	<?php
 	$i = 0;
@@ -24,30 +19,31 @@
 		}
 	?>
 	<tr<?php echo $class;?>>
-		<td><?php echo $orderedProduct['OrderedProduct']['id']; ?>&nbsp;</td>
+        <td>
+            <?php echo digi_date($orderedProduct['OrderedProduct']['created']); ?>
+        </td>
 		<td>
-			<?php echo $this->Html->link($orderedProduct['User']['username'], array('controller' => 'users', 'action' => 'view', $orderedProduct['User']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($orderedProduct['Seller']['username'], array('controller' => 'users', 'action' => 'view', $orderedProduct['Seller']['id'])); ?>
+			<?php echo $this->Html->link($orderedProduct['Seller']['name'], array('controller' => 'sellers', 'action' => 'view', $orderedProduct['Seller']['id']), array('title' => __('Visualizza la scheda dell\'azienda', true))); ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'])); ?>
 		</td>
-		<td>
-			<?php echo $this->Html->link($orderedProduct['Hamper']['name'], array('controller' => 'hampers', 'action' => 'view', $orderedProduct['Hamper']['id'])); ?>
-		</td>
 		<td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['paid']; ?>&nbsp;</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['retired']; ?>&nbsp;</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['created']; ?>&nbsp;</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['modified']; ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $orderedProduct['OrderedProduct']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $orderedProduct['OrderedProduct']['id'])); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $orderedProduct['OrderedProduct']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $orderedProduct['OrderedProduct']['id'])); ?>
-		</td>
+		<td><?php echo $orderedProduct['OrderedProduct']['value']; ?> &euro;</td>
+		<td class="actions"><?php
+        if($orderedProduct['OrderedProduct']['paid']) {
+            echo $this->Html->image('oxygen/16x16/actions/apply.png', array('title' => __('Pagato', true)));
+        } else {
+            echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('title' => __('Non ancora pagato', true)));
+        }
+        ?></td>
+		<td class="actions"><?php
+        if($orderedProduct['OrderedProduct']['retired']) {
+            echo $this->Html->image('oxygen/16x16/actions/apply.png', array('title' => __('Ritirato', true)));
+        } else {
+            echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('title' => __('Non ancora ritirato', true)));
+        }
+        ?></td>
 	</tr>
 <?php endforeach; ?>
 	</table>
@@ -68,14 +64,7 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Ordered Product', true)), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Users', true)), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('User', true)), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('controller' => 'products', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product', true)), array('controller' => 'products', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Hampers', true)), array('controller' => 'hampers', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Hamper', true)), array('controller' => 'hampers', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Payments', true)), array('controller' => 'payments', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Payment', true)), array('controller' => 'payments', 'action' => 'add')); ?> </li>
-	</ul>
+		<li><?php echo $this->Html->link(__('Continua gli acquisti', true), array('controller' => 'hampers', 'action' => 'index')); ?></li>
+        <li><?php echo $this->Html->link(__('I miei ordini attuali', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
+   	</ul>
 </div>
