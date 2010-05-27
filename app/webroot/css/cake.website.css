@@ -198,6 +198,7 @@ dl
 {
     position:relative;
     margin-bottom:15px;
+    padding-right:20px;
     padding-bottom:15px;
     border-bottom:1px solid #ccc;
     clear:left;
@@ -205,7 +206,7 @@ dl
 .userorder .orderedproduct .number
 {
     float:left;
-    font-size:25px;
+    font-size:30px;
     color: #ccc;
     padding-right:10px;
 }
@@ -292,4 +293,41 @@ dl
     font-weight:normal;
     text-decoration:none;
     color:#666;
+}
+
+.products.view .image
+{
+    float:right;
+    position:relative;
+    top:-40px;
+}
+.products.view .image img
+{
+    border:3px solid #333;
+}
+
+.products.view .text
+{
+    clear:left;
+    padding:15px 0;
+}
+
+.products.view h4.title
+{
+    float:left;
+    margin-right:5px;
+    color:#fff;
+}
+
+.products.view .detail
+{
+    float:left;
+    padding:5px 10px;
+    margin-right:5px;
+    background:#2D6324;
+    color:#fff;
+}
+.products.view .detail a
+{
+    color:#fff;
 }

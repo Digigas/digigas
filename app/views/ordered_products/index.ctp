@@ -1,8 +1,11 @@
 <div class="orderedProducts index">
     <h2><?php __('I miei ordini');?></h2>
+    <?php if(empty($orderedProducts)): ?>
+    <?php __('Nessun ordine in questo momento'); ?>
     <?php
+    else:
     foreach ($orderedProducts as $orderedProduct): 
-        ?>
+    ?>
     <div class="product">
         <?php echo $this->Image->resize('/documents/image/product/'.$orderedProduct['Product']['image'], '150', '120');?>
         <div class="name">
@@ -54,10 +57,12 @@
         </div>
     </div>
     <?php endforeach; ?>
+    <?php endif; ?>
 </div>
 <div class="actions">
     <h3><?php __('Actions'); ?></h3>
     <ul>
         <li><?php echo $this->Html->link(__('Continua gli acquisti', true), array('controller' => 'hampers', 'action' => 'index')); ?></li>
+        <li><?php echo $this->Html->link(__('Storico dei miei ordini', true), array('controller' => 'ordered_products', 'action' => 'past_orders')); ?></li>
     </ul>
 </div>

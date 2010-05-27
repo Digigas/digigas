@@ -1,3 +1,4 @@
+<?php if(!empty($userOrder)): ?>
 <div class="userorder">
     <h2><?php __('Riepilogo ordine'); ?></h2>
 
@@ -31,3 +32,4 @@
     </div>
     <?php endforeach; ?>
 </div>
+<?php endif; ?>
