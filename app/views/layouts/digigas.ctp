@@ -26,12 +26,12 @@
         </div>
         <div id="navigation">
             <ul>
-                <li class="products"><?php echo $this->Html->link('Produttori e prodotti', array('controller' => 'sellers')); ?></li>
-                <li class="hampers"><?php echo $this->Html->link('Panieri', array('controller' => 'hampers')); ?></li>
-                <li class="orders"><?php echo $this->Html->link('Ordini', array('controller' => 'ordered_products')); ?></li>
-                <li class="users"><?php echo $this->Html->link('Utenti', array('controller' => 'users')); ?></li>
-                <li class="website"><?php echo $this->Html->link('Sito web', array('controller' => 'pages')); ?></li>
-                <li class="tools"><?php echo $this->Html->link('Strumenti', array('controller' => 'filemanager')); ?></li>
+                <li class="products"><?php echo $this->Html->link('Produttori e prodotti', array('controller' => 'sellers', 'action' => 'index')); ?></li>
+                <li class="hampers"><?php echo $this->Html->link('Panieri', array('controller' => 'hampers', 'action' => 'index')); ?></li>
+                <li class="orders"><?php echo $this->Html->link('Ordini', array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
+                <li class="users"><?php echo $this->Html->link('Utenti', array('controller' => 'users', 'action' => 'index')); ?></li>
+                <li class="website"><?php echo $this->Html->link('Sito web', array('controller' => 'pages', 'action' => 'index')); ?></li>
+                <li class="tools"><?php echo $this->Html->link('Strumenti', array('controller' => 'filemanager', 'action' => 'index')); ?></li>
             </ul>
         </div>
 		<div id="content">
@@ -102,6 +102,14 @@
             $('.expander').click(function(){
                 $(this).toggleClass('open').next('div.accordion').toggleClass('open').slideToggle();
             })
+
+            //menu a tendina
+            $('.dropdown').children().hide()
+                .end()
+                .css({cursor: 'pointer'})
+                .click(function(){
+                    $(this).children().slideToggle();
+                })
 
             //active menu item
             <?php

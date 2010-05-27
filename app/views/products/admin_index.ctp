@@ -60,8 +60,8 @@
 	<ul>        
         <li><?php echo $this->Html->link(__('Nuovo prodotto', true), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('Gestisci i produttori', true), array('controller' => 'sellers', 'action' => 'index')); ?> </li>
-        <li>
-            Visualizza per categoria
+        <li class="dropdown">
+            <?php __('Visualizza per categoria'); ?>
             <ul>
                 <li><?php echo $this->Html->link('Tutte le categorie', array('action' => 'index')) ?></li>
                 <?php

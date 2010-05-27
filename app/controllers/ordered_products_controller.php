@@ -67,8 +67,113 @@ class OrderedProductsController extends AppController {
         $this->redirect($this->referer());
     }
 
-
     function admin_index() {
+        $this->paginate = array('conditions' => array(
+            'or' => array(
+                'paid' => 0,
+                'retired' => 0
+            )),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname')),
+                'Seller' => array('fields' => array('id', 'name')),
+                'Product' => array('fields' => array('id', 'name')))
+        );
+        $this->OrderedProduct->recursive = 0;
+        $orderedProducts = $this->paginate();
+        $this->set('orderedProducts', $orderedProducts);
+
+        $lastModified = $this->OrderedProduct->find('all', array(
+            'conditions' => array(
+            'paid' => 1,
+            'retired' => 1,
+            'OrderedProduct.modified > ' => date('Y-m-d H:i:s', strtotime('now - 24 hours'))),
+            'order' => 'OrderedProduct.modified desc',
+            'limit' => '20'
+            ));
+        $this->set('lastModified', $lastModified);
+
+        //trovo l'elenco degli utenti con ordini attivi
+        $users = $this->OrderedProduct->getPendingUsers();
+        
+        //trovo l'elenco dei produttori con ordini attivi
+        $sellers = $this->OrderedProduct->getPendingSellers();
+
+        $this->set(compact('sellers', 'users'));
+    }
+
+    function admin_index_user($user_id) {
+        $this->paginate = array(
+            'conditions' => array('user_id' => $user_id),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname')),
+                'Seller' => array('fields' => array('id', 'name')),
+                'Product' => array('fields' => array('id', 'name')))
+        );
+        $this->OrderedProduct->recursive = 0;
+        $orderedProducts = $this->paginate();
+
+        $user = $this->OrderedProduct->User->findById($user_id);
+
+        //trovo l'elenco degli utenti con ordini attivi
+        $users = $this->OrderedProduct->getPendingUsers();
+
+        //trovo l'elenco dei produttori con ordini attivi
+        $sellers = $this->OrderedProduct->getPendingSellers();
+
+        $this->set(compact('orderedProducts', 'user', 'users', 'sellers'));
+    }
+
+    function admin_index_seller($seller_id) {
+        $this->paginate = array(
+            'conditions' => array('OrderedProduct.seller_id' => $seller_id),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname')),
+                'Seller' => array('fields' => array('id', 'name')),
+                'Product' => array('fields' => array('id', 'name')))
+        );
+        $this->OrderedProduct->recursive = 0;
+        $orderedProducts = $this->paginate();
+
+        $seller = $this->OrderedProduct->User->findById($seller_id);
+
+        //trovo l'elenco degli utenti con ordini attivi
+        $users = $this->OrderedProduct->getPendingUsers();
+
+        //trovo l'elenco dei produttori con ordini attivi
+        $sellers = $this->OrderedProduct->getPendingSellers();
+
+        $this->set(compact('orderedProducts', 'seller', 'users', 'sellers'));
+    }
+
+    function admin_set_paid($id) {
+        if($this->OrderedProduct->setPaid($id)) {
+            $this->Session->setFlash(__('Ok, pagato!', true));
+            $this->redirect($this->referer());
+        }
+    }
+
+    function admin_set_not_paid($id) {
+        if($this->OrderedProduct->setNotPaid($id)) {
+            $this->Session->setFlash(__('Ordine ripristinato come pendente', true));
+            $this->redirect($this->referer());
+        }
+    }
+
+    function admin_set_retired($id) {
+        if($this->OrderedProduct->setRetired($id)) {
+            $this->Session->setFlash(__('Ok, ritirato!', true));
+            $this->redirect($this->referer());
+        }
+    }
+    
+    function admin_set_not_retired($id) {
+        if($this->OrderedProduct->setNotRetired($id)) {
+            $this->Session->setFlash(__('Ordine ripristinato come pendente', true));
+            $this->redirect($this->referer());
+        }
+    }
+
+    function admin_index_() {
         $this->OrderedProduct->recursive = 0;
         $this->set('orderedProducts', $this->paginate());
     }

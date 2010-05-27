@@ -1,5 +1,10 @@
 <div class="orderedProducts index">
-	<h2><?php __('Ordini pendenti');?></h2>
+	<h2>
+    <?php
+    __('Ordini pendenti per il produttore ');
+    echo $seller['Seller']['name'];
+    ?>
+    </h2>
 
     <p>
 	<?php
@@ -11,7 +16,6 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort(__('Acquirente', true), 'user_id');?></th>
-			<th><?php echo $this->Paginator->sort(__('Produttore', true), 'seller_id');?></th>
 			<th><?php echo $this->Paginator->sort(__('Prodotto', true), 'product_id');?></th>
 			<th><?php echo $this->Paginator->sort(__('Quantità', true), 'quantity');?></th>
 			<th><?php echo $this->Paginator->sort(__('Totale', true), 'value');?></th>
@@ -29,9 +33,6 @@
 	<tr<?php echo $class;?>>
 		<td>
 			<?php echo $this->Html->link($orderedProduct['User']['fullname'], array('controller' => 'users', 'action' => 'view', $orderedProduct['User']['id'], 'admin' => false)); ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($orderedProduct['Seller']['name'], array('controller' => 'users', 'action' => 'view', $orderedProduct['Seller']['id'], 'admin' => false)); ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false)); ?>
@@ -64,61 +65,11 @@
 		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
 	</div>
 
-<br/>
-    <h2><?php __('Ultimi ordini archiviati');?></h2>
-
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php __('Acquirente');?></th>
-			<th><?php __('Produttore');?></th>
-			<th><?php __('Prodotto');?></th>
-			<th><?php __('Quantità');?></th>
-			<th><?php __('Totale');?></th>
-			<th class="actions"><?php __('Pagato');?></th>
-			<th class="actions"><?php __('Ritirato');?></th>
-	</tr>
-	<?php
-	$i = 0;
-	foreach ($lastModified as $orderedProduct):
-		$class = null;
-		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
-	?>
-	<tr<?php echo $class;?>>
-		<td>
-			<?php echo $this->Html->link($orderedProduct['User']['fullname'], array('controller' => 'users', 'action' => 'view', $orderedProduct['User']['id'], 'admin' => false)); ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($orderedProduct['Seller']['name'], array('controller' => 'users', 'action' => 'view', $orderedProduct['Seller']['id'], 'admin' => false)); ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false)); ?>
-		</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
-		<td class="actions"><?php
-        if($orderedProduct['OrderedProduct']['paid']) {
-            echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $orderedProduct['OrderedProduct']['id'])));
-        } else {
-            echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_paid', $orderedProduct['OrderedProduct']['id'])));
-        }
-        ?></td>
-		<td class="actions"><?php
-        if($orderedProduct['OrderedProduct']['retired']) {
-            echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_retired', $orderedProduct['OrderedProduct']['id'])));
-        } else {
-            echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_retired', $orderedProduct['OrderedProduct']['id'])));
-        }
-        ?></td>
-	</tr>
-<?php endforeach; ?>
-	</table>
-	
 </div>
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
+        <li><?php echo $this->Html->link(__('Tutti gli ordini pendenti', true), array('action' => 'index')); ?></li>
         <li class="dropdown"><?php __('Vedi ordini per acquirente'); ?>
             <ul>
                 <?php foreach($users as $id => $user): ?>

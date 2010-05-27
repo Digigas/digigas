@@ -34,6 +34,6 @@
         array('controller' => 'pages', 'action' => 'view'),
         array('language' => '[a-z]{2}'));
 
-    Router::connect('/admin', array('controller' => 'products', 'action' => 'index', 'admin' => true));
+    Router::connect('/admin', array('controller' => 'ordered_products', 'action' => 'index', 'admin' => true));
 
 ?>

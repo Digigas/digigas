@@ -30,6 +30,7 @@ class HampersController extends AppController {
         $this->set('hamper', $this->Hamper->read(null, $id));
     }
 
+    //funzione per ordinare
     function add($id = false) {
         if(!$id) {
             $this->Session->setFlash(__('Non hai selezionato un paniere!', true));
@@ -107,7 +108,12 @@ class HampersController extends AppController {
 
     }
 
-    function admin_add() {
+    function admin_add($seller_id = null) {
+        if(!$seller_id && empty($this->data)) {
+            $this->Session->setFlash(__('Devi selezionare un produttore', true));
+            $this->redirect(array('action' => 'index'));
+        }
+        
         if (!empty($this->data)) {
             $this->data = $this->Hamper->formatDates($this->data);
             $this->Hamper->create();
@@ -119,17 +125,13 @@ class HampersController extends AppController {
             }
         }
 
+        $seller = $this->Hamper->Seller->field('name', $seller_id);
         $sellers = $this->Hamper->Seller->find('list', array('conditions' => array('active' => 1)));
-        $productCategories = $this->Hamper->Product->ProductCategory->find('all', array(
-            'order' => 'ProductCategory.lft asc',
-            'fields' => array(
-                'id', 'name', 'parent_id', 'lft', 'rght'
-            ),
-            'contain' => array(
-                'Product.id', 'Product.name', 'Product.image'
-            )
-        ));
-        $this->set(compact('sellers', 'productCategories'));
+
+        //seleziono i prodotti di questo produttore
+        $productCategories = $this->Hamper->Product->getAllFromSellerByCategory($seller_id);
+
+        $this->set(compact('seller', 'seller_id', 'sellers', 'productCategories'));
     }
 
     function admin_edit($id = null) {
@@ -150,15 +152,9 @@ class HampersController extends AppController {
             $this->data = $this->Hamper->read(null, $id);
         }
         $sellers = $this->Hamper->Seller->find('list', array('conditions' => array('active' => 1)));
-        $productCategories = $this->Hamper->Product->ProductCategory->find('all', array(
-            'order' => 'ProductCategory.lft asc',
-            'fields' => array(
-                'id', 'name', 'parent_id', 'lft', 'rght'
-            ),
-            'contain' => array(
-                'Product.id', 'Product.name', 'Product.image'
-            )
-        ));
+        //seleziono i prodotti di questo produttore
+        $productCategories = $this->Hamper->Product->getAllFromSellerByCategory($this->data['Seller']['id']);
+
         $relatedProducts = Set::extract('/Product/id', $this->data);
         $this->set(compact('sellers', 'productCategories', 'relatedProducts'));
     }
