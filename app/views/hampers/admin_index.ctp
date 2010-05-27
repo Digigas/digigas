@@ -47,16 +47,22 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-        <li><?php echo $this->Html->link(__('Nuovo paniere', true), array('action' => 'add')); ?></li>
+        <li class="dropdown"><?php __('Nuovo paniere'); ?>
+            <ul>
+                <?php foreach($sellers as $seller): ?>
+                <li><?php echo $this->Html->link(__('Per ', true).$seller['Seller']['name'], array('action' => 'add', $seller['Seller']['id'])); ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </li>
         <li><?php echo $this->Html->link(__('Nuovo paniere da modello', true), array('action' => 'index_templates')); ?></li>
-        <li><?php __('Visualizza'); ?>
+        <li class="dropdown"><?php __('Visualizza'); ?>
             <ul>
                 <li><?php echo $this->Html->link(__('Tutti', true), array('action' => 'index')); ?></li>
                 <li><?php echo $this->Html->link(__('Solo panieri aperti', true), array('actives' => 1)); ?></li>
                 <li><?php echo $this->Html->link(__('Solo i modelli', true), array('templates' => 1)); ?></li>
             </ul>
         </li>
-        <li><?php __('Visualizza per produttore'); ?>
+        <li class="dropdown"><?php __('Visualizza per produttore'); ?>
             <ul>
                 <li><?php echo $this->Html->link(__('Tutti', true), array('action' => 'index')); ?></li>
                 <?php foreach($sellers as $seller): ?>

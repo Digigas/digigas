@@ -1,7 +1,7 @@
 <div class="hampers form">
     <?php echo $this->Form->create('Hamper');?>
     <fieldset>
-        <h2><?php __('Modifica paniere'); ?></h2>
+        <h2><?php __('Modifica paniere di '); echo $this->data['Seller']['name']; ?></h2>
 
         <h3 class="expander"><?php __('Imposta il paniere'); ?></h3>
         <div class="accordion">
@@ -9,7 +9,7 @@
             echo $this->Form->input('id');
             
             echo $this->Form->input('name', array('label' => __('Nome', true)));
-            echo $this->Form->input('seller_id', array('label' => __('Produttore', true)));
+            echo $this->Form->hidden('seller_id');
             
             echo $this->element('admin/datetimeselect', array('field' => 'start_date', 'label' => __('Data di apertura', true)));
             echo $this->element('admin/datetimeselect', array('field' => 'end_date', 'label' => __('Data di chiusura', true)));

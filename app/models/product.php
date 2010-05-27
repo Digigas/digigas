@@ -46,7 +46,7 @@ class Product extends AppModel {
         'value' => array('rule' => 'notEmpty', 'on' => 'create')
     );
 
-    var $actsAs = array('MultipleUpload' =>
+    var $actsAs = array('Containable', 'MultipleUpload' =>
                             array(
                                 'image' => array(
                                     'field' => 'image',
@@ -57,6 +57,26 @@ class Product extends AppModel {
                                 )
                             )
                         );
+
+    function getAllFromSellerByCategory($seller_id) {
+        $products = $this->find('all', array(
+            'conditions' => array('seller_id' => $seller_id),
+            'fields' => array('id', 'name', 'image'),
+            'contain' => array(
+                'ProductCategory' => array(
+                    'order' => 'ProductCategory.lft asc',
+                    'fields' => array('id', 'name', 'parent_id', 'lft', 'rght')
+                )
+            )
+        ));
+        //formatto l'elenco in modo utile per il frontend
+        $productCategories = array();
+        foreach($products as $product) {
+            $productCategories[$product['ProductCategory']['id']]['ProductCategory'] = $product['ProductCategory'];
+            $productCategories[$product['ProductCategory']['id']]['Product'][] = $product['Product'];
+        }
+        return $productCategories;
+    }
 
 }
 ?>

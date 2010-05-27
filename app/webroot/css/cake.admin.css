@@ -112,6 +112,7 @@ div.message
 #tools li
 {
     float:left;
+    margin:0;
 }
 
 #navigation li
@@ -211,7 +212,11 @@ div.actions h3
 {
     display:none;
 }
-
+div.actions .dropdown
+{
+    padding:4px 0;
+    padding-left:8px;
+}
 
 .search
 {
@@ -298,6 +303,17 @@ h3
 {
     color:#666;
     margin:0;
+    border-bottom:1px dotted #999999;
+    clear:left;
+    color:#777777;
+    cursor:pointer;
+    padding-left:25px;
+}
+h3 a
+{
+    font-weight:normal;
+    color:#666;
+    text-decoration:none;
 }
 h4
 {
@@ -407,4 +423,9 @@ div.note
     color: #666;
     text-shadow: #fff 0px 1px 0px;
     font-size:11px;
+}
+.block
+{
+    margin-top:10px;
+    margin-bottom:20px;
 }

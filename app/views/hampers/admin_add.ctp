@@ -1,13 +1,13 @@
 <div class="hampers form">
     <?php echo $this->Form->create('Hamper');?>
     <fieldset>
-        <h2><?php __('Nuovo Paniere'); ?></h2>
+        <h2><?php __('Nuovo paniere per '); echo $seller; ?></h2>
 
         <h3 class="expander"><?php __('Imposta il paniere'); ?></h3>
         <div class="accordion">
             <?php
-            echo $this->Form->input('name', array('label' => __('Nome', true)));
-            echo $this->Form->input('seller_id', array('label' => __('Produttore', true)));
+            echo $this->Form->hidden('seller_id', array('value' => $seller_id));
+            echo $this->Form->input('name', array('label' => __('Nome del paniere (descrittivo)', true)));
             
             echo $this->element('admin/datetimeselect', array('field' => 'start_date', 'label' => __('Data di apertura', true)));
             echo $this->element('admin/datetimeselect', array('field' => 'end_date', 'label' => __('Data di chiusura', true)));
