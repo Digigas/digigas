@@ -52,7 +52,7 @@ class Product extends AppModel {
                                     'field' => 'image',
                                     'dir' => "documents{DS}image{DS}product", //markers: '{APP}', '{DS}', '{IMAGES}', '{WWW_ROOT}', '{FILES}'
                                     'deleteMainFile' => false,
-									'randomFilenames' => false,
+									'randomFilenames' => true,
                                     'thumbsizes' => array()
                                 )
                             )
