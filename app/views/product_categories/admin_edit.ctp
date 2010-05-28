@@ -4,7 +4,7 @@
  		<h2><?php __('Modifica categoria di prodotti'); ?></h2>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('parent_id', array('label' => __('&Egrave; sottocategoria di', true)));
+		echo $this->Form->input('parent_id', array('label' => __('&Egrave; sottocategoria di', true), 'empty' => true));
 		echo $this->Form->input('name', array('label' => __('Nome', true)));
 		echo $this->Form->input('text', array('label' => __('Descrizione', true)));
 	?>
