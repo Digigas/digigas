@@ -178,23 +178,31 @@ class OrderedProduct extends AppModel {
     }
 
     function setPaid($id) {
-        $this->findById($id);
+        $data = $this->findById($id);
         if($this->saveField('paid', 1)) {
-            return true;
+            $value = $data['OrderedProduct']['value'];
+            $user_id = $data['OrderedProduct']['user_id'];
+            $ordered_product_id = $data['OrderedProduct']['id'];
+            $message = 'Pagamento di '.$data['OrderedProduct']['quantity'].' '.$data['Product']['name'].' verso '.$data['Seller']['name'];
+            return $this->updateMoneyBox('out', $value, $user_id, $ordered_product_id, $message);
         } else {
             return false;
         }
     }
     function setNotPaid($id) {
-        $this->findById($id);
+        $data = $this->findById($id);
         if($this->saveField('paid', 0)) {
-            return true;
+            $value = $data['OrderedProduct']['value'];
+            $user_id = $data['OrderedProduct']['user_id'];
+            $ordered_product_id = $data['OrderedProduct']['id'];
+            $message = 'Restituzione pagamento per '.$data['OrderedProduct']['quantity'].' '.$data['Product']['name'].' da '.$data['Seller']['name'];
+            return $this->updateMoneyBox('in', $value, $user_id, $ordered_product_id, $message);
         } else {
             return false;
         }
     }
     function setRetired($id) {
-        $this->findById($id);
+        $data = $this->findById($id);
         if($this->saveField('retired', 1)) {
             return true;
         } else {
@@ -202,7 +210,7 @@ class OrderedProduct extends AppModel {
         }
     }
     function setNotRetired($id) {
-        $this->findById($id);
+        $data = $this->findById($id);
         if($this->saveField('retired', 0)) {
             return true;
         } else {
@@ -210,5 +218,22 @@ class OrderedProduct extends AppModel {
         }
     }
 
+    function updateMoneyBox($direction, $value, $user_id, $ordered_product_id, $message = 'null') {
+        $data = array('MoneyBox' => array(
+            'user_id' => $user_id,
+            'ordered_product_id' => $ordered_product_id,
+            'text' => $message
+        ));
+
+        switch($direction) {
+            case 'in':
+                $data['MoneyBox']['value_in'] = $value;
+            case 'out':
+                $data['MoneyBox']['value_out'] = $value;
+        }
+
+        $this->MoneyBox->create();
+        return $this->MoneyBox->save($data);
+    }
 }
 ?>
