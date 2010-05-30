@@ -20,5 +20,17 @@ class MoneyBox extends AppModel {
 			'order' => ''
 		)
 	);
+
+    var $actsAs = array('Containable');
+
+    function getTotal($user_id) {
+        $this->recursive = -1;
+        $inout = $this->query('SELECT SUM(value_in) as valuein, SUM(value_out) as valueout FROM '.$this->useTable.' WHERE user_id = '.$user_id);
+        $inout = $inout[0][0];
+
+        $total = $inout['valuein'] - $inout['valueout'];
+
+        return $total;
+    }
 }
 ?>
