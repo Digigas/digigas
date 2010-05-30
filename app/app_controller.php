@@ -4,7 +4,9 @@ class AppController extends Controller {
     var $components = array(
     	'Auth',
         'Session',
-    	'Cookie');
+    	'Cookie',
+        'Email'
+    );
     var $helpers = array(
         'Session',
         'Html',
@@ -39,4 +41,7 @@ class AppController extends Controller {
         return true;
     }
 
+    function _emailSetUp() {
+        $this->Email->delivery = 'mail';
+    }
 }
