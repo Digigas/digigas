@@ -108,7 +108,7 @@
                 .end()
                 .css({cursor: 'pointer'})
                 .click(function(){
-                    $(this).children().slideToggle();
+                    $(this).toggleClass('open').children().slideToggle();
                 })
 
             //active menu item
