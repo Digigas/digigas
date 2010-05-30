@@ -228,8 +228,10 @@ class OrderedProduct extends AppModel {
         switch($direction) {
             case 'in':
                 $data['MoneyBox']['value_in'] = $value;
+            break;
             case 'out':
                 $data['MoneyBox']['value_out'] = $value;
+            break;
         }
 
         $this->MoneyBox->create();
