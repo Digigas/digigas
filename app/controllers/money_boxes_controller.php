@@ -15,7 +15,7 @@ class MoneyBoxesController extends AppController {
         $this->MoneyBox->recursive = 0;
         $this->paginate = array(
             'conditions' => array('MoneyBox.user_id' => $this->Auth->user('id')),
-            'order' => 'MoneyBox.created desc');
+            'order' => array('MoneyBox.created desc', 'MoneyBox.id desc'));
         $this->set('moneyBoxes', $this->paginate());
 
         $total = $this->MoneyBox->getTotal($this->Auth->user('id'));
