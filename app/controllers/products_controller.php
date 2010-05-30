@@ -34,7 +34,9 @@ class ProductsController extends AppController {
 
         //aggiungo filtro per categoria
         if(isset($this->params['named']['category'])) {
-            $this->paginate = am($this->paginate, array('conditions' => array('product_category_id' => $this->params['named']['category'])));
+            //seleziono anche le sottocategorie
+            $categories = $this->Product->ProductCategory->getSubCategories($this->params['named']['category']);
+            $this->paginate = am($this->paginate, array('conditions' => array('product_category_id' => $categories)));
             $categoryName = $this->Product->ProductCategory->field('name', array('id' => $this->params['named']['category']));
             $this->set('categoryName', $categoryName);
         }

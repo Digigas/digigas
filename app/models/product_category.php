@@ -22,5 +22,20 @@ class ProductCategory extends AppModel {
 
     var $actsAs = array('Tree', 'Containable');
 
+    function getSubCategories($id) {
+        $category = $this->read(null, $id);
+        $categories = $this->find('all', array(
+            'conditions' => array(
+                'lft >= ' => $category['ProductCategory']['lft'],
+                'rght <= ' => $category['ProductCategory']['rght']
+            ),
+            'fields' => array('id'),
+            'contain' => array()
+        ));
+
+        $categories = Set::extract('/ProductCategory/id', $categories);
+
+        return $categories;
+    }
 }
 ?>
