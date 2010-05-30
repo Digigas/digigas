@@ -64,5 +64,6 @@
     <ul>
         <li><?php echo $this->Html->link(__('Continua gli acquisti', true), array('controller' => 'hampers', 'action' => 'index')); ?></li>
         <li><?php echo $this->Html->link(__('Storico dei miei ordini', true), array('controller' => 'ordered_products', 'action' => 'past_orders')); ?></li>
+        <li><?php echo $this->Html->link(__('Quanto ho speso', true), array('controller' => 'money_boxes', 'action' => 'index')); ?></li>
     </ul>
 </div>
