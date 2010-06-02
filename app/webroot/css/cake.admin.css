@@ -1,7 +1,9 @@
 body
 {
-    background:#f90;
+    background:#7CAF00;
     font-size:12px;
+    margin:0;
+    padding:0;
 }
 a
 {
@@ -29,6 +31,13 @@ a:hover
 div.message
 {
     background:#62AF56;
+}
+
+#container
+{}
+#header
+{
+    padding:0 15px;
 }
 #header h1
 {
@@ -170,7 +179,7 @@ td.actions a:hover
 {
     text-decoration:none;
     color:#fff;
-    background: #62AF56;
+    background: #8bc400;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -196,7 +205,7 @@ td.actions a
 div.actions ul li a:hover {
     text-decoration:none;
     color:#fff;
-    background: #62AF56;
+    background: #8bc400;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -302,6 +311,11 @@ h2
     border-bottom:1px solid #ccc;
     color:#f90;
     font-size:22px;
+}
+h2 a img
+{
+    position:relative;
+    top:10px;
 }
 h3
 {

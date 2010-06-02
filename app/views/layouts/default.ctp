@@ -20,7 +20,7 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1><?php echo $this->Html->link('Digigas3', '/'); ?></h1>
+			<h1><?php echo $this->Html->image('digigas.png', array('url' => '/')); ?></h1>
 		</div>
         <div id="tools">
             <?php echo $this->element('login_link'); ?>
