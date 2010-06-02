@@ -3,6 +3,10 @@
     <?php
     __('Ordini pendenti per l\'acquirente ');
     echo $user['User']['fullname'];
+    echo '&nbsp;';
+    echo $this->Html->image('oxygen/32x32/actions/mail_mark_unread.png', array(
+        'url' => array('action' => 'mail_orders_to_user', $user['User']['id']),
+        'title' => __('Invia per email all\'utente', true)));
     ?>
     </h2>
 
