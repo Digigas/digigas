@@ -13,7 +13,7 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/view/160/Testing
+ * @link          http://book.cakephp.org/view/1196/Testing
  * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -116,6 +116,12 @@ class InflectorTest extends CakeTestCase {
 		$this->assertEqual(Inflector::singularize('niches'), 'niche');
 		$this->assertEqual(Inflector::singularize('waves'), 'wave');
 		$this->assertEqual(Inflector::singularize('bureaus'), 'bureau');
+		$this->assertEqual(Inflector::singularize('genetic_analyses'), 'genetic_analysis');
+		$this->assertEqual(Inflector::singularize('doctor_diagnoses'), 'doctor_diagnosis');
+		$this->assertEqual(Inflector::singularize('parantheses'), 'paranthesis');
+		$this->assertEqual(Inflector::singularize('Causes'), 'Cause');
+		$this->assertEqual(Inflector::singularize('colossuses'), 'colossus');
+
 		$this->assertEqual(Inflector::singularize(''), '');
 	}
 
@@ -459,4 +465,3 @@ class InflectorTest extends CakeTestCase {
 		unset($this->Inflector);
 	}
 }
-?>
