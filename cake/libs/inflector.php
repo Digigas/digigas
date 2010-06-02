@@ -121,7 +121,7 @@ class Inflector {
 			'/(shoe|slave)s$/i' => '\1',
 			'/(o)es$/i' => '\1',
 			'/ouses$/' => 'ouse',
-			'/uses$/' => 'us',
+			'/([^a])uses$/' => '\1us',
 			'/([m|l])ice$/i' => '\1ouse',
 			'/(x|ch|ss|sh)es$/i' => '\1',
 			'/(m)ovies$/i' => '\1\2ovie',
@@ -133,7 +133,7 @@ class Inflector {
 			'/(drive)s$/i' => '\1',
 			'/([^fo])ves$/i' => '\1fe',
 			'/(^analy)ses$/i' => '\1sis',
-			'/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i' => '\1\2sis',
+			'/(analy|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i' => '\1\2sis',
 			'/([ti])a$/i' => '\1um',
 			'/(p)eople$/i' => '\1\2erson',
 			'/(m)en$/i' => '\1an',
@@ -621,4 +621,3 @@ class Inflector {
 		return preg_replace(array_keys($map), array_values($map), $string);
 	}
 }
-?>
