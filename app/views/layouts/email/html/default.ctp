@@ -19,10 +19,29 @@
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
-<head>
-	<title><?php echo $title_for_layout;?></title>
-</head>
-<body>
-	<?php echo $content_for_layout;?>
-</body>
+    <head>
+        <title><?php echo $title_for_layout;?></title>
+
+        <style type="text/css">
+            table
+            {
+                width:100%;
+            }
+            th 
+            {
+                border-bottom:2px solid #999;
+                padding:5px;
+            }
+            td
+            {
+                border-bottom:1px solid #ccc;
+                padding:3px;
+            }
+        </style>
+    </head>
+    <body>
+        <?php echo $content_for_layout;?>
+        <br/> <br />
+        Email inviata tramite Digigas3
+    </body>
 </html>

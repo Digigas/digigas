@@ -103,7 +103,7 @@ class OrderedProductsController extends AppController {
 
     function admin_index_user($user_id) {
         $this->paginate = array(
-            'conditions' => array('user_id' => $user_id),
+            'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
@@ -125,7 +125,7 @@ class OrderedProductsController extends AppController {
 
     function admin_index_seller($seller_id) {
         $this->paginate = array(
-            'conditions' => array('OrderedProduct.seller_id' => $seller_id),
+            'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
@@ -143,6 +143,51 @@ class OrderedProductsController extends AppController {
         $sellers = $this->OrderedProduct->getPendingSellers();
 
         $this->set(compact('orderedProducts', 'seller', 'users', 'sellers'));
+    }
+
+    function admin_mail_orders_to_user($user_id) {
+        //dati dell'utente
+        $user = $this->OrderedProduct->User->find('first', array(
+            'conditions' => array('User.id' => $user_id, 'User.active' => 1),
+            'fields' => array('fullname', 'email'),
+            'recursive' => -1));
+
+        if(empty($user)) {
+            $this->Session->setFlash(__('Utente inesistente o disattivato', true));
+            $this->redirect($this->referer());
+        }
+
+        //dati dell'ordine
+        $orderedProducts = $this->OrderedProduct->find('all', array(
+            'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname')),
+                'Seller' => array('fields' => array('id', 'name')),
+                'Product' => array('fields' => array('id', 'name')))
+        ));
+        $this->set(compact('user', 'orderedProducts'));
+
+        //compongo il messaggio nella view che si trova nella cartella email
+        /*
+         * da rifare -> invia seguendo le istruzioni e spostando la view in un element :-(
+         * rifatto ma… controllare, non sono sicuro che funzioni…
+         */
+        //invio l'email
+        //$this->Email->delivery = 'debug';
+        $this->Email->to = $user['User']['email'];
+        $this->Email->subject = __('Riepilogo ordini', true);
+        $this->Email->from = 'digigas3';
+        $this->Email->sendAs = 'html';
+        $this->Email->template = 'admin_mail_orders_to_user';
+
+        if($this->Email->send()) {
+            //mail ok
+            $this->Session->setFlash(__('Email inviata correttamente', true));
+        } else {
+            //mail error
+            $this->Session->setFlash(__('ERRORE durante l\'invio della mail', true));
+        }
+        $this->redirect($this->referer());
     }
 
     function admin_set_paid($id) {
