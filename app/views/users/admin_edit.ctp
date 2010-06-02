@@ -18,8 +18,8 @@
         <div class="accordion">
             <?php
             echo $this->Form->input('usergroup_id', array('label' => __('Gruppo', true)));
-            echo $this->Form->input('role', array('label' => __('Ruolo', true), 'value' => 3));
-            echo $this->Form->input('active', array('label' => 'Attivo', 'checked' => 'checked'));
+            echo $this->Form->input('role', array('label' => __('Ruolo', true)));
+            echo $this->Form->input('active', array('label' => 'Attivo'));
             ?>
         </div>
     </fieldset>

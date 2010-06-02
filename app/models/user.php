@@ -45,10 +45,11 @@ class User extends AppModel {
 
     var $actsAs = array('Containable');
 
-    function beforeSave() {
-        if(isset($this->data['User']['password']) && empty($this->data['User']['password'])) {
+    function beforeSave($options = array()) {
+        if(isset($this->data['User']['password']) 
+            && $this->data['User']['password'] == Security::hash('', null, true)) {
             unset($this->data['User']['password']);
-        }
+        } 
 
         // salvo il nuovo profilo azienda
         if(isset($this->data['Seller'])) {
@@ -63,7 +64,7 @@ class User extends AppModel {
             }
         }
 
-        return parent::beforeSave();
+        return parent::beforeSave($options);
     }
 }
 ?>
