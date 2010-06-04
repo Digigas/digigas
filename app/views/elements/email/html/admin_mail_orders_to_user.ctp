@@ -1,4 +1,5 @@
 <?php echo $this->Html->tag('h1', __('Invio riepilogo ordini', true)); ?>
+<?php echo date('D j M Y, H:i'); ?>
 
 <table cellpadding="0" cellspacing="0">
 	<tr>

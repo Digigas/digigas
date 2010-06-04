@@ -6,6 +6,27 @@
     ?>
     </h2>
 
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <th><?php __('Prodotto'); ?></th>
+            <th><?php __('Quantità'); ?></th>
+            <th><?php __('Totale'); ?></th>
+        </tr>
+    <?php foreach($totals as $product => $values): ?>
+        <tr class="total">
+            <td class="name"><?php echo $product; ?></td>
+            <td class="quantity"><?php echo $values['quantity']; ?></td>
+            <td class="value"><?php echo $values['total']; ?> &euro;</td>
+        </tr>
+    <?php endforeach; ?>
+    </table>
+
+    <h2>
+    <?php
+    __('Dettaglio');
+    ?>
+    </h2>
+    
     <p>
 	<?php
 	echo $this->Paginator->counter(array(

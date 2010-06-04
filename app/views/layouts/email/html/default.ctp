@@ -23,6 +23,17 @@
         <title><?php echo $title_for_layout;?></title>
 
         <style type="text/css">
+
+            body
+            {
+                margin:0;
+                padding:0;
+                color:#333;
+            }
+            h1
+            {
+                font-size:18px;
+            }
             table
             {
                 width:100%;
@@ -37,11 +48,20 @@
                 border-bottom:1px solid #ccc;
                 padding:3px;
             }
+            .content
+            {
+                padding:20px;
+            }
+            .footer
+            {
+                background:#7CAF00; color:#fff; padding:10px 20px; font-size:10px; text-align:right;
+            }
         </style>
     </head>
     <body>
+        <div class="content">
         <?php echo $content_for_layout;?>
-        <br/> <br />
-        Email inviata tramite Digigas3
+        </div>
+        <div class="footer">Email inviata tramite <?php echo $this->Html->link('digigas3', 'http://'.$_SERVER['HTTP_HOST']); ?></div>
     </body>
 </html>

@@ -38,6 +38,7 @@ class AppController extends Controller {
     }
 
     function isAuthorized() {
+        //solo gli utenti root, admin e seller possono accedere all'area admin
         if(isset($this->params['admin']) && $this->Auth->user('role') > 2) {
             return false;
         }

@@ -134,6 +134,15 @@ class OrderedProductsController extends AppController {
         $this->OrderedProduct->recursive = 0;
         $orderedProducts = $this->paginate();
 
+        //trovo il totale per ogni prodotto
+        $totals = $this->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
+            'fields' => array('product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => 'product_id',
+            'contain' => array('Product.name')
+        ));
+        $totals = Set::combine($totals, '{n}.Product.name', '{n}.0');
+
         $seller = $this->OrderedProduct->User->findById($seller_id);
 
         //trovo l'elenco degli utenti con ordini attivi
@@ -142,7 +151,7 @@ class OrderedProductsController extends AppController {
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
-        $this->set(compact('orderedProducts', 'seller', 'users', 'sellers'));
+        $this->set(compact('orderedProducts', 'seller', 'users', 'sellers', 'totals'));
     }
 
     function admin_mail_orders_to_user($user_id) {
@@ -176,7 +185,7 @@ class OrderedProductsController extends AppController {
         //$this->Email->delivery = 'debug';
         $this->Email->to = $user['User']['email'];
         $this->Email->subject = __('Riepilogo ordini', true);
-        $this->Email->from = 'digigas3';
+        $this->Email->from = Configure::read('email.from');
         $this->Email->sendAs = 'html';
         $this->Email->template = 'admin_mail_orders_to_user';
 
