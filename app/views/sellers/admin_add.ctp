@@ -1,7 +1,7 @@
 <div class="sellers form">
     <?php echo $this->Form->create('Seller');?>
     <fieldset>
-        <h2><?php __('Nuovo profilo di azienda fornitore'); ?></h2>
+        <h2><?php __('Nuovo profilo di azienda produttrice'); ?></h2>
 
         <h3 class="expander"><?php __('Dati profilo aziendale'); ?></h3>
         <div class="accordion">
