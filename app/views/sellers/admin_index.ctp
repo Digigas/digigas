@@ -40,7 +40,7 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Nuovo profilo aziendale', true), array('action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Nuovo profilo produttore', true), array('action' => 'add')); ?> </li>
         <li><?php echo $this->Html->link(__('Gestisci i prodotti', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
     </ul>
 </div>
