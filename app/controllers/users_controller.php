@@ -68,7 +68,7 @@ class UsersController extends AppController {
         }
 
         if(isset($this->params['named']['active'])) {
-            $this->paginate = am($this->paginate, array('conditions' => array('active' => $this->params['named']['active'])));
+            $this->paginate = am($this->paginate, array('conditions' => array('User.active' => $this->params['named']['active'])));
         }
 
 		$this->set('users', $this->paginate());
