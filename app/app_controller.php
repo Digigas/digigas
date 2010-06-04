@@ -38,6 +38,9 @@ class AppController extends Controller {
     }
 
     function isAuthorized() {
+        if(isset($this->params['admin']) && $this->Auth->user('role') > 2) {
+            return false;
+        }
         return true;
     }
 
