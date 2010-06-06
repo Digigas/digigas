@@ -109,7 +109,13 @@
                 .css({cursor: 'pointer'})
                 .click(function(){
                     $(this).toggleClass('open').children().slideToggle();
-                })
+                });
+
+            //strumenti ausiliari
+            $('.export-tools .toolslist').hide();
+            $('.export-tools .openclose').css({cursor: 'pointer'}).click(function(){
+                $('.export-tools .toolslist').toggle('slow');
+            })
 
             //active menu item
             <?php

@@ -131,8 +131,8 @@ div.message
 
 #content
 {
-    border-top:3px solid #111;
-    border-bottom:3px solid #111;
+    border-top:3px solid #222;
+    border-bottom:3px solid #222;
     padding:0;
 }
 
@@ -446,4 +446,53 @@ div.note
 {
     margin-top:10px;
     margin-bottom:20px;
+}
+.export-tools
+{
+    position:absolute;
+    right:22%;
+    background:#222;
+    color:#fff;
+    border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+}
+.export-tools .openclose
+{
+    position:relative;
+    float:left;
+    padding:5px 8px;
+}
+.export-tools ul
+{
+    display:none;
+    position:relative;
+    float:left;
+    width:200px;
+    margin:0;
+    padding:3px 5px;
+    list-style-type:none;
+    overflow:hidden;
+}
+.export-tools li
+{
+    margin:0;
+    padding:5px 8px;
+}
+.export-tools li a
+{
+    display:block;
+    font-weight:normal;
+    text-decoration:none;
+    color:#fff;
+}
+.export-tools li a:hover
+{
+    color:#f90;
+}
+.export-tools li img
+{
+    display:block;
+    float:left;
+    padding-right:6px;
 }
