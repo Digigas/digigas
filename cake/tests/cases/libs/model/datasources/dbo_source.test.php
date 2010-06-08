@@ -4316,7 +4316,7 @@ class DboSourceTest extends CakeTestCase {
 				' WHERE Article.id = ' . $this->db->fullTableName('comments') . '.article_id'
 		);
 		$conditions = array('two' => 2);
-		$result = $this->db->conditions($conditions,true,false,$Article);
+		$result = $this->db->conditions($conditions, true, false, $Article);
 		$expected = '(1 + 1) = 2';
 		$this->assertEqual($expected, $result);
 
@@ -4350,6 +4350,11 @@ class DboSourceTest extends CakeTestCase {
 			'two' => '1 + 1',
 		);
 		$order = array('two', 'this_moment');
+		$result = $this->db->order($order, 'ASC', $Article);
+		$expected = ' ORDER BY (1 + 1) ASC, (NOW()) ASC';
+		$this->assertEqual($expected, $result);
+
+		$order = array('Article.two', 'Article.this_moment');
 		$result = $this->db->order($order, 'ASC', $Article);
 		$expected = ' ORDER BY (1 + 1) ASC, (NOW()) ASC';
 		$this->assertEqual($expected, $result);
