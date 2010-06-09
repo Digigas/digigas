@@ -30,9 +30,21 @@
                 padding:0;
                 color:#333;
             }
+            .header
+            {
+                background:#7CAF00; color:#fff; padding:10px 20px; font-size:20px; text-align:left;
+            }
             h1
             {
                 font-size:18px;
+            }
+            div.date
+            {
+                background:#7CAF00;
+                color:#fff;
+                padding:5px 8px;
+                width:auto;
+                float:right;
             }
             table
             {
@@ -42,11 +54,13 @@
             {
                 border-bottom:2px solid #999;
                 padding:5px;
+                text-align:left;
             }
             td
             {
                 border-bottom:1px solid #ccc;
                 padding:3px;
+                text-align:left;
             }
             .content
             {
@@ -59,6 +73,11 @@
         </style>
     </head>
     <body>
+        <div class="header">
+        <?php 
+        echo Configure::read('GAS.name');
+        ?>
+        </div>
         <div class="content">
         <?php echo $content_for_layout;?>
         </div>

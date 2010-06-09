@@ -143,7 +143,7 @@ class OrderedProductsController extends AppController {
         ));
         $totals = Set::combine($totals, '{n}.Product.name', '{n}.0');
 
-        $seller = $this->OrderedProduct->User->findById($seller_id);
+        $seller = $this->OrderedProduct->Seller->findById($seller_id);
 
         //trovo l'elenco degli utenti con ordini attivi
         $users = $this->OrderedProduct->getPendingUsers();
@@ -166,37 +166,141 @@ class OrderedProductsController extends AppController {
             $this->redirect($this->referer());
         }
 
+        //invio la mail
+        $mail_ok = $this->_mail_orders_to_user($user_id, $user['User']['email']);
+
+        if($mail_ok) {
+            $this->Session->setFlash(__('Email inviata correttamente', true));
+        } else {
+            $this->Session->setFlash(__('ERRORE durante l\'invio della mail', true));
+        }
+        $this->redirect($this->referer());
+    }
+
+    function admin_mass_mail_orders_to_users() {
+        //utenti con ordini pendenti
+        $users = $this->OrderedProduct->getPendingUsers(true);
+        
+        $failed = array();
+        foreach($users as $user) {
+            if(!$this->_mail_orders_to_user($user['User']['id'], $user['User']['email'])) {
+                $failed[] = $user;
+            }
+        }
+
+        if(empty($failed)) {
+            $this->Session->setFlash(__('Tutte le email sono state spedite correttamente', true));
+        } else {
+            $this->Session->setFlash(__('Si sono verificati degli errori durante la spedizione delle email', true));
+        }
+        $this->redirect($this->referer());
+    }
+
+    function admin_mail_orders_to_seller($seller_id) {
+        //dati dell'utente
+        $seller = $this->OrderedProduct->Seller->find('first', array(
+            'conditions' => array('Seller.id' => $seller_id, 'Seller.active' => 1),
+            'fields' => array('business_name', 'email'),
+            'recursive' => -1));
+
+        if(empty($seller)) {
+            $this->Session->setFlash(__('Fornitore inesistente o disattivato', true));
+            $this->redirect($this->referer());
+        }
+
+        $mail_ok = $this->_mail_orders_to_seller($seller_id, $seller['Seller']['name']);
+        
+        if($mail_ok) {
+            $this->Session->setFlash(__('Email inviata correttamente', true));
+        } else {
+            $this->Session->setFlash(__('ERRORE durante l\'invio della mail', true));
+        }        
+        $this->redirect($this->referer());
+    }
+
+    function admin_mass_mail_orders_to_sellers() {
+        //utenti con ordini pendenti
+        $sellers = $this->OrderedProduct->getPendingSellers(true);
+
+        $failed = array();
+        foreach($sellers as $seller) {
+            if(!$this->_mail_orders_to_seller($seller['Seller']['id'], $seller['Seller']['email'])) {
+                $failed[] = $seller;
+            }
+        }
+
+        if(empty($failed)) {
+            $this->Session->setFlash(__('Tutte le email sono state spedite correttamente', true));
+        } else {
+            $this->Session->setFlash(__('Si sono verificati degli errori durante la spedizione delle email', true));
+        }
+        $this->redirect($this->referer());
+    }
+
+    function _mail_orders_to_user($user_id, $user_email) {
         //dati dell'ordine
         $orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name')))
+                'Product' => array('fields' => array('id', 'name')),
+                'Hamper' => array('fields' => array('delivery_date_on')))
         ));
         $this->set(compact('user', 'orderedProducts'));
 
         //compongo il messaggio nella view che si trova nella cartella email
-        /*
-         * da rifare -> invia seguendo le istruzioni e spostando la view in un element :-(
-         * rifatto ma… controllare, non sono sicuro che funzioni…
-         */
         //invio l'email
         //$this->Email->delivery = 'debug';
-        $this->Email->to = $user['User']['email'];
-        $this->Email->subject = __('Riepilogo ordini', true);
+        $this->Email->to = $user_email;
+        $this->Email->subject = '['.Configure::read('GAS.name').'] '.__('Riepilogo ordini', true);
         $this->Email->from = Configure::read('email.from');
         $this->Email->sendAs = 'html';
         $this->Email->template = 'admin_mail_orders_to_user';
 
         if($this->Email->send()) {
             //mail ok
-            $this->Session->setFlash(__('Email inviata correttamente', true));
+            return true;
         } else {
             //mail error
-            $this->Session->setFlash(__('ERRORE durante l\'invio della mail', true));
+            return false;
         }
-        $this->redirect($this->referer());
+    }
+
+    function _mail_orders_to_seller($seller_id, $seller_email) {
+        //dati dell'ordine
+        //trovo il totale per ogni prodotto
+        $totals = $this->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
+            'fields' => array('product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => 'product_id',
+            'contain' => array('Product.name', 'Hamper.delivery_date_on')
+        ));
+        $totals = Set::combine($totals, '{n}.Product.name', '{n}');
+        $this->set(compact('seller', 'totals'));
+
+        $relatedUsers = $this->OrderedProduct->Seller->getUserEmails($seller_id);
+
+        $adminUsers = $this->OrderedProduct->User->getAdminEmails();
+
+        //compongo il messaggio nella view che si trova nella cartella email
+        //invio l'email
+        //$this->Email->delivery = 'debug';
+        $this->Email->to = $seller_email;
+        $this->Email->cc = $relatedUsers;
+        $this->Email->bcc = $adminUsers;
+        $this->Email->subject = '['.Configure::read('GAS.name').'] '.__('Riepilogo ordini per produttori', true);
+        $this->Email->from = Configure::read('email.from');
+        $this->Email->sendAs = 'html';
+        $this->Email->template = 'admin_mail_orders_to_seller';
+
+        if($this->Email->send()) {
+            //mail ok
+            return true;
+        } else {
+            //mail error
+            return false;
+        }
     }
 
     function admin_set_paid($id) {
@@ -225,11 +329,6 @@ class OrderedProductsController extends AppController {
             $this->Session->setFlash(__('Ordine ripristinato come pendente', true));
             $this->redirect($this->referer());
         }
-    }
-
-    function admin_index_() {
-        $this->OrderedProduct->recursive = 0;
-        $this->set('orderedProducts', $this->paginate());
     }
 
     function admin_view($id = null) {

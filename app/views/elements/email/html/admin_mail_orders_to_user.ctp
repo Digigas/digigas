@@ -1,5 +1,9 @@
+<div class="date">
+<?php __('Inviata il'); ?>:
+<?php echo digi_date(date('D j M Y, H:i')); ?>
+</div>
 <?php echo $this->Html->tag('h1', __('Invio riepilogo ordini', true)); ?>
-<?php echo date('D j M Y, H:i'); ?>
+
 
 <table cellpadding="0" cellspacing="0">
 	<tr>
@@ -8,7 +12,7 @@
 			<th><?php __('Quantità');?></th>
 			<th><?php __('Totale');?></th>
 			<th class="actions"><?php __('Pagato');?></th>
-			<th class="actions"><?php __('Ritirato');?></th>
+			<th class="actions"><?php __('Ritirato?');?></th>
 	</tr>
 <?php foreach($orderedProducts as $orderedProduct): ?>
     <tr>
@@ -24,7 +28,14 @@
         echo $orderedProduct['OrderedProduct']['paid']?'si':'no';
         ?></td>
 		<td class="actions"><?php
-        echo $orderedProduct['OrderedProduct']['retired']?'si':'no';
+        if($orderedProduct['OrderedProduct']['retired']) {
+            __('si');
+        } else {
+            echo '<strong>';
+            __('Ritiralo ');
+            echo digi_date($orderedProduct['Hamper']['delivery_date_on']);
+            echo '</strong>';
+        }
         ?></td>
 	</tr>
 <?php endforeach; ?>

@@ -1,3 +1,15 @@
+
+<div class="export-tools">
+    <div class="openclose">
+        <?php echo $this->Html->image('oxygen/16x16/actions/tool2.png'); ?>
+    </div>
+    <ul class="toolslist">
+        <li><?php
+        echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
+        echo $this->Html->link(__('email al fornitore', true), array('action' => 'mail_orders_to_seller', $seller['Seller']['id'])); ?></li>
+    </ul>
+</div>
+
 <div class="orderedProducts index">
 	<h2>
     <?php

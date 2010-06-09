@@ -114,32 +114,38 @@ class OrderedProduct extends AppModel {
         return $userOrder;
     }
 
-    function getPendingUsers() {
+    function getPendingUsers($full = false) {
         $orderedProducts = $this->getPending(); 
 
         $user_ids = Set::extract('/OrderedProduct/user_id', $orderedProducts); 
         
         $_users = $this->User->find('all', array(
             'conditions' => array('User.id' => $user_ids),
-            'fields' => array('id', 'fullname'),
             'contain' => array()
         ));
+
+        if($full) {
+            return $_users;
+        }
 
         $users = Set::combine($_users, '{n}.User.id', '{n}.User.fullname');
 
         return $users;
     }
     
-    function getPendingSellers() {
+    function getPendingSellers($full = false) {
         $orderedProducts = $this->getPending();
 
         $seller_ids = Set::extract('/OrderedProduct/seller_id', $orderedProducts);
 
         $_sellers = $this->Seller->find('all', array(
             'conditions' => array('Seller.id' => $seller_ids),
-            'fields' => array('id', 'name'),
             'contain' => array()
         ));
+
+        if($full) {
+            return $_sellers;
+        }
 
         $sellers = Set::combine($_sellers, '{n}.Seller.id', '{n}.Seller.name');
 

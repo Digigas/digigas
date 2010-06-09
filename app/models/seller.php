@@ -83,5 +83,17 @@ class Seller extends AppModel {
         return $sellers;
     }
 
+    function getUserEmails($id) {
+        $users = $this->User->find('all', array(
+            'conditions' => array(
+                'User.active' => 1,
+                'User.seller_id' => $id),
+            'fields' => array('email'),
+            'contain' => array()
+        ));
+        $emails = Set::extract('/User/email', $users);
+        return $emails;
+    }
+
 }
 ?>

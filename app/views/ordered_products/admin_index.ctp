@@ -6,16 +6,17 @@
     <ul class="toolslist">
         <li><?php
         echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
-        echo $this->Html->link(__('email agli utenti', true), array()); ?></li>
+        echo $this->Html->link(__('email agli utenti', true), array('action' => 'mass_mail_orders_to_users'));
+        ?></li>
         <li>
         <?php
         echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
-        echo $this->Html->link(__('email agli amministratori', true), array());
+        echo $this->Html->link(__('email ai produttori', true), array('action' => 'mass_mail_orders_to_sellers'));
         ?></li>
-        <li><?php
+        <!-- <li><?php
         echo $this->Html->image('oxygen/16x16/mimetypes/application_vnd.ms_excel.png');
         echo $this->Html->link(__('salva in excel', true), array());
-        ?></li>
+        ?></li> -->
     </ul>
 </div>
 
