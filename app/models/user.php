@@ -66,5 +66,17 @@ class User extends AppModel {
 
         return parent::beforeSave($options);
     }
+
+    function getAdminEmails() {
+        $users = $this->find('all', array(
+            'conditions' => array(
+                'User.active' => 1,
+                'User.role < ' => 2),
+            'fields' => array('email'),
+            'contain' => array()
+        ));
+        $emails = Set::extract('/User/email', $users);
+        return $emails;
+    }
 }
 ?>

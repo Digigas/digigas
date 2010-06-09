@@ -1,5 +1,6 @@
 <?php
 $config = array(
+    'GAS.name' => 'Gas di prova',
     'language' => array('it'),
     'default_language' => 'it',
     'date.format' => 'D j M Y, H:i',

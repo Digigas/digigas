@@ -1,12 +1,20 @@
+
+<div class="export-tools">
+    <div class="openclose">
+        <?php echo $this->Html->image('oxygen/16x16/actions/tool2.png'); ?>
+    </div>
+    <ul class="toolslist">
+        <li><?php
+        echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
+        echo $this->Html->link(__('email all\' utente', true), array('action' => 'mail_orders_to_user', $user['User']['id'])); ?></li>        
+    </ul>
+</div>
+
 <div class="orderedProducts index">
 	<h2>
     <?php
     __('Ordini pendenti per l\'acquirente ');
     echo $user['User']['fullname'];
-    echo '&nbsp;';
-    echo $this->Html->image('oxygen/32x32/actions/mail_mark_unread.png', array(
-        'url' => array('action' => 'mail_orders_to_user', $user['User']['id']),
-        'title' => __('Invia per email all\'utente', true)));
     ?>
     </h2>
 

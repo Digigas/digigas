@@ -23,13 +23,19 @@
                 $now = strtotime('now');
                 if(strtotime($hamper['Hamper']['start_date']) < $now && strtotime($hamper['Hamper']['end_date']) > $now) {
                     //paniere aperto
-                    echo $this->Html->image('oxygen/16x16/actions/button_ok.png', array('alt' => __('Aperto', true), 'title' => __('Aperto', true)));
+                    echo $this->Html->image('oxygen/16x16/actions/button_ok.png', array(
+                        'alt' => __('Aperto', true),
+                        'title' => __('Aperto', true)));
                 } else if(strtotime($hamper['Hamper']['end_date']) < $now && strtotime($hamper['Hamper']['delivery_date_off']) > $now) {
                     //paniere in consegna
-                    echo $this->Html->image('oxygen/16x16/actions/alarmclock.png', array('alt' => __('In consegna', true), 'title' => __('In consegna', true)));
+                    echo $this->Html->image('oxygen/16x16/actions/alarmclock.png', array(
+                        'alt' => __('In consegna entro ', true).digi_date($hamper['Hamper']['delivery_date_off']),
+                        'title' => __('In consegna entro ', true).digi_date($hamper['Hamper']['delivery_date_off'])));
                 } else {
                     //paniere chiuso
-                    echo $this->Html->image('oxygen/16x16/actions/button_cancel.png', array('alt' => __('Chiuso', true), 'title' => __('Chiuso', true)));
+                    echo $this->Html->image('oxygen/16x16/actions/button_cancel.png', array(
+                        'alt' => __('Chiuso', true),
+                        'title' => __('Chiuso', true)));
                 }
                 ?>
             </td>
