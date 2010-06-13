@@ -33,6 +33,8 @@
     Router::connect('/:language/pages/*',
         array('controller' => 'pages', 'action' => 'view'),
         array('language' => '[a-z]{2}'));
+    Router::connect('/digigas',
+        array('controller'=>'hampers', 'action'=>'index'));
 
     Router::connect('/admin', array('controller' => 'ordered_products', 'action' => 'index', 'admin' => true));
 
