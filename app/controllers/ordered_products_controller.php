@@ -238,6 +238,8 @@ class OrderedProductsController extends AppController {
     }
 
     function _mail_orders_to_user($user_id, $user_email) {
+        $this->Email->reset();
+
         //dati dell'ordine
         $orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
@@ -251,7 +253,7 @@ class OrderedProductsController extends AppController {
 
         //compongo il messaggio nella view che si trova nella cartella email
         //invio l'email
-        //$this->Email->delivery = 'debug';
+        //$this->Email->delivery = 'debug';        
         $this->Email->to = $user_email;
         $this->Email->subject = '['.Configure::read('GAS.name').'] '.__('Riepilogo ordini', true);
         $this->Email->from = Configure::read('email.from');
@@ -268,6 +270,8 @@ class OrderedProductsController extends AppController {
     }
 
     function _mail_orders_to_seller($seller_id, $seller_email) {
+        $this->Email->reset();
+        
         //dati dell'ordine
         //trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
@@ -285,7 +289,7 @@ class OrderedProductsController extends AppController {
 
         //compongo il messaggio nella view che si trova nella cartella email
         //invio l'email
-        //$this->Email->delivery = 'debug';
+        //$this->Email->delivery = 'debug';        
         $this->Email->to = $seller_email;
         $this->Email->cc = $relatedUsers;
         $this->Email->bcc = $adminUsers;
