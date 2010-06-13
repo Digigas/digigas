@@ -3,14 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 24 mag, 2010 at 10:59 PM
+-- Generato il: 13 giu, 2010 at 08:19 PM
 -- Versione MySQL: 5.1.37
 -- Versione PHP: 5.2.10
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `digigas2`
+-- Database: `digigas3`
 --
 
 -- --------------------------------------------------------
@@ -79,7 +79,7 @@ CREATE TABLE `money_boxes` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='cassa';
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='cassa';
 
 -- --------------------------------------------------------
 
@@ -166,6 +166,7 @@ CREATE TABLE `pages` (
   `menuable` tinyint(1) NOT NULL,
   `skip_to_first_child` tinyint(1) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `private` tinyint(1) NOT NULL,
   `slug` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `created` date NOT NULL,
   `modified` date NOT NULL,
