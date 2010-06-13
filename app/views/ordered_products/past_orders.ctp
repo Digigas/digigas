@@ -1,5 +1,5 @@
 <div class="orderedProducts index">
-	<h2><?php __('Storico dei miei ordini');?></h2>
+	<h2><?php __('Storico dei tuoi ordini');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
             <th><?php echo $this->Paginator->sort(__('Data dell\' ordine', true), 'created');?></th>
@@ -65,7 +65,7 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('Continua gli acquisti', true), array('controller' => 'hampers', 'action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(__('I miei ordini attuali', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(__('Quanto ho speso', true), array('controller' => 'money_boxes', 'action' => 'index')); ?></li>
+        <li><?php echo $this->Html->link(__('I tuoi ordini attuali', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
+        <li><?php echo $this->Html->link(__('Quanto hai  speso', true), array('controller' => 'money_boxes', 'action' => 'index')); ?></li>
     </ul>
 </div>
