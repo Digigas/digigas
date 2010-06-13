@@ -83,29 +83,32 @@ class Hamper extends AppModel {
 
         $this->recursive = -1;
         $data = $this->findById($id);
+        $now = date('Y-m-d H:m:s');
 
-        $return = false;
+        $return = true;
 
         switch($data['Hamper']['start_date']) {
             case '0000-00-00 00:00:00':
                 $return = false;
                 break;
-            case ($data['Hamper']['start_date'] < date('Y-m-d H:m:s')):
-                $return = true;
+            case ($data['Hamper']['start_date'] > $now):
+                $return = false; 
+                break;
         }
 
         switch($data['Hamper']['end_date']) {
             case '0000-00-00 00:00:00':
                 $return = false;
                 break;
-            case ($data['Hamper']['end_date'] > date('Y-m-d H:m:s')):
-                $return = true;
+            case ($data['Hamper']['end_date'] < $now):
+                $return = false; 
+                break;
         }
 
         $sellerIsActive = $this->Seller->field('active', array('id' => $data['Hamper']['seller_id']));
         if(!$sellerIsActive) {
             $return = false;
-        }
+        } 
 
         return $return;
     }
