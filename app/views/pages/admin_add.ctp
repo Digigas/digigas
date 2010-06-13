@@ -16,6 +16,8 @@
 <div class="accordion">
 		
     <?php echo $this->Form->input('active', array('label'=>'Attiva', 'checked'=>'checked'));?>
+    <?php echo $this->Form->input('private', array('label'=>'Privata'));?>
+    <?php echo $this->Html->div('note', __('Una pagina privata è visibile solo ai partecipanti del GAS', true)); ?>
     <?php echo $this->Form->input('date_on', array('label'=>'Data di pubblicazione', 'class'=>'calendar', 'type'=>'text'));?>
     <?php echo $this->Form->input('date_off', array('label'=>'Data di scadenza', 'class'=>'calendar', 'type'=>'text'));?>
 

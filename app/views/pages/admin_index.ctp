@@ -16,7 +16,7 @@ echo $paginator->counter(array(
 	<th><?php __('Menu'); ?></th>
 	<th><?php __('Titolo'); ?></th>
 	<th><?php __('Attiva'); ?></th>
-	<th><?php __('Ultima modifica'); ?></th>
+	<th><?php __('Privata'); ?></th>
 	<th class="actions" colspan="5"><?php __('Azioni'); ?></th>
 </tr>
 <?php
@@ -49,10 +49,10 @@ foreach ($pages as $page):
 			<?php echo $page['Page']['title']; ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($page['Page']['active']?'si':'no', array('action'=>'toggle_active', $page['Page']['id'])); ?>
+			<?php echo $this->Html->link($page['Page']['active']?__('si', true):__('no', true), array('action'=>'toggle_active', $page['Page']['id'])); ?>
 		</td>
 		<td>
-			<?php echo date('d F Y', strtotime($page['Page']['modified'])); ?>
+			<?php echo $page['Page']['private']?__('si', true):__('no', true); ?>
 		</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Sposta in su', true), array('action'=>'up', $page['Page']['id'])); ?>

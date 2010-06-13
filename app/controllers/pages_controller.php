@@ -81,8 +81,17 @@ class PagesController extends AppController {
         if($page['Page']['active'] == 0)
         {
             //pagina disattivata
-            $this->Session->setFlash(__('Invalid Page.', true));
+            $this->Session->setFlash(__('La pagina non è disponibile', true));
             $this->redirect(array('action'=>'index'));
+        }
+
+        //controllo pagine private
+        $user = $this->Auth->user();
+        if($page['Page']['private'] == 1 && empty($user))
+        {
+            //pagina disattivata
+            $this->Session->setFlash(__('Questa pagina è riservata gli iscritti', true));
+            $this->redirect(array('controller' => 'users', 'action' => 'login'));
         }
 
         //se skip_to_first_child è impostato, faccio redirect alla prima sottopagina
