@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 13 giu, 2010 at 08:19 PM
+-- Generato il: 13 giu, 2010 at 08:21 PM
 -- Versione MySQL: 5.1.37
 -- Versione PHP: 5.2.10
 
@@ -115,6 +115,7 @@ CREATE TABLE `newscategories` (
   `rght` int(11) NOT NULL,
   `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `active` tinyint(1) NOT NULL,
+  `private` tinyint(1) NOT NULL,
   `slug` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `created` date NOT NULL,
   `modified` date NOT NULL,
@@ -271,3 +272,4 @@ CREATE TABLE `users` (
   `modified` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='utenti';
+
