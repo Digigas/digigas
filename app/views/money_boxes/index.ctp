@@ -52,7 +52,7 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('Continua gli acquisti', true), array('controller' => 'hampers', 'action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(__('I miei ordini attuali', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(__('Storico dei miei ordini', true), array('controller' => 'ordered_products', 'action' => 'past_orders')); ?></li>
+        <li><?php echo $this->Html->link(__('I tuoi ordini attuali', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
+        <li><?php echo $this->Html->link(__('Storico dei tuoi ordini', true), array('controller' => 'ordered_products', 'action' => 'past_orders')); ?></li>
     </ul>
 </div>
