@@ -19,39 +19,43 @@ class UsersController extends AppController {
         $this->redirect($this->Auth->logout());
     }
 
+    function _getUserIdOrLogin() {
+        if (!$this->Auth->user()) {
+			$this->Session->setFlash(__('Devi fare login per amministrare il tuo profilo', true));
+			$this->redirect('/users/login');
+            return false;
+		}
+
+        $id = $this->Auth->user('id');
+        return $id;
+    }
+
 
     //di fatto questa è la funzione view…
-	function index($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
-			$this->redirect('/');
-		}
-		$this->set('user', $this->User->read(null, $id));
+	function index() { 
+		$id = $this->_getUserIdOrLogin();
+
+        $user = $this->User->find('first', array(
+            'conditions' => array('User.id' => $id),
+            'contain' => array('Seller')
+        ));
+        
+		$this->set(compact('user'));
 	}
 
-	function add() {
-		if (!empty($this->data)) {
-			$this->User->create();
-			if ($this->User->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
-			}
-		}
-	}
-
-	function edit($id = null) {
+	function edit() {
+        $id = $this->_getUserIdOrLogin();
+        
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
+			$this->Session->setFlash(__('Utente non valido', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->User->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
+				$this->Session->setFlash(__('Profilo salvato', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
+				$this->Session->setFlash(__('Si è verificato un errore, riprova', true));
 			}
 		}
 		if (empty($this->data)) {
