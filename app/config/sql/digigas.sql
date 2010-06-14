@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 14 giu, 2010 at 08:18 PM
+-- Generato il: 14 giu, 2010 at 11:30 PM
 -- Versione MySQL: 5.1.37
 -- Versione PHP: 5.2.10
 
@@ -282,6 +282,7 @@ CREATE TABLE `users` (
   `last_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `role` tinyint(4) NOT NULL,
   `usergroup_id` int(11) DEFAULT NULL,
