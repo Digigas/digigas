@@ -3,7 +3,7 @@
 <?php echo digi_date(date('D j M Y, H:i')); ?>
 </div>
 <h1>
-    <?php __('Ciao'); echo $user['User']['fullname']; ?>!
+    <?php __('Ciao'); echo ' '.$user['User']['fullname']; ?>!
     <?php echo __('Benvenuto in', true).' '.Configure::read('GAS.name'); ?>
 </h1>
 <p>
@@ -15,7 +15,7 @@ clicca sul link sottostante e imposta la tua password.<br/>
 </strong>
 <br/><br/>
 In seguito potrai accedere al software da questo indirizzo:<br/>
-<?php echo $this->Html->link($_SERVER['SERVER_NAME'], '/digigas', array('full' => true)); ?>
+<a href="<?php echo $this->Html->url('/digigas',true); ?>"><?php echo $_SERVER['SERVER_NAME']; ?></a>
 </p>
 
 
