@@ -148,6 +148,7 @@ div.index,
 div.view {
     float:left;
     width:76%;
+    border-left:none;
     border-right:1px solid #666;
     padding:10px 2%;
     overflow:auto;
@@ -496,4 +497,35 @@ div.note
     display:block;
     float:left;
     padding-right:6px;
+}
+
+.tools-list ul
+{
+    margin:0;
+    padding:0;
+    list-style-type:none;
+}
+.tools-list li
+{
+    display:block;
+    float:left;
+    margin-right:10px;
+    margin-bottom:10px;
+    padding:10px;
+    width:100px;
+    height:150px;
+    overflow:hidden;
+    text-align:center;
+}
+.tools-list li a
+{
+    display:block;
+    padding:4px;
+    text-decoration:none;
+    font-size:14px;
+    color:#333;
+}
+.tools-list li a:hover
+{
+    color:#f90;
 }

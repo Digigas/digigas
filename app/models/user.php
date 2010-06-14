@@ -33,7 +33,7 @@ class User extends AppModel {
         )
     );
 
-    var $belongsTo = array('Seller');
+    var $belongsTo = array('Seller', 'Usergroup');
 
     var $validate = array(
         'first_name'    => array('rule' => 'notEmpty', 'on' => 'create'),

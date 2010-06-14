@@ -30,8 +30,7 @@
                 <li class="hampers"><?php echo $this->Html->link('Panieri', array('controller' => 'hampers', 'action' => 'index')); ?></li>
                 <li class="orders"><?php echo $this->Html->link('Ordini', array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
                 <li class="users"><?php echo $this->Html->link('Utenti', array('controller' => 'users', 'action' => 'index')); ?></li>
-                <li class="website"><?php echo $this->Html->link('Sito web', array('controller' => 'pages', 'action' => 'index')); ?></li>
-                <li class="tools"><?php echo $this->Html->link('Strumenti', array('controller' => 'filemanager', 'action' => 'index')); ?></li>
+                <li class="tools"><?php echo $this->Html->link('Strumenti', array('controller' => 'tools', 'action' => 'index')); ?></li>
             </ul>
         </div>
 		<div id="content">

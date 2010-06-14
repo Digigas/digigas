@@ -74,7 +74,7 @@ $(document).ready(function() {
 <body>
     <div id="container">
         <div id="header">
-            <h1>Mr.Content</h1>
+            <h1>Digigas</h1>
         </div>
 
         <div id="topmenu">
