@@ -61,6 +61,7 @@ class UsersController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->User->read(null, $id);
 		}
+
 	}
     
 	function admin_index($role = null) {
@@ -91,7 +92,9 @@ class UsersController extends AppController {
 
         $roles = Configure::read('roles');
 
-        $this->set('roles', $roles);
+        $usergroups = $this->User->Usergroup->find('list', array('conditions' => array('Usergroup.active' => 1)));
+
+        $this->set(compact('roles', 'usergroups'));
 	}
 
     function admin_addseller() {
@@ -104,6 +107,11 @@ class UsersController extends AppController {
 				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
 			}
 		}
+
+        $usergroups = $this->User->Usergroup->find('list', array('conditions' => array('Usergroup.active' => 1)));
+
+
+        $this->set(compact('usergroups'));
 	}
 
 	function admin_edit($id = null) {
@@ -118,16 +126,20 @@ class UsersController extends AppController {
 			} else {
 				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
 			}
-		}
-		if (empty($this->data)) {
+		}	
+
+        $roles = Configure::read('roles');
+
+        $usergroups = $this->User->Usergroup->find('list', array('conditions' => array('Usergroup.active' => 1)));
+
+        $this->set(compact('roles', 'usergroups'));
+
+        if (empty($this->data)) {
 			$this->data = $this->User->read(null, $id);
             if($this->data['User']['role'] == 2) {
                 $this->render('admin_editseller');
             }
 		}
-
-        $roles = Configure::read('roles');
-        $this->set('roles', $roles);
 	}
 
 	function admin_delete($id = null) {

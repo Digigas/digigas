@@ -14,7 +14,7 @@ class PagesController extends AppController {
         parent::beforeFilter();
 
         if(isset($this->params['admin']) && $this->params['admin']) {
-            $this->set('activemenu_for_layout', 'website');
+            $this->set('activemenu_for_layout', 'tools');
         }
 
     }

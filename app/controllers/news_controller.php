@@ -8,7 +8,7 @@ class NewsController extends AppController
 
     function beforeFilter()
     {
-        $this->set('activemenu_for_layout', 'website');
+        $this->set('activemenu_for_layout', 'tools');
         return parent::beforeFilter();
     }
     
