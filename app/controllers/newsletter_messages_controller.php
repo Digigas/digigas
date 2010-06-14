@@ -36,7 +36,7 @@ class NewsletterMessagesController extends AppController {
 
             $message = $this->NewsletterMessage->save($this->data);
             if ($message && $this->_send($message)) {
-                $this->NewsletterMessage->saveSentData($this->NewsletterMessage->getInsertId());
+                $this->NewsletterMessage->saveSentDate($this->NewsletterMessage->getInsertId());
                 $this->Session->setFlash(__('Il messaggio è stato inviato correttamente', true));
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -63,6 +63,7 @@ class NewsletterMessagesController extends AppController {
     function send($id) {
         $message = $this->NewsletterMessage->read(null, $id);
         if ($message && $this->_send($message)) {
+            $this->NewsletterMessage->saveSentDate($id);
             $this->Session->setFlash(__('Il messaggio è stato inviato correttamente', true));
         } else {
             $this->Session->setFlash(__('Si è verificato un errore nell\'invio del messaggio, riprova', true));

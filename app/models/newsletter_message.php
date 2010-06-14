@@ -21,7 +21,7 @@ class NewsletterMessage extends AppModel {
 		)
 	);
 
-    function saveSentData($id) {
+    function saveSentDate($id) {
         $this->id = $id;
         return $this->saveField('sent_date', date('Y-m-d H:i:s', strtotime('now')));
     }
