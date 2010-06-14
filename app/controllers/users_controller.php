@@ -63,6 +63,44 @@ class UsersController extends AppController {
 		}
 
 	}
+
+    function password_reset($hash = false) {
+        if(!$hash) {
+            $this->Session->setFlash(__('Spiacente, l\'utente non è stato riconosciuto. Contatta l\'amministratore', true));
+            $this->redirect('/');
+        }
+
+        $this->User->recursive = -1;
+        $user = $this->User->findByHash($hash);
+
+        if(!empty($this->data)) {
+            if($this->data['User']['password'] !== $this->data['User']['password2']) {
+                $this->Session->setFlash(__('Le password non coincidono, riprova', true));
+                $this->redirect(array('action' => $this->action, $hash));
+            } else {
+                $this->User->id = $user['User']['id'];
+                if($this->User->saveField('password', $this->Auth->password($this->data['User']['password']))) {
+                    $this->Session->setFlash(__('Ok, password salvata, ora puoi fare login!', true));
+                    $this->redirect(array('action' => 'login'));
+                } else {
+                    $this->Session->setFlash(__('Si è verificato un errore, riprova', true));
+                    $this->redirect(array('action' => $this->action, $hash));
+                }
+            }
+        }
+
+        if(empty($user)) {
+            $this->Session->setFlash(__('Spiacente, l\'utente non è stato riconosciuto. Contatta l\'amministratore', true));
+            $this->redirect('/');
+        }
+
+        if($user['User']['active'] != 1) {
+            $this->Session->setFlash(__('Spiacente, l\'utente non è attivo. Contatta l\'amministratore', true));
+            $this->redirect('/');
+        }
+
+        $this->set('user', $user);
+    }
     
 	function admin_index($role = null) {
 		$this->User->recursive = 0;
@@ -154,5 +192,39 @@ class UsersController extends AppController {
 		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'User'));
 		$this->redirect(array('action' => 'index'));
 	}
+
+    function admin_mail_users_notification($id = false) {
+        if(!$id) {
+            $users = $this->User->getActiveUsers();
+        } else {
+            $this->User->recursive = -1;
+            $user = $this->User->read(null, $id);
+            $users = array($user);
+        }
+
+        foreach($users as $user) {
+            $this->Email->reset();
+
+            $this->Email->to = $user['User']['email'];
+            $this->Email->subject = '['.Configure::read('GAS.name').'] '.__('Come attivare il tuo account', true);
+            $this->Email->from = Configure::read('email.from');
+            $this->Email->sendAs = 'html';
+            $this->Email->template = 'admin_mail_users_notification';
+
+            $this->set(compact('user'));
+
+            if(!$this->Email->send()) {
+                $this->log($this->name.'->'.$this->action.' email not sent to: '.$user['User']['email'], 'users_mail_errors');
+                $errors[] = $user;
+            }
+        }
+
+        if(empty($errors)) {
+            $this->Session->setFlash(__('Tutte le email sono state inviate correttamente', true));
+        } else {
+            $this->Session->setFlash(__('Si sono verificati degli errori nell\'invio delle email', true));
+        }
+        $this->redirect(array('action' => 'index'));
+    }
 }
 ?>

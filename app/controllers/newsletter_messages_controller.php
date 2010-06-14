@@ -98,13 +98,14 @@ class NewsletterMessagesController extends AppController {
             $this->set(compact('user', 'title', 'text'));
 
             if(!$this->Email->send()) {
+                $this->log($this->name.'->'.$this->action.' email not sent to: '.$user, 'newsletter_mail_errors');
                 $errors[] = $user;
             }
         }
 
         if(empty($errors)) {
             return true;
-        } else {
+        } else {            
             return $errors;
         }
     }
