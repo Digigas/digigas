@@ -509,11 +509,10 @@ div.note
 {
     display:block;
     float:left;
-    margin-right:10px;
-    margin-bottom:10px;
+    margin: 0 10px 10px 0;
     padding:10px;
     width:100px;
-    height:150px;
+    height:120px;
     overflow:hidden;
     text-align:center;
 }
@@ -523,7 +522,7 @@ div.note
     padding:4px;
     text-decoration:none;
     font-size:14px;
-    color:#333;
+    color:#666;
 }
 .tools-list li a:hover
 {
