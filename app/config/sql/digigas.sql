@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 13 giu, 2010 at 08:21 PM
+-- Generato il: 14 giu, 2010 at 08:18 PM
 -- Versione MySQL: 5.1.37
 -- Versione PHP: 5.2.10
 
@@ -119,6 +119,25 @@ CREATE TABLE `newscategories` (
   `slug` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `created` date NOT NULL,
   `modified` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `newsletter_messages`
+--
+
+CREATE TABLE `newsletter_messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `text` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `usergroup_id` int(11) DEFAULT NULL,
+  `reply_to` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sent_date` datetime DEFAULT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -272,4 +291,3 @@ CREATE TABLE `users` (
   `modified` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='utenti';
-
