@@ -30,7 +30,8 @@ class AppController extends Controller {
             $this->Auth->allow('*');
         }
         //$this->Auth->allow('*'); //temporaneo, da disabilitare
-        
+
+        $this->_emailSetUp();
     }
 
     function beforeRender() {
@@ -46,6 +47,6 @@ class AppController extends Controller {
     }
 
     function _emailSetUp() {
-        $this->Email->delivery = 'mail';
+        $this->Email->delivery = 'debug';
     }
 }

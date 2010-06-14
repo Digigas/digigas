@@ -1,3 +1,21 @@
+
+<div class="export-tools">
+    <div class="openclose">
+        <?php echo $this->Html->image('oxygen/16x16/actions/tool2.png'); ?>
+    </div>
+    <ul class="toolslist">
+        <li><?php
+        echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
+        echo $this->Html->link(__('email notifica iscrizione', true),
+            array(
+                'action' => 'mail_users_notification'),
+            array(
+                'title' => __('invia agli utenti una email con le istruzioni per accedere al sito', true)
+            ));
+        ?></li>
+    </ul>
+</div>
+
 <div class="users index">
 	<h2><?php __('Gestione utenti'); if(isset($role)) {echo ' - '.$role;} ?></h2>
 	<table cellpadding="0" cellspacing="0">

@@ -64,6 +64,9 @@ class User extends AppModel {
             }
         }
 
+        //modificao il campo hash
+        $this->data['User']['hash'] = $this->randomString();
+
         return parent::beforeSave($options);
     }
 
@@ -77,6 +80,40 @@ class User extends AppModel {
         ));
         $emails = Set::extract('/User/email', $users);
         return $emails;
+    }
+
+    function getActiveUsers() {
+        $users = $this->find('all', array(
+            'conditions' => array('User.active' => 1),
+            'recursive' => -1
+        ));
+        return $users;
+    }
+    
+    function getActiveEmails() {
+        $users = $this->find('all', array(
+            'conditions' => array('User.active' => 1),
+            'fields' => array('email'),
+            'recursive' => -1
+        ));
+        $emails = Set::extract('/User/email', $users);
+        return $emails;
+    }
+
+    function randomString($lenght = false) {
+        if(!$lenght) {
+            $lenght = 30;
+        }
+        $base='ABCDEFGHKLMNOPQRSTWXYZabcdefghjkmnpqrstwxyz0123456789';
+        $max=strlen($base)-1;
+        $return='';
+        mt_srand((double)microtime() * 1000000);
+        while (strlen($return) < $lenght+1)
+          $return.=$base{mt_rand(0,$max)
+
+          };
+          
+        return $return;
     }
 }
 ?>
