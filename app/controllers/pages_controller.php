@@ -44,6 +44,15 @@ class PagesController extends AppController {
             );
         $this->set('page', $page);
         $this->set('pageSlug', $page['Page']['slug']);
+
+        //pubblico le news in homeapage
+        $this->News = ClassRegistry::init('News');
+        $lastNews = $this->News->find('all', array(
+            'conditions' => $this->News->findActive(true),
+            'order' => array('News.date_on desc'),
+            'limit' => 15
+        ));
+        $this->set(compact('lastNews'));
         
         $this->render('homepage');
     }

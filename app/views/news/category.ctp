@@ -1,4 +1,4 @@
-<div class="news index">
+<div class="news-list index">
     <h2><?php __('News');?></h2>
     <p>
         <?php
@@ -15,13 +15,13 @@
     <?php
     foreach ($news as $one_news):
         ?>
-    <div class="news-item">
-        <h1><?php echo $one_news['News']['title']; ?></h1>
-        <div class="newscategory"><?php echo $one_news['Newscategory']['name']; ?></div>
-        <div class="date"><?php echo $one_news['News']['date_on'] ?></div>
+    <div class="news">
+        <div class="news-category"><?php echo $one_news['Newscategory']['name']; ?></div>
+        <div class="news-date"><?php echo digi_date($one_news['News']['date_on']); ?></div>
+        <h2><?php echo $one_news['News']['title']; ?></h2>
         <div class="summary"><?php echo $one_news['News']['summary']; ?>
-            <span class="more">
-                    <?php echo $html->link(__('more…', true), array('action'=>'view', $one_news['News']['id'])); ?>
+            <span class="news-more">
+                    <?php echo $html->link(__('Leggi tutto…', true), array('action'=>'view', $one_news['News']['id'])); ?>
             </span>
         </div>
     </div>

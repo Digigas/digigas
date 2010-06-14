@@ -27,9 +27,7 @@ class NewsController extends AppController
             $this->set('categorie', $categorie);
             $this->pageTitle = __('All news', true);
             $news = $this->paginate();
-            $news = $this->News->translate($news);
             $this->set('news', $news);
-            $this->render('index');
         }
         else
         {
@@ -48,7 +46,6 @@ class NewsController extends AppController
             $conditions[] = $this->News->findActive(true);
             $this->paginate = array('conditions'=>$conditions, 'limit'=>5, 'order'=>array('News.date_on desc , News.created desc, News.id desc'));
             $news = $this->paginate();
-            $news = $this->News->translate($news);
             $this->set('news', $news);
             $this->pageTitle = __('News', true);
         }
@@ -75,7 +72,6 @@ class NewsController extends AppController
         }
         $conditions[] = $this->News->findActive(true);
         $news = $this->News->find('first', array('conditions'=>$conditions));
-        $news = $this->News->translate($news);
         if($news['News']['active'] != '1')
         {
             $this->Session->setFlash(__('News non disponibile', true));

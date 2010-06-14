@@ -30,8 +30,6 @@
     <div class="body">
         <?php
         echo $news['News']['text'];
-
-        echo $bookmark->getBookMarks($news['News']['title']);
         ?>
     </div>
 
