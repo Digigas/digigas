@@ -124,24 +124,34 @@ class OrderedProductsController extends AppController {
     }
 
     function admin_index_seller($seller_id) {
-        $this->paginate = array(
+
+        //dettagli ordine
+        $this->OrderedProduct->recursive = 0;
+        $orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
                 'Product' => array('fields' => array('id', 'name')))
-        );
-        $this->OrderedProduct->recursive = 0;
-        $orderedProducts = $this->paginate();
+        ));
 
         //trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
-            'fields' => array('product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
-            'group' => 'product_id',
-            'contain' => array('Product.name')
+            'fields' => array('hamper_id', 'product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id'),
+            'order' => array('hamper_id desc'),
+            'contain' => array('Product.name', 'Hamper.delivery_date_on')
         ));
-        $totals = Set::combine($totals, '{n}.Product.name', '{n}.0');
+
+        $totalsByHamper = array();
+        foreach($totals as $tot) {
+            if(isset($totalsByHamper[$tot['Hamper']['delivery_date_on']])) {
+                $totalsByHamper[$tot['Hamper']['delivery_date_on']] += $tot['0']['total'];
+            } else {
+                $totalsByHamper[$tot['Hamper']['delivery_date_on']] = $tot['0']['total'];
+            }
+        }
 
         $seller = $this->OrderedProduct->Seller->findById($seller_id);
 
@@ -151,7 +161,7 @@ class OrderedProductsController extends AppController {
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
-        $this->set(compact('orderedProducts', 'seller', 'users', 'sellers', 'totals'));
+        $this->set(compact('orderedProducts', 'seller', 'users', 'sellers', 'totals', 'totalsByHamper'));
     }
 
     function admin_mail_orders_to_user($user_id) {

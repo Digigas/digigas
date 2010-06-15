@@ -29,6 +29,10 @@ body {
 	font-size:90%;
 	margin: 0;
 }
+#today-date
+{
+    display:none;
+}
 a {
 	color: #003d4c;
 	text-decoration: underline;

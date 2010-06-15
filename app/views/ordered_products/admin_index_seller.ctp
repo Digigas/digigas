@@ -7,13 +7,17 @@
         <li><?php
         echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
         echo $this->Html->link(__('email al fornitore', true), array('action' => 'mail_orders_to_seller', $seller['Seller']['id'])); ?></li>
+        <li><a href="" onclick = "window.print(); return false;">
+            <?php echo $this->Html->image('oxygen/16x16/devices/printer.png'); ?>
+            <?php __('Stampa'); ?>
+            </a></li>
     </ul>
 </div>
 
 <div class="orderedProducts index">
 	<h2>
     <?php
-    __('Ordini pendenti per il produttore ');
+    __('Ordini pendenti per ');
     echo $seller['Seller']['name'];
     ?>
     </h2>
@@ -23,12 +27,32 @@
             <th><?php __('Prodotto'); ?></th>
             <th><?php __('Quantità'); ?></th>
             <th><?php __('Totale'); ?></th>
+            <th><?php __('Data di consegna'); ?></th>
         </tr>
-    <?php foreach($totals as $product => $values): ?>
+    <?php foreach($totals as $product): ?>
         <tr class="total">
-            <td class="name"><?php echo $product; ?></td>
-            <td class="quantity"><?php echo $values['quantity']; ?></td>
-            <td class="value"><?php echo $values['total']; ?> &euro;</td>
+            <td class="name"><?php echo $product['Product']['name']; ?></td>
+            <td class="quantity"><?php echo $product['0']['quantity']; ?></td>
+            <td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
+            <td class="date"><?php echo digi_date($product['Hamper']['delivery_date_on']); ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </table>
+
+    <h2>
+    <?php
+    __('Totali per consegna');
+    ?>
+    </h2>
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <th><?php __('Data di consegna'); ?></th>
+            <th><?php __('Totale'); ?></th>
+        </tr>
+    <?php foreach($totalsByHamper as $date => $total): ?>
+        <tr class="total">
+            <td class="date"><?php echo digi_date($date); ?></td>
+            <td class="value"><?php echo $total; ?> &euro;</td>
         </tr>
     <?php endforeach; ?>
     </table>
@@ -39,21 +63,14 @@
     ?>
     </h2>
     
-    <p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-	));
-	?>	</p>
-    
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort(__('Acquirente', true), 'user_id');?></th>
-			<th><?php echo $this->Paginator->sort(__('Prodotto', true), 'product_id');?></th>
-			<th><?php echo $this->Paginator->sort(__('Quantità', true), 'quantity');?></th>
-			<th><?php echo $this->Paginator->sort(__('Totale', true), 'value');?></th>
-			<th class="actions"><?php echo $this->Paginator->sort(__('Pagato', true), 'paid');?></th>
-			<th class="actions"><?php echo $this->Paginator->sort(__('Ritirato', true), 'retired');?></th>
+			<th><?php __('Acquirente');?></th>
+			<th><?php __('Prodotto');?></th>
+			<th><?php __('Quantità');?></th>
+			<th><?php __('Totale');?></th>
+			<th class="actions"><?php __('Pagato');?></th>
+			<th class="actions"><?php __('Ritirato');?></th>
 	</tr>
 	<?php
 	$i = 0;
@@ -89,14 +106,6 @@
 	</tr>
 <?php endforeach; ?>
 	</table>
-
-
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
-	</div>
 
 </div>
 <div class="actions">
