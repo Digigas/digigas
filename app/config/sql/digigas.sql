@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 15 giu, 2010 at 09:45 AM
+-- Generato il: 15 giu, 2010 at 09:58 AM
 -- Versione MySQL: 5.1.37
 -- Versione PHP: 5.2.10
 
@@ -266,9 +266,9 @@ CREATE TABLE `usergroups` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `text` text COLLATE utf8_unicode_ci NOT NULL,
-  `parent_id` int(11) NOT NULL,
-  `lft` int(11) NOT NULL,
-  `rght` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `lft` int(11) DEFAULT NULL,
+  `rght` int(11) DEFAULT NULL,
   `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
