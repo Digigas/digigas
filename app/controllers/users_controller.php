@@ -130,8 +130,8 @@ class UsersController extends AppController {
 
         $roles = Configure::read('roles');
 
-        $usergroups = $this->User->Usergroup->find('list', array('conditions' => array('Usergroup.active' => 1)));
-
+        $usergroups = $this->User->Usergroup->generatetreelist(array('Usergroup.active' => 1), '{n}.Usergroup.id', '{n}.Usergroup.name', ' - ');
+        
         $this->set(compact('roles', 'usergroups'));
 	}
 
@@ -146,8 +146,7 @@ class UsersController extends AppController {
 			}
 		}
 
-        $usergroups = $this->User->Usergroup->find('list', array('conditions' => array('Usergroup.active' => 1)));
-
+        $usergroups = $this->User->Usergroup->generatetreelist(array('Usergroup.active' => 1), '{n}.Usergroup.id', '{n}.Usergroup.name', ' - ');
 
         $this->set(compact('usergroups'));
 	}
@@ -168,7 +167,7 @@ class UsersController extends AppController {
 
         $roles = Configure::read('roles');
 
-        $usergroups = $this->User->Usergroup->find('list', array('conditions' => array('Usergroup.active' => 1)));
+        $usergroups = $this->User->Usergroup->generatetreelist(array('Usergroup.active' => 1), '{n}.Usergroup.id', '{n}.Usergroup.name', ' - ');
 
         $this->set(compact('roles', 'usergroups'));
 
