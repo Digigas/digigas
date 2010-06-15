@@ -1,21 +1,27 @@
 <div class="usergroups index">
 	<h2><?php __('Gruppi di utenti');?></h2>
-	<table cellpadding="0" cellspacing="0">
+	<table id="tree-table" cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('Nome del gruppo', 'name');?></th>
-			<th><?php echo $this->Paginator->sort('Attivo', 'active');?></th>
+			<th><?php __('Nome del gruppo');?></th>
+			<th><?php __('Attivo');?></th>
 			<th class="actions"><?php __('Azioni');?></th>
 	</tr>
 	<?php
 	$i = 0;
 	foreach ($usergroups as $usergroup):
-		$class = null;
-		if ($i++ % 2 == 0) {
-			$class = ' class="altrow"';
-		}
+        if($usergroup['Usergroup']['parent_id'] > 0) {
+            $class = 'child-of-node-'.$usergroup['Usergroup']['parent_id'];
+        }
+        else {
+            $class = '';
+        }
+
+        if ($i++ % 2 == 0) {
+            $class .= ' altrow';
+        }
 	?>
-	<tr<?php echo $class;?>>
-		<td><?php echo $usergroup['Usergroup']['name']; ?>&nbsp;</td>
+	<tr class="<?php echo $class;?>" id="node-<?php echo $usergroup['Usergroup']['id'] ?>">
+		<td class="first"><?php echo $usergroup['Usergroup']['name']; ?>&nbsp;</td>
 		<td><?php echo $usergroup['Usergroup']['active']?'si':'no'; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $usergroup['Usergroup']['id'])); ?>
