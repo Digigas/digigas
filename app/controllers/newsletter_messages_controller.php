@@ -60,7 +60,7 @@ class NewsletterMessagesController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
-    function send($id) {
+    function admin_send($id) {
         $message = $this->NewsletterMessage->read(null, $id);
         if ($message && $this->_send($message)) {
             $this->NewsletterMessage->saveSentDate($id);

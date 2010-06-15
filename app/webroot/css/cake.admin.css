@@ -17,6 +17,7 @@ a:hover
 {
     display:block;
     clear:both;
+    height:0;
 }
 #flashMessage
 {
@@ -134,6 +135,7 @@ div.message
     border-top:3px solid #222;
     border-bottom:3px solid #222;
     padding:0;
+    overflow:hidden;
 }
 
 fieldset
@@ -215,6 +217,8 @@ div.actions li
 {
     margin:0;
     padding-left:8px;
+    height: auto !important;
+    height:0;
 }
 
 div.actions h3
@@ -451,19 +455,22 @@ div.note
 .export-tools
 {
     position:absolute;
+    z-index:50;
     right:22%;
     background:#222;
     color:#fff;
     border-radius: 0 0 5px 5px;
     -moz-border-radius: 0 0 5px 5px;
     -webkit-border-radius: 0 0 5px 5px;
-    z-index:10;
+    overflow:hidden;
 }
 .export-tools .openclose
 {
     position:relative;
     float:left;
     padding:5px 8px;
+    width:16px;
+    height:16px;
 }
 .export-tools ul
 {

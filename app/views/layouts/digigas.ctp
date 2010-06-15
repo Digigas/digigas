@@ -41,20 +41,17 @@
 			<?php echo $content_for_layout; ?>
             <?php echo $this->Session->flash('email'); //debug emails in debig mode ?>
 
+            <div class="clear"></div>
 		</div>
 		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt'=> __('CakePHP: the rapid development php framework', true), 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false)
-				);
-			?>
+			<?php echo $this->element('footer'); ?>
 		</div>
 	</div>
 
     <?php
 
         echo $this->Javascript->link('jquery-1.4.2.min');
+        echo $this->Javascript->link('jquery.ifixpng');
         echo $this->Javascript->link('jquery.ui');
         echo $this->Javascript->link('ckeditor/ckeditor');
         echo $this->Javascript->link('ckeditor/adapters/jquery');
@@ -71,6 +68,10 @@
     <script type="text/javascript">
     //<![CDATA[
         $(function(){
+
+            //png fix
+            $.ifixpng('<?php echo $this->webroot; ?>img/blank.gif');
+            $('img[src$=.png]').ifixpng();
 
             //CKEditor
             var CKconfig = {

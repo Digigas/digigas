@@ -46,7 +46,23 @@ class AppController extends Controller {
         return true;
     }
 
-    function _emailSetUp() {
-        $this->Email->delivery = 'debug';
+    function _emailSetUp() {        
+        $SMTPoptions = Configure::read('email.SMTPoptions');
+        if(!empty($SMTPoptions)) {
+            $this->Email->smtpOptions = $SMTPoptions;
+            $this->Email->delivery = 'smtp';
+        } else {
+            $this->Email->delivery = 'mail';
+        }
+    }
+
+    function afterFilter() {
+
+        //log degli errori smtp
+    	if(!empty($this->Email->smtpError)) {
+    		$this->log($this->Email->smtpError, 'smtp-errors');
+    	}
+
+    	return parent::afterFilter();
     }
 }
