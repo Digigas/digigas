@@ -15,7 +15,10 @@ clicca sul link sottostante e imposta la tua password.<br/>
 </strong>
 <br/><br/>
 In seguito potrai accedere al software da questo indirizzo:<br/>
-<a href="<?php echo $this->Html->url('/digigas',true); ?>"><?php echo $_SERVER['SERVER_NAME']; ?></a>
+<a href="<?php echo $this->Html->url('/digigas',true); ?>"><?php echo $_SERVER['SERVER_NAME']; ?></a> 
+e con questo username: <strong>
+<?php echo $user['User']['username']; ?>
+</strong>
 </p>
 
 
