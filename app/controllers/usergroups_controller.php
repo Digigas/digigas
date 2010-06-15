@@ -35,6 +35,9 @@ class UsergroupsController extends AppController {
 				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'usergroup'));
 			}
 		}
+
+        $parents = $this->Usergroup->generatetreelist(array(), '{n}.Usergroup.id', '{n}.Usergroup.name', ' - ');
+        $this->set(compact('parents'));
 	}
 
 	function admin_edit($id = null) {
@@ -53,6 +56,13 @@ class UsergroupsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Usergroup->read(null, $id);
 		}
+        
+        $parents = $this->Usergroup->generatetreelist(array(
+            'not' => array('and' =>array(
+                'Usergroup.lft >=' => $this->data['Usergroup']['lft'],
+                'Usergroup.rght <=' => $this->data['Usergroup']['rght']
+            ))), '{n}.Usergroup.id', '{n}.Usergroup.name', ' - ');
+        $this->set(compact('parents'));
 	}
 
 	function admin_delete($id = null) {

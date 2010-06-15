@@ -71,11 +71,25 @@ class NewsletterMessagesController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
+    //invia email a tutti gli utenti appartenenti al gruppo selezionato e ai suoi sottogruppi
     function _send($message) {
+        //seleziono tutti i sottogruppi attivi
+        $this->NewsletterMessage->Usergroup->recursive = -1;
+        $baseGroup = $this->NewsletterMessage->Usergroup->findById($message['NewsletterMessage']['usergroup_id']);
+        $usergroups = $this->NewsletterMessage->Usergroup->find('all', array(
+            'conditions' => array(
+                'lft >= ' => $baseGroup['Usergroup']['lft'],
+                'rght <= ' => $baseGroup['Usergroup']['rght'],
+                'active' => 1
+            ),
+            'fields' => array('id')
+        ));
+        $usergroupsIds = Set::extract('/Usergroup/id', $usergroups); //<- sottogruppi
+
         $users = $this->NewsletterMessage->User->find('all', array(
             'conditions' => array(
                 'User.active' => 1,
-                'usergroup_id' => $message['NewsletterMessage']['usergroup_id']),
+                'usergroup_id' => $usergroupsIds),
             'fields' => array('email'),
             'recursive' => -1
         ));
