@@ -10,6 +10,7 @@
 
 		echo $this->Html->css('cake.generic');
         echo $this->Html->css('cake.admin');
+        echo $this->Html->css('digigas.print', null, array('media' => 'print'));
         echo $this->Html->css('jquery.lightbox');
         echo $this->Html->css('digigas/jquery.treeTable');
         echo $this->Html->css('jquery-ui-themeroller');
@@ -20,6 +21,7 @@
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->image('digigas.png', array('url' => '/')); ?></h1>
+            <div id="today-date"><?php echo digi_date('now'); ?></div>
 		</div>
         <div id="tools">
             <?php echo $this->element('login_link'); ?>

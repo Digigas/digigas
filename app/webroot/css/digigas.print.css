@@ -1,0 +1,23 @@
+/* print css */
+
+#tools,
+#navigation,
+#footer,
+.export-tools,
+.actions
+{
+    display:none;
+}
+div.form, div.index, div.view
+{
+    width:100%;
+    border-right:none;
+}
+#today-date
+{
+    display:block;
+    position:absolute;
+    top:0;
+    right:0;
+    color:#2D6324;
+}
