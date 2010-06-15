@@ -117,6 +117,33 @@ class UsersController extends AppController {
 		$this->set('users', $this->paginate());
 	}
 
+    function admin_search($key = false) {
+        if(!$key && empty($this->data)) {
+            $this->Session->setFlash('Nessuna chiave di ricerca specificata');
+            $this->redirect($this->referer());
+        }
+
+        if(!$key && !empty($this->data)) {
+            $key = Inflector::slug($this->data['Search']['key']);
+            $this->redirect(array('action' => 'search', $key));
+        }
+
+        $key = low(Inflector::humanize($key));
+        $users = $this->User->find('all', array(
+            'conditions' => array(
+                'or' => array(
+                    'first_name LIKE ' => '%'.$key.'%',
+                    'last_name LIKE ' => '%'.$key.'%',
+                    'username LIKE ' => '%'.$key.'%',
+                    'email LIKE ' => '%'.$key.'%',
+                )
+            ),
+            'recursive' => -1
+        ));
+
+        $this->set(compact('users', 'key'));
+    }
+
 	function admin_add() {
 		if (!empty($this->data)) {
 			$this->User->create();
