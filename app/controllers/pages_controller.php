@@ -185,7 +185,8 @@ class PagesController extends AppController {
 
     function admin_index() {
         $this->Page->recursive = 0;
-        $this->set('pages', $this->paginate());
+        $pages = $this->Page->find('all', array('order' => 'lft asc'));
+        $this->set(compact('pages'));
     }
 
     function admin_view($id = null) {
