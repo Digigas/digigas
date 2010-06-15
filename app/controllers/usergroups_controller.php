@@ -14,6 +14,7 @@ class UsergroupsController extends AppController {
 
 	function admin_index() {
 		$this->Usergroup->recursive = 0;
+        $this->paginate = array('order' => array('lft asc'));
 		$this->set('usergroups', $this->paginate());
 	}
 
