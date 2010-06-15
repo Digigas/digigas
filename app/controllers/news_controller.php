@@ -26,6 +26,7 @@ class NewsController extends AppController
             $categorie = $this->News->Newscategory->find('all', array('conditions'=>array('active'=>1)));
             $this->set('categorie', $categorie);
             $this->pageTitle = __('All news', true);
+            $this->paginate = array('conditions'=>$this->News->findActive(true), 'limit'=>5, 'order'=>array('News.date_on desc , News.created desc, News.id desc'));
             $news = $this->paginate();
             $this->set('news', $news);
         }

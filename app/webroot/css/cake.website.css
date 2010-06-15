@@ -416,6 +416,11 @@ dl
     float:right;
     font-size:10px;
 }
+.news-list .news .news-category a
+{
+    text-decoration:none;
+    color:#fff;
+}
 .news-list .news .news-content
 {}
 .news-list .news .news-more
