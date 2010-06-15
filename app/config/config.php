@@ -16,5 +16,15 @@ $config = array(
          */
         'root', 'admin', 'fornitore', 'utente'
     ),
-    'email.from' => 'info@digigas.org'
+    'email.from' => 'info@digigas.org',
+    'email.SMTPoptions' => array(
+        /* 
+         * 'port' => '',
+         * 'host' => '',
+         * 'timeout' => '',
+         * 'username' => '',
+         * 'password' => '',
+         * 'client' => ''
+         */
+    )
 );
