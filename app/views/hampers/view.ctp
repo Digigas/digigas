@@ -47,7 +47,7 @@ $this->Layout->blockEnd();
                     <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '150', '120');?>
             <div class="name"><?php echo $product['name'];?></div>
 
-                    <?php if(!empty($product['text'])): ?>
+                    <!--<?php if(!empty($product['text'])): ?>
             <div class="text"><?php echo $product['text'];?></div>
                     <?php endif; ?>
 
@@ -58,7 +58,7 @@ $this->Layout->blockEnd();
                             echo $product['packing'];
                             ?>
             </div>
-                    <?php endif; ?>
+                    <?php endif; ?>-->
 
                     <?php if(!empty($product['weight'])): ?>
             <div class="weight">

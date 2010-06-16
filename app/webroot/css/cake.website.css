@@ -151,9 +151,27 @@ h1
     padding:10px;
     border:1px solid #ccc;
     width:150px;
-    height:350px;
+    height:260px;
+    overflow:hidden;
 }
-.product .name
+.product-detail
+{
+    padding:10px;
+    border:1px solid #ccc;
+    overflow:hidden;
+    margin-bottom:10px;
+}
+.product-detail .detail-1
+{
+    float:left;
+}
+.product-detail .detail-2
+{
+    margin-left:160px;
+}
+
+.product .name,
+.product-detail .name
 {
     background:#f90;
     color: #fff;
@@ -165,7 +183,12 @@ h1
     -moz-border-radius: 0 0 5px 5px ;
     -webkit-border-radius: 0 0 5px 5px ;
 }
-.product .text
+.product-detail .name
+{
+    width:140px;
+}
+.product .text,
+.product-detail .text
 {
     margin-bottom:10px;
     padding: 5px;
@@ -173,7 +196,8 @@ h1
     color:#000;
 }
 
-.product .options
+.product .options,
+.product-detail .options
 {
     display:block;
     position:absolute;
@@ -181,7 +205,8 @@ h1
     width:150px;
     background:#eee;
 }
-.product .options h4
+.product .options h4,
+.product-detail .options h4
 {
     font-weight:bold;
     text-align:center;
@@ -192,7 +217,8 @@ h1
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
 }
-.product .options h4:hover
+.product .options h4:hover,
+.product-detail .options h4:hover
 {
     background:#2D6324;
 }
@@ -220,6 +246,7 @@ h1
     width:135px;
     margin:0;
 }
+
 dl
 {
     width:100%;

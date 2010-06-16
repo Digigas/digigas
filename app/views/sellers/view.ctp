@@ -61,26 +61,29 @@
         <h2><?php __('Prodotti');?></h2>
         <?php if (!empty($seller['Product'])):?>
 
-        <?php foreach ($seller['Product'] as $product): ?>
-        <div class="product">
-                    <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '150', '120');?>
-            <div class="name"><?php echo $product['name'];?></div>
+            <?php foreach ($seller['Product'] as $product): ?>
+        <div class="product-detail">
+            <div class="detail-1">
+                        <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '150', '120');?>
+                <div class="name"><?php echo $product['name'];?></div>
 
-                    <?php if(!empty($product['text'])): ?>
-            <div class="text"><?php echo $product['text'];?></div>
-                    <?php endif; ?>
-            <div class="pack"><?php __('Confezione: ');
-                        echo $product['packing'];?></div>
-
-            <div class="weight"><?php __('Peso: ');
-                        echo $product['weight'];?></div>
-            <div class="number"><?php __('Pezzi per collo: ');
-                        echo $product['number'];?></div>
-            <div class="value"><?php __('Prezzo: ');
-                        echo $product['value'];?></div>
-
+                <div class="weight"><?php __('Peso: ');
+                            echo $product['weight'];?></div>
+                <div class="number"><?php __('Pezzi per collo: ');
+                            echo $product['number'];?></div>
+                <div class="value"><?php __('Prezzo: ');
+                            echo $product['value'];?></div>
+            </div>
+            <div class="detail-2">
+                        <?php if(!empty($product['text'])): ?>
+                <div class="text"><?php echo $product['text'];?></div>
+                        <?php endif; ?>
+                <div class="pack"><?php __('Confezione: ');
+                            echo $product['packing'];?></div>
+            </div>
+            <div class="clear"></div>
         </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
         <?php endif; ?>
     </div>
 
