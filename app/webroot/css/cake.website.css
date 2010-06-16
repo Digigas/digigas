@@ -169,6 +169,10 @@ h1
 {
     margin-left:160px;
 }
+.product a img
+{
+    display:block;
+}
 
 .product .name,
 .product-detail .name

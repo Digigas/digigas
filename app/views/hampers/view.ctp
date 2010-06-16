@@ -44,20 +44,22 @@ $this->Layout->blockEnd();
         <?php if (!empty($hamper['Product'])):?>
             <?php foreach ($hamper['Product'] as $product): ?>
         <div class="product">
-                    <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '150', '120');?>
+            <a href="<?php echo $this->Html->url(array('controller' => 'products', 'action' => 'view', $product['id'])); ?>">
+                <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '150', '120');?>
+            </a>
             <div class="name"><?php echo $product['name'];?></div>
 
-                    <!--<?php if(!empty($product['text'])): ?>
-            <div class="text"><?php echo $product['text'];?></div>
+            <!--<?php if(!empty($product['text'])): ?>
+    <div class="text"><?php echo $product['text'];?></div>
                     <?php endif; ?>
 
                     <?php if(!empty($product['packing'])): ?>
-            <div class="pack">
-                            <?php
-                            __('Confezione: ');
-                            echo $product['packing'];
-                            ?>
-            </div>
+    <div class="pack">
+                        <?php
+                        __('Confezione: ');
+                        echo $product['packing'];
+                        ?>
+    </div>
                     <?php endif; ?>-->
 
                     <?php if(!empty($product['weight'])): ?>
@@ -89,18 +91,18 @@ $this->Layout->blockEnd();
 
             <div class="options">
                 <h4><?php __('Ordina'); ?></h4>
-                <?php
-                echo $this->Form->create('OrderedProduct', array('action' => 'add'));
-                echo $this->Form->hidden('product_id', array('value' => $product['id']));
-                echo $this->Form->hidden('hamper_id', array('value' => $hamper['Hamper']['id']));
-                echo $this->Form->hidden('seller_id', array('value' => $hamper['Seller']['id']));
-                $selectOptions = array();
-                for($i = 1; $i < 11; $i ++) {
-                    $selectOptions[$i] = $i;
-                }
-                echo $this->Form->input('quantity', array('options' => $selectOptions, 'label' => __('Quantità', true)));
-                echo $this->Form->end('Acquista');
-                ?>
+                        <?php
+                        echo $this->Form->create('OrderedProduct', array('action' => 'add'));
+                        echo $this->Form->hidden('product_id', array('value' => $product['id']));
+                        echo $this->Form->hidden('hamper_id', array('value' => $hamper['Hamper']['id']));
+                        echo $this->Form->hidden('seller_id', array('value' => $hamper['Seller']['id']));
+                        $selectOptions = array();
+                        for($i = 1; $i < 11; $i ++) {
+                            $selectOptions[$i] = $i;
+                        }
+                        echo $this->Form->input('quantity', array('options' => $selectOptions, 'label' => __('Quantità', true)));
+                        echo $this->Form->end('Acquista');
+                        ?>
             </div>
 
         </div>
@@ -114,7 +116,7 @@ $this->Layout->blockEnd();
     <ul>
         <li><?php echo $this->Html->link(__('<< Ritorna ai panieri', true), array('action' => 'index')); ?></li>
     </ul>
-    
+
     <?php echo $this->element('user_order', array('userOrder' => $userOrder)); ?>
 
     <ul>
