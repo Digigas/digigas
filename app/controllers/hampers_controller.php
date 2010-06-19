@@ -20,6 +20,7 @@ class HampersController extends AppController {
         $this->paginate = array('conditions' => $this->Hamper->getActiveConditions(), 'order' => array('Hamper.end_date asc'));
         $this->Hamper->recursive = 0;
         $this->set('hampers', $this->paginate());
+        $this->set('title_for_layout', __('Tutti i panieri aperti in questo momento', true).' - '.Configure::read('GAS.name'));
     }
 
     function view($id = null) {
@@ -27,7 +28,9 @@ class HampersController extends AppController {
             $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
             $this->redirect(array('action' => 'index'));
         }
-        $this->set('hamper', $this->Hamper->read(null, $id));
+        $hamper = $this->Hamper->read(null, $id);
+        $this->set('hamper', $hamper);
+        $this->set('title_for_layout', __('Paniere', true).' '.$hamper['Hamper']['name'].' - '.Configure::read('GAS.name'));
     }
 
     //funzione per ordinare

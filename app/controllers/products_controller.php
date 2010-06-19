@@ -27,6 +27,8 @@ class ProductsController extends AppController {
 
         $product = $this->Product->read(null, $id);
 		$this->set('product', $product);
+        $this->set('title_for_layout', $product['Seller']['name'].' - '.$product['Product']['name'].' - '.Configure::read('GAS.name'));
+
 	}
 
 	function admin_index() {

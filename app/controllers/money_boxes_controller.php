@@ -20,6 +20,7 @@ class MoneyBoxesController extends AppController {
 
         $total = $this->MoneyBox->getTotal($this->Auth->user('id'));
         $this->set('total', $total);
+        $this->set('title_for_layout', __('Dettaglio delle spese', true).' - '.Configure::read('GAS.name'));
     }
 }
 ?>

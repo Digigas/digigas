@@ -41,6 +41,7 @@ class UsersController extends AppController {
         ));
         
 		$this->set(compact('user'));
+        $this->set('title_for_layout', __('Il mio profilo', true).' - '.Configure::read('GAS.name'));
 	}
 
 	function edit() {
@@ -62,6 +63,7 @@ class UsersController extends AppController {
 			$this->data = $this->User->read(null, $id);
 		}
 
+        $this->set('title_for_layout', __('Modifica il profilo', true).' - '.Configure::read('GAS.name'));
 	}
 
     function password_reset($hash = false) {
@@ -100,6 +102,7 @@ class UsersController extends AppController {
         }
 
         $this->set('user', $user);
+        $this->set('title_for_layout', __('Imposta password', true).' - '.Configure::read('GAS.name'));
     }
     
 	function admin_index($role = null) {
