@@ -15,6 +15,7 @@ class SellersController extends AppController {
 	function index() {
 		$this->paginate = array('conditions' => array('Seller.active' => 1), 'order' => 'Seller.name asc');
 		$this->set('sellers', $this->paginate());
+        $this->set('title_for_layout', __('Elenco produttori', true).' - '.Configure::read('GAS.name'));
 	}
 
 	function view($id = null) {
@@ -28,6 +29,7 @@ class SellersController extends AppController {
             'contain' => array('Product')));
 
 		$this->set('seller', $seller);
+        $this->set('title_for_layout', $seller['Seller']['name'].' - '.Configure::read('GAS.name'));
 	}
     
 	function admin_index() {

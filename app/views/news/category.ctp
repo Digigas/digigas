@@ -18,7 +18,7 @@
     <div class="news">
         <div class="news-category"><?php echo $one_news['Newscategory']['name']; ?></div>
         <div class="news-date"><?php echo digi_date($one_news['News']['date_on']); ?></div>
-        <h2><?php echo $one_news['News']['title']; ?></h2>
+        <h2><?php echo $this->Html->link($one_news['News']['title'], array('action'=>'view', $one_news['News']['id'])); ?></h2>
         <div class="summary"><?php echo $one_news['News']['summary']; ?>
             <span class="news-more">
                     <?php echo $html->link(__('Leggi tutto…', true), array('action'=>'view', $one_news['News']['id'])); ?>

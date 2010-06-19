@@ -79,6 +79,7 @@ div.message
     display:block;
     float:left;
     position:relative;
+    z-index:10;
     top:3px;
     margin-right:4px;
     padding:4px 12px;
@@ -215,8 +216,15 @@ div.actions ul li a:hover {
 }
 div.actions li
 {
+    display:block;
     margin:0;
     padding-left:8px;
+    height: auto !important;
+    height:0;
+}
+div.actions li a
+{
+    display:block;
     height: auto !important;
     height:0;
 }
@@ -299,6 +307,12 @@ input, textarea
 input.calendar
 {
     width:auto;
+}
+.checkbox input
+{
+    width:auto;
+    border:none;
+    padding:0;
 }
 .select label
 {

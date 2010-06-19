@@ -14,6 +14,7 @@ class OrderedProductsController extends AppController {
     function index() {
         $orderedProducts = $this->OrderedProduct->getUserOrder($this->Auth->User());
         $this->set(compact('orderedProducts'));
+        $this->set('title_for_layout', __('I miei ordini', true).' - '.Configure::read('GAS.name'));
     }
     
     function past_orders() {
@@ -23,14 +24,7 @@ class OrderedProductsController extends AppController {
         ));
         $this->OrderedProduct->recursive = 0;
         $this->set('orderedProducts', $this->paginate());
-    }
-
-    function view($id = null) {
-        if (!$id) {
-            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'ordered product'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->set('orderedProduct', $this->OrderedProduct->read(null, $id));
+        $this->set('title_for_layout', __('Storico degli ordini', true).' - '.Configure::read('GAS.name'));
     }
 
     function add() {

@@ -25,7 +25,6 @@ class NewsController extends AppController
             $this->News->Newscategory->recursive = 1;
             $categorie = $this->News->Newscategory->find('all', array('conditions'=>array('active'=>1)));
             $this->set('categorie', $categorie);
-            $this->pageTitle = __('All news', true);
             $this->paginate = array('conditions'=>$this->News->findActive(true), 'limit'=>5, 'order'=>array('News.date_on desc , News.created desc, News.id desc'));
             $news = $this->paginate();
             $this->set('news', $news);
@@ -47,9 +46,9 @@ class NewsController extends AppController
             $conditions[] = $this->News->findActive(true);
             $this->paginate = array('conditions'=>$conditions, 'limit'=>5, 'order'=>array('News.date_on desc , News.created desc, News.id desc'));
             $news = $this->paginate();
-            $this->set('news', $news);
-            $this->pageTitle = __('News', true);
+            $this->set('news', $news);            
         }
+        $this->set('title_for_layout', __('News', true).' - '.Configure::read('GAS.name'));
     }
 
     /*
@@ -80,7 +79,7 @@ class NewsController extends AppController
         }
 
         $this->set('news', $news);
-        $this->pageTitle = __('News', true).' // '.$news['News']['title'];
+        $this->set('title_for_layout', $news['News']['title'].' - '.Configure::read('GAS.name'));
     }
 
     function admin_index()

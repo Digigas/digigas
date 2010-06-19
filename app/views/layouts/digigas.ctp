@@ -118,7 +118,7 @@
             $('.export-tools .toolslist').hide();
             $('.export-tools .openclose').css({cursor: 'pointer'}).click(function(){
                 $('.export-tools .toolslist').toggle('slow');
-            })
+            });
 
             //active menu item
             <?php

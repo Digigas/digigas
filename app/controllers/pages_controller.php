@@ -54,7 +54,7 @@ class PagesController extends AppController {
         ));
         $this->set(compact('lastNews'));
 
-        $this->pageTitle = Configure::read('GAS.name').' - '.$page['Page']['title'];
+        $this->set('title_for_layout', Configure::read('GAS.name').' - '.$page['Page']['title']);
         
         $this->render('homepage');
     }
@@ -136,7 +136,7 @@ class PagesController extends AppController {
         $this->set('page', $page);
         $this->set('pageSlug', $page['Page']['slug']);
 
-        $this->pageTitle = Configure::read('GAS.name').' - '.$page['Page']['title'] ;
+        $this->set('title_for_layout', Configure::read('GAS.name').' - '.$page['Page']['title']);
     }
 
     function display() {
