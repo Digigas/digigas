@@ -102,15 +102,20 @@ class OrderedProductsController extends AppController {
     }
 
     function admin_index_user($user_id) {
-        $this->paginate = array(
-            'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
-            'contain' => array(
-                'User' => array('fields' => array('id', 'fullname')),
-                'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name')))
-        );
-        $this->OrderedProduct->recursive = 0;
-        $orderedProducts = $this->paginate();
+//        $this->paginate = array(
+//            'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
+//            'contain' => array(
+//                'User' => array('fields' => array('id', 'fullname')),
+//                'Seller' => array('fields' => array('id', 'name')),
+//                'Product' => array('fields' => array('id', 'name')))
+//        );
+//        $this->OrderedProduct->recursive = 0;
+//        $orderedProducts = $this->paginate();
+
+        $orderedProducts = $this->OrderedProduct->getPendingForUser($user_id);
+
+        $toPay = Set::extract('/OrderedProduct/value', $orderedProducts);
+        $total = array_sum($toPay);
 
         $user = $this->OrderedProduct->User->findById($user_id);
 
@@ -120,7 +125,7 @@ class OrderedProductsController extends AppController {
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
-        $this->set(compact('orderedProducts', 'user', 'users', 'sellers'));
+        $this->set(compact('orderedProducts', 'user', 'users', 'sellers', 'total'));
     }
 
     function admin_index_seller($seller_id) {
