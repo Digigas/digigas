@@ -167,6 +167,17 @@ class OrderedProduct extends AppModel {
         return $this->pendingProducts;
     }
 
+    function getPendingForUser($user_id) {
+        $pendings = $this->find('all', array(
+            'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname')),
+                'Seller' => array('fields' => array('id', 'name')),
+                'Product' => array('fields' => array('id', 'name')))
+        ));
+        return $pendings;
+    }
+
     function verify($id, $user) {
         $orderedProduct = $this->findById($id);
 
