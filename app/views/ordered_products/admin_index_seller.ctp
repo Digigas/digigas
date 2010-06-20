@@ -82,7 +82,7 @@
 	?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $this->Html->link($orderedProduct['User']['fullname'], array('controller' => 'users', 'action' => 'view', $orderedProduct['User']['id'], 'admin' => false)); ?>
+			<?php echo $this->Html->link($orderedProduct['User']['fullname'], array('action' => 'index_user', $orderedProduct['User']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false)); ?>

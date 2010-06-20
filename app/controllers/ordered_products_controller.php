@@ -339,14 +339,6 @@ class OrderedProductsController extends AppController {
         }
     }
 
-    function admin_view($id = null) {
-        if (!$id) {
-            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'ordered product'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->set('orderedProduct', $this->OrderedProduct->read(null, $id));
-    }
-
     function admin_add() {
         if (!empty($this->data)) {
             $this->OrderedProduct->create();
