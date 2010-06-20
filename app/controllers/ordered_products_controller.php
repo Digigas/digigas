@@ -29,7 +29,13 @@ class OrderedProductsController extends AppController {
 
     function add() {
 
-        $this->data = $this->OrderedProduct->buildOrder($this->data, $this->Auth->user());
+        $user = $this->Auth->user();
+        if(empty($user)) {
+            $this->Session->setFlash(__('Devi fare login per ordinare', true));
+            $this->redirect(array('controller' => 'users', 'action' => 'login'));
+        }
+
+        $this->data = $this->OrderedProduct->buildOrder($this->data, $user);
 
         if (!empty($this->data)) {        
             $this->OrderedProduct->create();

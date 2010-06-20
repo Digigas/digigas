@@ -33,30 +33,6 @@ class HampersController extends AppController {
         $this->set('title_for_layout', __('Paniere', true).' '.$hamper['Hamper']['name'].' - '.Configure::read('GAS.name'));
     }
 
-    //funzione per ordinare
-    function add($id = false) {
-        if(!$id) {
-            $this->Session->setFlash(__('Non hai selezionato un paniere!', true));
-            $this->redirect($this->referer());
-        }
-
-        $user = $this->Auth->user();
-        if(empty($user)) {
-            $this->Session->setFlash(__('Devi fare login per ordinare', true));
-            $this->redirect(array('controller' => 'users', 'action' => 'login'));
-        }
-
-        if(!$this->Hamper->isActive($id)) {
-            $this->Session->setFlash(__('Non puoi acquistare questo paniere, l\'ordine è chiuso', true));
-            $this->redirect($this->referer());
-        }
-
-        if($this->Hamper->buy($id, $this->Auth->user())) {
-            $this->Session->setFlash(__('Il tuo ordine è stato processato correttamente. Grazie!', true));
-            $this->redirect($this->referer());
-        }
-    }
-
     function admin_index() {
         $this->Hamper->recursive = 0;
         $this->paginate = array('order' => array('Hamper.id desc'));

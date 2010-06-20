@@ -1,5 +1,10 @@
 /* print css */
 
+*
+{
+    page-break-inside:auto;
+}
+
 #tools,
 #navigation,
 #footer,
