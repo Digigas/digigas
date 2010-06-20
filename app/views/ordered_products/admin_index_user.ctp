@@ -44,7 +44,7 @@
 	?>
 	<tr<?php echo $class;?>>
 		<td>
-			<?php echo $this->Html->link($orderedProduct['Seller']['name'], array('controller' => 'users', 'action' => 'view', $orderedProduct['Seller']['id'], 'admin' => false)); ?>
+			<?php echo $this->Html->link($orderedProduct['Seller']['name'], array('action' => 'index_seller', $orderedProduct['Seller']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false)); ?>

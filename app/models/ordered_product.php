@@ -121,6 +121,7 @@ class OrderedProduct extends AppModel {
         
         $_users = $this->User->find('all', array(
             'conditions' => array('User.id' => $user_ids),
+            'order' => 'User.last_name asc',
             'contain' => array()
         ));
 
@@ -140,6 +141,7 @@ class OrderedProduct extends AppModel {
 
         $_sellers = $this->Seller->find('all', array(
             'conditions' => array('Seller.id' => $seller_ids),
+            'order' => 'Seller.name asc',
             'contain' => array()
         ));
 
