@@ -410,10 +410,15 @@ class OrderedProductsController extends AppController {
             'contain' => array('Seller.name')
         ));
         $this->set(compact('users', 'hampers'));
+
+        if(empty($hampers)) {
+            $this->Session->setFlash(__('Non ci sono panieri aperti in questo momento', true));
+            $this->redirect(array('action' => 'index'));
+        }
     }
 
     function admin_order_for_user_2() {
-        if(empty($this->data)) {
+        if(empty($this->data) || empty($this->data['OrderedProduct']['hamper_id'])) {
             $this->Session->setFlash(__('Devi prima compilare questa pagina', true));
             $this->redirect(array('action' => 'admin_order_for_user'));
         }
