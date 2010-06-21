@@ -19,8 +19,14 @@ class HampersController extends AppController {
     function index() {
         $this->paginate = array('conditions' => $this->Hamper->getActiveConditions(), 'order' => array('Hamper.end_date asc'));
         $this->Hamper->recursive = 0;
-        $this->set('hampers', $this->paginate());
+        $hampers = $this->paginate();
+        $this->set('hampers', $hampers);
         $this->set('title_for_layout', __('Tutti i panieri aperti in questo momento', true).' - '.Configure::read('GAS.name'));
+
+        if(empty($hampers)) {
+            $this->set('title_for_layout', __('Nessun paniere disponibile in questo momento', true).' - '.Configure::read('GAS.name'));
+            $this->render('index_close');
+        }
     }
 
     function view($id = null) {
