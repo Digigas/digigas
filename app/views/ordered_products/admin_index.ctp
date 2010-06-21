@@ -155,5 +155,8 @@
                 <?php endforeach; ?>
             </ul>
         </li>
+        <li>
+            <?php echo $this->Html->link(__('Fai un ordine per un utente', true), array('controller' => 'ordered_products', 'action' => 'order_for_user')); ?>
+        </li>
     </ul>
 </div>
