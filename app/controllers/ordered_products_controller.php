@@ -16,11 +16,11 @@ class OrderedProductsController extends AppController {
         $this->set(compact('orderedProducts'));
         $this->set('title_for_layout', __('I miei ordini', true).' - '.Configure::read('GAS.name'));
     }
-    
+
     function past_orders() {
         $user = $this->Auth->user();
         $this->paginate = array('conditions' => array(
-            'user_id' => $user['User']['id']
+                'user_id' => $user['User']['id']
         ));
         $this->OrderedProduct->recursive = 0;
         $this->set('orderedProducts', $this->paginate());
@@ -37,7 +37,7 @@ class OrderedProductsController extends AppController {
 
         $this->data = $this->OrderedProduct->buildOrder($this->data, $user);
 
-        if (!empty($this->data)) {        
+        if (!empty($this->data)) {
             $this->OrderedProduct->create();
             if ($this->OrderedProduct->save($this->data)) {
                 $this->Session->setFlash(__('L\'Ordine è stato registrato correttamente, grazie!', true));
@@ -69,10 +69,10 @@ class OrderedProductsController extends AppController {
 
     function admin_index() {
         $this->paginate = array('conditions' => array(
-            'or' => array(
-                'paid' => 0,
-                'retired' => 0
-            )),
+                'or' => array(
+                    'paid' => 0,
+                    'retired' => 0
+                )),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
@@ -84,17 +84,17 @@ class OrderedProductsController extends AppController {
 
         $lastModified = $this->OrderedProduct->find('all', array(
             'conditions' => array(
-            'paid' => 1,
-            'retired' => 1,
-            'OrderedProduct.modified > ' => date('Y-m-d H:i:s', strtotime('now - 24 hours'))),
+                'paid' => 1,
+                'retired' => 1,
+                'OrderedProduct.modified > ' => date('Y-m-d H:i:s', strtotime('now - 24 hours'))),
             'order' => 'OrderedProduct.modified desc',
             'limit' => '20'
-            ));
+        ));
         $this->set('lastModified', $lastModified);
 
         //trovo l'elenco degli utenti con ordini attivi
         $users = $this->OrderedProduct->getPendingUsers();
-        
+
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
@@ -195,7 +195,7 @@ class OrderedProductsController extends AppController {
     function admin_mass_mail_orders_to_users() {
         //utenti con ordini pendenti
         $users = $this->OrderedProduct->getPendingUsers(true);
-        
+
         $failed = array();
         foreach($users as $user) {
             if(!$this->_mail_orders_to_user($user['User']['id'], $user['User']['email'])) {
@@ -224,12 +224,12 @@ class OrderedProductsController extends AppController {
         }
 
         $mail_ok = $this->_mail_orders_to_seller($seller_id, $seller['Seller']['name']);
-        
+
         if($mail_ok) {
             $this->Session->setFlash(__('Email inviata correttamente', true));
         } else {
             $this->Session->setFlash(__('ERRORE durante l\'invio della mail', true));
-        }        
+        }
         $this->redirect($this->referer());
     }
 
@@ -268,7 +268,7 @@ class OrderedProductsController extends AppController {
 
         //compongo il messaggio nella view che si trova nella cartella email
         //invio l'email
-        //$this->Email->delivery = 'debug';        
+        //$this->Email->delivery = 'debug';
         $this->Email->to = $user_email;
         $this->Email->subject = '['.Configure::read('GAS.name').'] '.__('Riepilogo ordini', true);
         $this->Email->from = Configure::read('email.from');
@@ -286,7 +286,7 @@ class OrderedProductsController extends AppController {
 
     function _mail_orders_to_seller($seller_id, $seller_email) {
         $this->Email->reset();
-        
+
         //dati dell'ordine
         //trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
@@ -304,7 +304,7 @@ class OrderedProductsController extends AppController {
 
         //compongo il messaggio nella view che si trova nella cartella email
         //invio l'email
-        //$this->Email->delivery = 'debug';        
+        //$this->Email->delivery = 'debug';
         $this->Email->to = $seller_email;
         $this->Email->cc = $relatedUsers;
         $this->Email->bcc = $adminUsers;
@@ -342,7 +342,7 @@ class OrderedProductsController extends AppController {
             $this->redirect($this->referer());
         }
     }
-    
+
     function admin_set_not_retired($id) {
         if($this->OrderedProduct->setNotRetired($id)) {
             $this->Session->setFlash(__('Ordine ripristinato come pendente', true));
@@ -401,6 +401,69 @@ class OrderedProductsController extends AppController {
         }
         $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Ordered product'));
         $this->redirect(array('action' => 'index'));
+    }
+
+    function admin_order_for_user() {
+        $users = $this->OrderedProduct->User->find('list', array('User.active' => 1));
+        $hampers = $this->OrderedProduct->Hamper->find('all', array(
+            'conditions' => $this->OrderedProduct->Hamper->getActiveConditions(),
+            'contain' => array('Seller.name')
+        ));
+        $this->set(compact('users', 'hampers'));
+    }
+
+    function admin_order_for_user_2() {
+        if(empty($this->data)) {
+            $this->Session->setFlash(__('Devi prima compilare questa pagina', true));
+            $this->redirect(array('action' => 'admin_order_for_user'));
+        }
+
+        $user_id = $this->data['OrderedProduct']['user_id'];
+        $user = $this->OrderedProduct->User->read(null, $user_id);
+        $hamper_id = $this->data['OrderedProduct']['hamper_id'];
+        $hamper = $this->OrderedProduct->Hamper->read(null, $hamper_id);
+
+        $this->set(compact('user_id', 'user', 'hamper_id', 'hamper'));
+    }
+
+    function admin_order_for_user_3() {
+        if(empty($this->data)) {
+            $this->Session->setFlash(__('Devi prima compilare questa pagina', true));
+            $this->redirect(array('action' => 'admin_order_for_user'));
+        }
+
+        $user = $this->OrderedProduct->User->read(null, $this->data['OrderedProduct']['user_id']);
+
+        $errors = false;
+        foreach($this->data['Product'] as $product_id => $quantity) {
+            if(!empty($quantity)) {
+                $dataToValidate = array('OrderedProduct' => array(
+                        'product_id' => $product_id,
+                        'hamper_id' => $this->data['OrderedProduct']['hamper_id'],
+                        'seller_id' => $this->data['OrderedProduct']['seller_id'],
+                        'quantity' => $quantity
+                ));
+                //debug($dataToValidate);
+                $dataToSave = $this->OrderedProduct->buildOrder($dataToValidate, $user);
+                //debug($dataToSave);
+                if(!empty($dataToSave)) {
+                    $this->OrderedProduct->create();
+                    if(!$this->OrderedProduct->save($dataToSave)) {
+                        $errors = true;
+                    }
+                } else {
+                    $errors = true;
+                }
+            }
+        }
+
+        if($errors) {
+            $this->Session->setFlash(__('L\'Ordine è stato registrato correttamente!', true));
+        } else {
+            $this->Session->setFlash(__('Si sono verificati degli errori, verifica', true));
+        }
+        $this->redirect(array('controller' => 'ordered_products', 'action' => 'index'));
+
     }
 }
 ?>

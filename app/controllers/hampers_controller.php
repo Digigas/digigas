@@ -25,7 +25,7 @@ class HampersController extends AppController {
 
         if(empty($hampers)) {
             $this->set('title_for_layout', __('Nessun paniere disponibile in questo momento', true).' - '.Configure::read('GAS.name'));
-            $this->render('index_close');
+            $this->render('index_closed');
         }
     }
 
