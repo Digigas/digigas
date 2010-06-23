@@ -20,10 +20,11 @@
     
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php __('Produttore', true);?></th>
-			<th><?php __('Prodotto', true);?></th>
-			<th><?php __('Quantità', true);?></th>
-			<th><?php __('Totale', true);?></th>
+			<th><?php __('Produttore');?></th>
+			<th><?php __('Prodotto');?></th>
+			<th><?php __('Quantità');?></th>
+			<th><?php __('Totale');?></th>
+            <th><?php __('Data di consegna');?></th>
 			<th class="actions"><?php __('Pagato', true);?></th>
 			<th class="actions"><?php __('Ritirato', true);?></th>
 	</tr>
@@ -44,6 +45,7 @@
 		</td>
 		<td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
 		<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+        <td><?php echo digi_date($orderedProduct['Hamper']['delivery_date_on']); ?>&nbsp;</td>
 		<td class="actions"><?php
         if($orderedProduct['OrderedProduct']['paid']) {
             echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $orderedProduct['OrderedProduct']['id'])));
@@ -72,7 +74,7 @@
             ?>
             </strong>
         </td>
-        <td colspan="2">&nbsp;</td>
+        <td colspan="3">&nbsp;</td>
     </tr>
 	</table>
 
