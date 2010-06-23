@@ -73,6 +73,7 @@ class OrderedProductsController extends AppController {
                     'paid' => 0,
                     'retired' => 0
                 )),
+            'order' => array('hamper_id desc', 'user_id asc'),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
