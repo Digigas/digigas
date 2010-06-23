@@ -11,6 +11,7 @@ class NewsletterMessagesController extends AppController {
 
     function admin_index() {
         $this->NewsletterMessage->recursive = 0;
+        $this->paginate = array('order' => 'sent_date desc');
         $this->set('newsletterMessages', $this->paginate());
     }
 
