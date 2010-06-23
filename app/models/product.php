@@ -58,6 +58,12 @@ class Product extends AppModel {
                             )
                         );
 
+    function beforeSave() {
+        $value = str_replace(',', '.', $this->data['Product']['value']);
+        $this->data['Product']['value'] = $value;
+        return parent::beforeSave();
+    }
+    
     function getAllFromSellerByCategory($seller_id) {
         $products = $this->find('all', array(
             'conditions' => array('seller_id' => $seller_id),
