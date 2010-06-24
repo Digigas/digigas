@@ -77,7 +77,8 @@ class OrderedProductsController extends AppController {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name')))
+                'Product' => array('fields' => array('id', 'name')),
+                'Hamper' => array('fields' => array('id', 'delivery_date_on')))
         );
         $this->OrderedProduct->recursive = 0;
         $orderedProducts = $this->paginate();
