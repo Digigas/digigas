@@ -37,6 +37,7 @@
             <th><?php echo $this->Paginator->sort(__('Prodotto', true), 'product_id');?></th>
             <th><?php echo $this->Paginator->sort(__('Quantità', true), 'quantity');?></th>
             <th><?php echo $this->Paginator->sort(__('Totale', true), 'value');?></th>
+            <th><?php echo $this->Paginator->sort(__('Consegna', true), 'hamper_id');?></th>
             <th class="actions"><?php echo $this->Paginator->sort(__('Pagato', true), 'paid');?></th>
             <th class="actions"><?php echo $this->Paginator->sort(__('Ritirato', true), 'retired');?></th>
         </tr>
@@ -57,9 +58,12 @@
             </td>
             <td>
                     <?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false)); ?>
-            </td>
+            </td>            
             <td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
             <td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+            <td>
+                    <?php echo date('d/m/Y', strtotime($orderedProduct['Hamper']['delivery_date_on'])); ?>
+            </td>
             <td class="actions"><?php
                     if($orderedProduct['OrderedProduct']['paid']) {
                         echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $orderedProduct['OrderedProduct']['id'])));
