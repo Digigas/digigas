@@ -171,6 +171,50 @@ class OrderedProductsController extends AppController {
         $this->set(compact('orderedProducts', 'seller', 'users', 'sellers', 'totals', 'totalsByHamper'));
     }
 
+    function admin_mass_actions($action = false, $hamper_id = false) {
+
+        //piccolo controllo
+        if(!in_array($action, array('paid', 'retired', false))) {
+            $this->Session->setFlash(__('Ehi, non cercare di fregarmi!', true));
+            $this->redirect(array('action' => 'mass_actions'));
+        }
+
+        if($action && $hamper_id) {
+
+            //SALVO
+            $this->OrderedProduct->updateAll(array($action => 1), array('OrderedProduct.hamper_id' => $hamper_id));
+
+            $this->Session->setFlash(__('Ok, operazione eseguita', true));
+            $this->redirect(array('action' => 'mass_actions'));
+        }
+
+        $pendingOrders = $this->OrderedProduct->find('all', array(
+            'conditions' => array('or' => array('paid' => 0, 'retired' => 0)),
+            'fields' => array('OrderedProduct.hamper_id'),
+            'group' => array('OrderedProduct.seller_id', 'OrderedProduct.hamper_id'),
+            'recursive' => -1
+        ));
+        $pendingHampersIds = Set::extract('/OrderedProduct/hamper_id', $pendingOrders);
+        $pendingHampers = $this->OrderedProduct->Hamper->find('all', array(
+            'conditions' => array('Hamper.id' => $pendingHampersIds),
+            'fields' => array('Hamper.id', 'Hamper.name', 'Hamper.delivery_date_on'),
+            'contain' => array('Seller.name')
+        ));
+
+        if(empty($pendingHampers)) {
+            $this->Session->setFlash(__('Non c\'è nessun ordine pendente in questo momento', true));
+            $this->redirect(array('action' => 'index'));
+        }
+
+        //trovo l'elenco degli utenti con ordini attivi
+        $users = $this->OrderedProduct->getPendingUsers();
+
+        //trovo l'elenco dei produttori con ordini attivi
+        $sellers = $this->OrderedProduct->getPendingSellers();
+
+        $this->set(compact('users', 'sellers', 'pendingHampers'));
+    }
+
     function admin_mail_orders_to_user($user_id) {
         //dati dell'utente
         $user = $this->OrderedProduct->User->find('first', array(

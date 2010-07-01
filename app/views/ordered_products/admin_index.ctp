@@ -162,5 +162,6 @@
         <li>
             <?php echo $this->Html->link(__('Fai un ordine per un utente', true), array('controller' => 'ordered_products', 'action' => 'order_for_user')); ?>
         </li>
+        <li><?php echo $this->Html->link(__('Comandi rapidi', true), array('action' => 'mass_actions')); ?></li>
     </ul>
 </div>
