@@ -19,9 +19,12 @@ class OrderedProductsController extends AppController {
 
     function past_orders() {
         $user = $this->Auth->user();
-        $this->paginate = array('conditions' => array(
-                'user_id' => $user['User']['id']
-        ));
+        $this->paginate = array(
+            'conditions' => array(
+                'user_id' => $user['User']['id']),
+            'order' => array(
+                'OrderedProduct.created desc'
+            ));
         $this->OrderedProduct->recursive = 0;
         $this->set('orderedProducts', $this->paginate());
         $this->set('title_for_layout', __('Storico degli ordini', true).' - '.Configure::read('GAS.name'));
