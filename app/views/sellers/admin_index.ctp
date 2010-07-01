@@ -42,5 +42,6 @@
 	<ul>
 		<li><?php echo $this->Html->link(__('Nuovo profilo produttore', true), array('action' => 'add')); ?> </li>
         <li><?php echo $this->Html->link(__('Gestisci i prodotti', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
+        <li><?php echo $this->Html->link(__('Nuovo prodotto', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
     </ul>
 </div>
