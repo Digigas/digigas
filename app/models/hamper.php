@@ -138,6 +138,13 @@ class Hamper extends AppModel {
             return false;
         }
 
+        //imposto tutte le date a oggi
+        $template['Hamper']['start_date'] = date('Y-m-d H:i:s');
+        $template['Hamper']['end_date'] = date('Y-m-d H:i:s');
+        $template['Hamper']['checkout_date'] = date('Y-m-d H:i:s');
+        $template['Hamper']['delivery_date_on'] = date('Y-m-d H:i:s');
+        $template['Hamper']['delivery_date_off'] = date('Y-m-d H:i:s');
+
         $this->create();
         if($this->save($template)) {
             return $this->id;
