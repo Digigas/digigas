@@ -1,6 +1,6 @@
 <div class="orderedProducts index">
     <h2><?php __('Comandi rapidi');?></h2>
-    <p>Le funzioni di quest apagina permettono di impostare come pagati e consegnati tutti gli ordini di un paniere con solo un click.</p>
+    <p>Le funzioni di questa pagina permettono di impostare come pagati e consegnati tutti gli ordini di un paniere con solo un click.</p>
 
     <table cellpadding="0" cellspacing="0">
         <tr>
