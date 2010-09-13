@@ -14,8 +14,10 @@ class PDF extends FPDF {
         }
 
     function footer() {
-        $this->SetFont('Arial','',9);
+        $this->SetFont('Arial','',8);
+        $this->SetTextColor(124, 175, 0);
         $this->Cell(0,0,'Digigas3');
+        $this->SetTextColor(0, 0, 0);
     }
 
     function adaptiveCell($actualsize, $w ="", $h="" , $txt="", $border="" , $ln="" ,$align="" , $fill="" , $link="") {
