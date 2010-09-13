@@ -11,6 +11,10 @@
                 <?php echo $this->Html->image('oxygen/16x16/devices/printer.png'); ?>
                 <?php __('Stampa'); ?>
             </a></li>
+        <li><a href="<?php echo $this->Html->url(array('controller' => 'ordered_products', 'action' => 'print_pdf_seller', $seller['Seller']['id'])); ?>">
+                <?php echo $this->Html->image('oxygen/16x16/mimetypes/pdf.png'); ?>
+                <?php __('Salva in PDF'); ?>
+            </a></li>
     </ul>
 </div>
 

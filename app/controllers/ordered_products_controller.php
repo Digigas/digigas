@@ -519,5 +519,46 @@ class OrderedProductsController extends AppController {
         $this->redirect(array('controller' => 'ordered_products', 'action' => 'index'));
 
     }
+
+    function admin_print_pdf_seller($seller_id) {
+        //Configure::write('debug', 0);
+        $this->layout = 'pdf';
+        //debug(WWW_ROOT);
+
+        //dettagli ordine
+        $this->OrderedProduct->recursive = 0;
+        $orderedProducts = $this->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname')),
+                'Seller' => array('fields' => array('id', 'name')),
+                'Product' => array('fields' => array('id', 'name')))
+        )); 
+
+        //trovo il totale per ogni prodotto
+        $totals = $this->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
+            'fields' => array('hamper_id', 'product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id'),
+            'order' => array('hamper_id desc'),
+            'contain' => array('Product.name', 'Hamper.delivery_date_on')
+        )); 
+
+        $totalsByHamper = array();
+        foreach($totals as $tot) {
+            if(isset($totalsByHamper[$tot['Hamper']['delivery_date_on']])) {
+                $totalsByHamper[$tot['Hamper']['delivery_date_on']] += $tot['0']['total'];
+            } else {
+                $totalsByHamper[$tot['Hamper']['delivery_date_on']] = $tot['0']['total'];
+            }
+        } 
+
+        $seller = $this->OrderedProduct->Seller->findById($seller_id);
+
+        $this->set(compact('orderedProducts', 'seller', 'totals', 'totalsByHamper'));
+        
+        $pageTitle = Inflector::slug(Configure::read('GAS.name').'_'.__('ordini pendenti', true).'_'.$seller['Seller']['name']).'.pdf';
+        $this->set('pageTitle', $pageTitle);
+    }
 }
 ?>
