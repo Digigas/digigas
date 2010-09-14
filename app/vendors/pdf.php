@@ -42,14 +42,5 @@ class PDF extends FPDF {
         $this->SetFont('Arial','',9);
         $this->SetTextColor(0, 0, 0);
     }
-
-    function table($data) {
-        foreach ($data as $row) {
-            $numCol = count($row);
-            foreach($row as $col) {
-                
-            }
-        }
-    }
     
 }
