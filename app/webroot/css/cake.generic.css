@@ -23,23 +23,18 @@
 
 /** General Style Info **/
 body {
-	background: #003d4c;
 	color: #fff;
 	font-family:'lucida grande',verdana,helvetica,arial,sans-serif;
-	font-size:90%;
-	margin: 0;
 }
 #today-date
 {
     display:none;
 }
 a {
-	color: #003d4c;
 	text-decoration: underline;
 	font-weight: bold;
 }
 a:hover {
-	color: #367889;
 	text-decoration:none;
 }
 a img {
@@ -50,12 +45,9 @@ h1, h2, h3, h4 {
 	margin-bottom:0.5em;
 }
 h1 {
-	background:#fff;
-	color: #003d4c;
 	font-size: 100%;
 }
 h2 {
-	background:#fff;
 	color: #e32;
 	font-family:'Gill Sans','lucida grande', helvetica, arial, sans-serif;
 	font-size: 190%;
@@ -82,9 +74,7 @@ p
 	text-align: left;
 }
 
-#header{
-	padding: 10px 20px;
-}
+#header{}
 #header h1 {
 	line-height:20px;
 	background: #003d4c url('../img/cake.icon.png') no-repeat left;
@@ -106,8 +96,6 @@ p
 	background: #fff;
 	clear: both;
 	color: #333;
-	padding: 10px 20px 40px 20px;
-	overflow: auto;
 }
 #footer {
 	clear: both;
@@ -118,17 +106,8 @@ p
 /** containers **/
 div.form,
 div.index,
-div.view {
-	float:right;
-	width:76%;
-	border-left:1px solid #666;
-	padding:10px 2%;
-}
-div.actions {
-	float:left;
-	width:16%;
-	padding:10px 1.5%;
-}
+div.view {}
+div.actions {}
 div.actions h3 {
 	padding-top:0;
 	color:#777;
