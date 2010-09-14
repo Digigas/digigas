@@ -521,9 +521,8 @@ class OrderedProductsController extends AppController {
     }
 
     function admin_print_pdf_seller($seller_id) {
-        //Configure::write('debug', 0);
+        Configure::write('debug', 0);
         $this->layout = 'pdf';
-        //debug(WWW_ROOT);
 
         //dettagli ordine
         $this->OrderedProduct->recursive = 0;
