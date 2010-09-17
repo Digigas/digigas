@@ -185,7 +185,7 @@ class OrderedProductsController extends AppController {
         if($action && $hamper_id) {
 
             //SALVO
-            $this->OrderedProduct->updateAll(array($action => 1), array('OrderedProduct.hamper_id' => $hamper_id));
+            $this->OrderedProduct->massUpdate($action, $hamper_id);
 
             $this->Session->setFlash(__('Ok, operazione eseguita', true));
             $this->redirect(array('action' => 'mass_actions'));

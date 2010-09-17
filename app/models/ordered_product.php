@@ -197,8 +197,40 @@ class OrderedProduct extends AppModel {
         return true;
     }
 
+    function massUpdate($field, $hamper_id) {
+        $ordersToUpdate = $this->find('all', array(
+            'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
+            'contain' => array(
+                'Product.name',
+                'Seller.name'
+            )
+        ));
+        $orders_id = Set::extract('/OrderedProduct/id', $ordersToUpdate);
+        $return = $this->updateAll(array($field => 1), array('OrderedProduct.id' => $orders_id));
+
+        //se il campo da modificare è "paid", aggiorno anche moneyboxes
+        if($field == 'paid') { 
+            foreach($ordersToUpdate as $data) {debug($data);
+                $value = $data['OrderedProduct']['value'];
+                $user_id = $data['OrderedProduct']['user_id'];
+                $ordered_product_id = $data['OrderedProduct']['id'];
+                $message = 'Pagamento di '.$data['OrderedProduct']['quantity'].' '.$data['Product']['name'].' verso '.$data['Seller']['name'];
+                if(!$this->updateMoneyBox('out', $value, $user_id, $ordered_product_id, $message)) {
+                    $return = false;
+                }
+            }
+        }
+
+        return $return;
+    }
+
     function setPaid($id) {
-        $data = $this->findById($id);
+        $data = $this->find('first', array(
+            'conditions' => array('OrderedProduct.id' => $id),
+            'contain' => array(
+                'Product.name',
+                'Seller.name'
+            )));
         if($this->saveField('paid', 1)) {
             $value = $data['OrderedProduct']['value'];
             $user_id = $data['OrderedProduct']['user_id'];
@@ -210,7 +242,12 @@ class OrderedProduct extends AppModel {
         }
     }
     function setNotPaid($id) {
-        $data = $this->findById($id);
+        $data = $this->find('first', array(
+            'conditions' => array('OrderedProduct.id' => $id),
+            'contain' => array(
+                'Product.name',
+                'Seller.name'
+            )));
         if($this->saveField('paid', 0)) {
             $value = $data['OrderedProduct']['value'];
             $user_id = $data['OrderedProduct']['user_id'];
@@ -222,6 +259,7 @@ class OrderedProduct extends AppModel {
         }
     }
     function setRetired($id) {
+        $this->recursive = -1;
         $data = $this->findById($id);
         if($this->saveField('retired', 1)) {
             return true;
@@ -230,6 +268,7 @@ class OrderedProduct extends AppModel {
         }
     }
     function setNotRetired($id) {
+        $this->recursive = -1;
         $data = $this->findById($id);
         if($this->saveField('retired', 0)) {
             return true;
