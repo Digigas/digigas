@@ -220,7 +220,6 @@ class OrderedProduct extends AppModel {
                 }
             }
         }
-debug($ordersToUpdate);
         return $return;
     }
 
