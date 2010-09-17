@@ -206,11 +206,11 @@ class OrderedProduct extends AppModel {
             )
         ));
         $orders_id = Set::extract('/OrderedProduct/id', $ordersToUpdate);
-        $return = $this->updateAll(array($field => 1), array('OrderedProduct.id' => $orders_id));
+        $return = $this->updateAll(array('OrderedProduct.'.$field => 1, 'OrderedProduct.modified' => 'NOW()'), array('OrderedProduct.id' => $orders_id));
 
         //se il campo da modificare è "paid", aggiorno anche moneyboxes
         if($field == 'paid') { 
-            foreach($ordersToUpdate as $data) {debug($data);
+            foreach($ordersToUpdate as $data) {
                 $value = $data['OrderedProduct']['value'];
                 $user_id = $data['OrderedProduct']['user_id'];
                 $ordered_product_id = $data['OrderedProduct']['id'];
@@ -220,7 +220,7 @@ class OrderedProduct extends AppModel {
                 }
             }
         }
-
+debug($ordersToUpdate);
         return $return;
     }
 
