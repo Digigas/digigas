@@ -70,6 +70,16 @@ class OrderedProductsController extends AppController {
         $this->redirect($this->referer());
     }
 
+    function send_me_orders_email() {
+        $user = $this->Auth->user();
+        if($this->_mail_orders_to_user($user['User']['id'], $user['User']['email'])) {
+            $this->Session->setFlash(__('Ti è statainviata una email con il riepilogo dei tuoi ordini', true));
+        } else {
+            $this->Session->setFlash(__('Si è verificato un errore, riprova o contatta l\'amministratore', true));
+        }
+        $this->redirect($this->referer());
+    }
+
     function admin_index() {
         $this->paginate = array('conditions' => array(
                 'or' => array(

@@ -65,5 +65,6 @@
         <li><?php echo $this->Html->link(__('Continua gli acquisti', true), array('controller' => 'hampers', 'action' => 'index')); ?></li>
         <li><?php echo $this->Html->link(__('Storico dei tuoi ordini', true), array('controller' => 'ordered_products', 'action' => 'past_orders')); ?></li>
         <li><?php echo $this->Html->link(__('Quanto hai speso', true), array('controller' => 'money_boxes', 'action' => 'index')); ?></li>
+        <li><?php echo $this->Html->link(__('Mandami un promemoria', true), array('controller' => 'ordered_products', 'action' => 'send_me_orders_email')); ?></li>
     </ul>
 </div>
