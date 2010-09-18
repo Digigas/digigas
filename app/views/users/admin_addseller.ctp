@@ -21,7 +21,7 @@
         <h3 class="expander"><?php __('Dati profilo aziendale'); ?></h3>
         <div class="accordion">
             <?php
-            echo $this->Html->div('note', __('Imposta i dati aziendali che verranno esposti agli altri utenti', true));
+            echo $this->Html->div('note', __('Imposta i dati aziendali che verranno visualizzati sul sito', true));
             echo $this->Form->input('Seller.name');
             echo $this->Form->input('Seller.business_name');
             echo $this->Form->input('Seller.address');

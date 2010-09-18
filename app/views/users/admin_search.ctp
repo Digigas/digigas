@@ -29,12 +29,13 @@
     
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo __('Congome');?></th>
-			<th><?php echo __('Nome');?></th>
-			<th><?php echo __('Username');?></th>
-			<th><?php echo __('e-mail');?></th>
-			<th><?php echo __('Tipo');?></th>
-			<th><?php echo __('Attivo');?></th>
+			<th><?php __('Congome');?></th>
+			<th><?php __('Nome');?></th>
+			<th><?php __('Username');?></th>
+			<th><?php __('e-mail');?></th>
+			<th><?php __('Tipo');?></th>
+			<th><?php __('Attivo');?></th>
+            <th><?php __('Famiglia'); ?></th>
 			<th class="actions"><?php __('Azioni');?></th>
 	</tr>
 	<?php
@@ -51,8 +52,19 @@
 		<td><?php echo $user['User']['username']; ?>&nbsp;</td>
 		<td><?php echo $this->Html->link($user['User']['email'], 'mailto:'.$user['User']['email']); ?>&nbsp;</td>
 		<td><?php echo Configure::read('roles.'.$user['User']['role']); ?>&nbsp;</td>
-		<td><?php echo $user['User']['active']?'si':'no'; ?>&nbsp;</td>
-		<td class="actions">
+		<td class="align-center"><?php echo $user['User']['active']?'si':'no'; ?>&nbsp;</td>
+		<td class="align-center">
+                <?php
+                if(isset($fathers[$user['User']['id']])) {
+                    echo $this->Html->image('oxygen/family.png', array('title' => __('Visualizza famiglia', true), 'url' => array('action' => 'index', 'family' => $user['User']['id'])));
+                } else if(empty($user['User']['parent_id'])) {
+                    echo $this->Html->image('oxygen/single.png', array('title' => __('Partecipante single', true)));
+                } else {
+                    echo $this->Html->image('oxygen/child.png', array('title' => __('Appartiene a una famiglia', true)));
+                }
+                ?>
+        </td>
+        <td class="actions">
 			<?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $user['User']['id'])); ?>
 			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?>
 		</td>

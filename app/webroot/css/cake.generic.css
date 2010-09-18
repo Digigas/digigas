@@ -157,6 +157,12 @@ td.actions {
 	text-align: center;
 	white-space: nowrap;
 }
+td.align-center {
+   text-align:center;
+}
+table td.align-center a {
+    float:none;
+}
 table td.actions a {
 	margin: 0px 6px;
 	padding:2px 5px;
