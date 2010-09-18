@@ -63,5 +63,6 @@
     <?php echo $this->element('user_order', array('userOrder' => $userOrder)); ?>
     <ul>
         <li><?php echo $this->Html->link(__('Vai alla tua pagina ordini', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
+        <li><?php echo $this->Html->link(__('Mandami un promemoria', true), array('controller' => 'ordered_products', 'action' => 'send_me_orders_email')); ?></li>
     </ul>
 </div>
