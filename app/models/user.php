@@ -70,6 +70,19 @@ class User extends AppModel {
         return parent::beforeSave($options);
     }
 
+    function getFathers($findType = 'list') {
+        $fathersId = $this->find('all', array('conditions' => array(
+            'User.parent_id != ' => NULL
+            ),
+            'fields' => array('parent_id'),
+            'group' => 'parent_id',
+            'recursive' => -1
+            ));
+        $fathersId = Set::extract('/User/parent_id', $fathersId);
+        $fathers = $this->find($findType, array('conditions' => array('User.id' => $fathersId), 'order' => 'last_name asc'));
+        return $fathers;
+    }
+
     function getAdminEmails() {
         $users = $this->find('all', array(
             'conditions' => array(

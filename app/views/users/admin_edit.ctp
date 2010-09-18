@@ -17,6 +17,7 @@
         <h3 class="expander">Altro</h3>
         <div class="accordion">
             <?php
+            echo $this->Form->input('parent_id', array('label' => __('Appartiene alla famiglia di', true), 'empty' => 'Nessuno: è capofamiglia', 'options' => $families));
             echo $this->Form->input('usergroup_id', array('label' => __('Gruppo', true)));
             echo $this->Form->input('role', array('label' => __('Ruolo', true)));
             echo $this->Form->input('active', array('label' => 'Attivo'));

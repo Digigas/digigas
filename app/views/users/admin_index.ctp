@@ -20,7 +20,8 @@
     <h2><?php __('Gestione utenti');
 if(isset($role)) {
         echo ' - '.$role;
-    } ?></h2>
+    } ?>
+    (<?php echo $familiesCount; ?> <?php __('famiglie'); ?>)</h2>
 
     <div class="search">
         <?php
@@ -33,7 +34,7 @@ if(isset($role)) {
     <p>
         <?php
         echo $this->Paginator->counter(array(
-'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+'format' => __('Pagina %page% di %pages%', true)
 ));
         ?>	</p>
 
@@ -46,12 +47,12 @@ if(isset($role)) {
 
     <table cellpadding="0" cellspacing="0">
         <tr>
-            <th><?php echo $this->Paginator->sort(__('Congome', true), 'last_name');?></th>
-            <th><?php echo $this->Paginator->sort(__('Nome', true), 'first_name');?></th>
+            <th><?php echo $this->Paginator->sort(__('Nome', true), 'last_name');?></th>
             <th><?php echo $this->Paginator->sort(__('Username', true), 'username');?></th>
             <th><?php echo $this->Paginator->sort(__('e-mail', true), 'email');?></th>
             <th><?php echo $this->Paginator->sort(__('Tipo', true), 'role');?></th>
             <th><?php echo $this->Paginator->sort(__('Attivo', true), 'active');?></th>
+            <th><?php echo $this->Html->link(__('Famiglia', true), array('fathers' => true));?></th>
             <th class="actions"><?php __('Azioni');?></th>
         </tr>
         <?php
@@ -63,15 +64,29 @@ if(isset($role)) {
     }
     ?>
         <tr<?php echo $class;?>>
-            <td><?php echo $user['User']['last_name']; ?>&nbsp;</td>
-            <td><?php echo $user['User']['first_name']; ?>&nbsp;</td>
+            <td>
+                <?php echo $user['User']['last_name']; ?>
+                &nbsp;
+                <?php echo $user['User']['first_name']; ?>&nbsp;
+            </td>
             <td><?php echo $user['User']['username']; ?>&nbsp;</td>
             <td><?php echo $this->Html->link($user['User']['email'], 'mailto:'.$user['User']['email']); ?>&nbsp;</td>
             <td><?php echo Configure::read('roles.'.$user['User']['role']); ?>&nbsp;</td>
-            <td><?php echo $user['User']['active']?'si':'no'; ?>&nbsp;</td>
+            <td class="align-center"><?php echo $user['User']['active']?'si':'no'; ?>&nbsp;</td>
+            <td class="align-center">
+                <?php
+                if(isset($fathers[$user['User']['id']])) {
+                    echo $this->Html->image('oxygen/family.png', array('title' => __('Visualizza famiglia', true), 'url' => array('action' => 'index', 'family' => $user['User']['id'])));
+                } else if(empty($user['User']['parent_id'])) {
+                    echo $this->Html->image('oxygen/single.png', array('title' => __('Partecipante single', true)));
+                } else {
+                    echo $this->Html->image('oxygen/child.png', array('title' => __('Appartiene a una famiglia', true)));
+                }
+                ?>
+            </td>
             <td class="actions">
-    <?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $user['User']['id'])); ?>
-            <?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?>
+                <?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $user['User']['id'])); ?>
+                <?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?>
             </td>
         </tr>
 <?php endforeach; ?>
@@ -90,6 +105,7 @@ if(isset($role)) {
         <li>Filtra
             <ul>
                 <li><?php echo $this->Html->link(__('Tutti gli utenti', true), array('action' => 'index')); ?></li>
+                <li><?php echo $this->Html->link(__('Solo capofamiglia', true), array('fathers' => true)); ?></li>
                 <li><?php echo $this->Html->link(__('Solo attivi', true), array('active' => 1)); ?></li>
                 <li><?php echo $this->Html->link(__('Solo disattivati', true), array('active' => 0)); ?></li>
 <?php foreach(Configure::read('roles') as $n => $_role): ?>
