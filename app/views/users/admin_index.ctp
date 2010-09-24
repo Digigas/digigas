@@ -34,7 +34,7 @@ if(isset($role)) {
     <p>
         <?php
         echo $this->Paginator->counter(array(
-'format' => __('Pagina %page% di %pages%', true)
+'format' => __('Pagina %page% di %pages%, %count% utenti totali', true)
 ));
         ?>	</p>
 
