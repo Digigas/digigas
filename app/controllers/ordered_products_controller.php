@@ -409,22 +409,22 @@ class OrderedProductsController extends AppController {
         }
     }
 
-    function admin_add() {
-        if (!empty($this->data)) {
-            $this->OrderedProduct->create();
-            if ($this->OrderedProduct->save($this->data)) {
-                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'ordered product'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'ordered product'));
-            }
-        }
-        $users = $this->OrderedProduct->User->find('list');
-        $sellers = $this->OrderedProduct->Seller->find('list');
-        $products = $this->OrderedProduct->Product->find('list');
-        $hampers = $this->OrderedProduct->Hamper->find('list');
-        $this->set(compact('users', 'sellers', 'products', 'hampers'));
-    }
+//    function admin_add() {
+//        if (!empty($this->data)) {
+//            $this->OrderedProduct->create();
+//            if ($this->OrderedProduct->save($this->data)) {
+//                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'ordered product'));
+//                $this->redirect(array('action' => 'index'));
+//            } else {
+//                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'ordered product'));
+//            }
+//        }
+//        $users = $this->OrderedProduct->User->find('list');
+//        $sellers = $this->OrderedProduct->Seller->find('list');
+//        $products = $this->OrderedProduct->Product->find('list');
+//        $hampers = $this->OrderedProduct->Hamper->find('list');
+//        $this->set(compact('users', 'sellers', 'products', 'hampers'));
+//    }
 
     function admin_edit($id = null) {
         if (!$id && empty($this->data)) {
