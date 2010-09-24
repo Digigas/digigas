@@ -5,7 +5,7 @@ class FilemanagerController extends AppController
     var $uses = array();
     var $docs_dir = 'documents';
     var $helpers = array('Image');
-    var $components = array('Files');
+    //var $components = array('Files');
 
     function __construct() {
         parent::__construct();
