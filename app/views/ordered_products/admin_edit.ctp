@@ -1,32 +1,56 @@
 <div class="orderedProducts form">
+
+ 		<h2><?php __('Modifica ordine'); ?>
+            (<?php echo $this->data['Product']['name'].' '. __('di', true).' '.$this->data['User']['fullname'].' '.__('in consegna entro', true).' '.digi_date($this->data['Hamper']['delivery_date_off']) ?>)</h2>
+        
 <?php echo $this->Form->create('OrderedProduct');?>
 	<fieldset>
- 		<legend><?php printf(__('Admin Edit %s', true), __('Ordered Product', true)); ?></legend>
-	<?php
+        <dl>
+            <dt class="altrow"><?php __('Utente'); ?></dt>
+            <dd class="altrow">
+                <?php echo $this->data['User']['fullname']; ?>
+                &nbsp;
+            </dd>
+
+            <dt><?php __('Paniere'); ?></dt>
+            <dd>
+                <?php echo $this->data['Hamper']['name']; ?>
+                &nbsp;
+            </dd>
+
+            <dt class="altrow"><?php __('Termine consegna'); ?></dt>
+            <dd class="altrow">
+                <?php echo digi_date($this->data['Hamper']['delivery_date_off']); ?>
+                &nbsp;
+            </dd>
+
+            <dt><?php __('Produttore'); ?></dt>
+            <dd>
+                <?php echo $this->data['Seller']['name']; ?>
+                &nbsp;
+            </dd>
+            
+            <dt class="altrow"><?php __('Prodotto'); ?></dt>
+            <dd class="altrow">
+                <?php echo $this->data['Product']['name']; ?>
+                &nbsp;
+            </dd>           
+
+        </dl>
+    <?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('user_id');
-		echo $this->Form->input('seller_id');
-		echo $this->Form->input('product_id');
-		echo $this->Form->input('hamper_id');
-		echo $this->Form->input('quantity');
-		echo $this->Form->input('value');
-		echo $this->Form->input('paid');
-		echo $this->Form->input('retired');
+		echo $this->Form->input('quantity', array('label' => __('Quantità', true)));
+		echo $this->Form->input('value', array('label' => __('Costo totale', true)));
+		echo $this->Form->input('paid', array('label' => __('Pagato', true)));
+		echo $this->Form->input('retired', array('label' => __('Ritirato', true)));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit', true));?>
+<?php echo $this->Form->end(__('Salva', true));?>
 </div>
 <div class="actions">
-	<h3><?php __('Actions'); ?></h3>
+	<h3><?php __('Azioni'); ?></h3>
 	<ul>
-
-		<li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('OrderedProduct.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('OrderedProduct.id'))); ?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Ordered Products', true)), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Users', true)), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('User', true)), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('controller' => 'products', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product', true)), array('controller' => 'products', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Hampers', true)), array('controller' => 'hampers', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Hamper', true)), array('controller' => 'hampers', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('<< Torna agli ordini', true), array('action' => 'index'));?></li>
+        <li><?php echo $this->Html->link(__('Elimina questo ordine', true), array('action' => 'delete', $this->Form->value('OrderedProduct.id')), null, __('Sei sicuro di eliminare l\'ordine?', true)); ?></li>
     </ul>
 </div>

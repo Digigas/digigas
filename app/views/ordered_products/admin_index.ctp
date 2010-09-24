@@ -26,7 +26,7 @@
     <p>
         <?php
         echo $this->Paginator->counter(array(
-        'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+        'format' => __('Pagina %page% di %pages% pagine, %count% ordini totali', true)
         ));
         ?>	</p>
 
@@ -40,6 +40,7 @@
             <th><?php echo $this->Paginator->sort(__('Consegna', true), 'hamper_id');?></th>
             <th class="actions"><?php echo $this->Paginator->sort(__('Pagato', true), 'paid');?></th>
             <th class="actions"><?php echo $this->Paginator->sort(__('Ritirato', true), 'retired');?></th>
+            <th class="actions"><?php __('Azioni') ?></th>
         </tr>
         <?php
         $i = 0;
@@ -78,6 +79,9 @@
                         echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_retired', $orderedProduct['OrderedProduct']['id'])));
                     }
                     ?></td>
+            <td>
+                <?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $orderedProduct['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
+            </td>
         </tr>
         <?php endforeach; ?>
     </table>
