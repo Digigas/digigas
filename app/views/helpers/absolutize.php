@@ -18,10 +18,9 @@ class AbsolutizeHelper extends Helper {
         {
             for ($i = 0; $i < count($matches[0]); $i++)
             {
-                $full_www_root = 'http://'.$_SERVER['HTTP_HOST'];
-                $file = str_replace($this->webroot($matches[1][$i]), WWW_ROOT, $matches[1][$i]);
+                $full_www_root = 'http://'.$_SERVER['HTTP_HOST']; 
+                $file = $full_www_root . $matches[1][$i];
 
-                $file = $full_www_root . $file;
                 $file = str_replace($matches[1][$i], $file, $matches[0][$i]);
                 $text = str_replace($matches[0][$i], $file, $text);
             }

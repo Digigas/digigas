@@ -45,7 +45,7 @@ class NewsletterMessagesController extends AppController {
                 $this->Session->setFlash(__('Si è verificato un errore nell\'invio del messaggio, riprova', true));
             }
         }
-        $usergroups = $this->NewsletterMessage->Usergroup->find('list', array('conditions' => array('Usergroup.active' => 1)));
+        $usergroups = $this->NewsletterMessage->Usergroup->generatetreelist(array('Usergroup.active' => 1), null, null, '- ');
         $this->set(compact('usergroups'));
     }
 
