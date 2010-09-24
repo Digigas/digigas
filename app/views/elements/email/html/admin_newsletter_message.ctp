@@ -4,4 +4,4 @@
 </div>
 
 <?php echo $this->Html->tag('h1', $title); ?>
-<?php echo $text; ?>
+<?php echo $this->Absolutize->links($this->Absolutize->images($text)); ?>

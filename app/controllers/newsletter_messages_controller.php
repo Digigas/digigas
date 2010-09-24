@@ -3,6 +3,7 @@ class NewsletterMessagesController extends AppController {
 
     var $name = 'NewsletterMessages';
     var $components = array('Email');
+    var $helpers = array('Absolutize');
 
     function beforeFilter() {
         $this->set('activemenu_for_layout', 'tools');
