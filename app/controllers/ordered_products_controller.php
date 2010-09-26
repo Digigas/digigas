@@ -521,7 +521,7 @@ class OrderedProductsController extends AppController {
             }
         }
 
-        if($errors) {
+        if(!$errors) {
             $this->Session->setFlash(__('L\'Ordine è stato registrato correttamente!', true));
         } else {
             $this->Session->setFlash(__('Si sono verificati degli errori, verifica', true));
