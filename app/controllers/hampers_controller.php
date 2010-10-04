@@ -30,7 +30,7 @@ class HampersController extends AppController {
     }
 
     function view($id = null) {
-        if (!$id) {
+        if (!$id || !$this->Hamper->isActive($id)) {
             $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
             $this->redirect(array('action' => 'index'));
         }
