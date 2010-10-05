@@ -81,8 +81,7 @@ class Hamper extends AppModel {
             $this->id = $id;
         }
 
-        $this->recursive = -1;
-        $data = $this->findById($id);
+        $data = $this->find('first', array('conditions' => array('id' => $id), 'recursive' => -1));
         $now = date('Y-m-d H:m:s');
 
         $return = true;
