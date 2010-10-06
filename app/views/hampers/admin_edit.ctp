@@ -18,7 +18,8 @@
             echo $this->element('admin/datetimeselect', array('field' => 'delivery_date_off', 'label' => __('Termine massimo per la consegna', true)));
 
             echo $this->Form->input('delivery_position', array('type' => 'text', 'label' => __('Luogo di consegna', true)));
-            echo $this->Form->input('is_template', array('label' => __('Salva come modello', true)));
+            echo $this->Form->input('notes', array('label' => __('Note', true)));
+			echo $this->Form->input('is_template', array('label' => __('Salva come modello', true)));
             ?>
         </div>
 
