@@ -36,6 +36,11 @@ $this->Layout->blockEnd();
         echo  digi_date($hamper['Hamper']['delivery_date_on']);
         __(' a ');
         echo  digi_date($hamper['Hamper']['delivery_date_off']);
+
+		$_notes = strip_tags($hamper['Hamper']['notes']);
+		if(!empty($_notes)) {
+			echo $this->Html->div('attention', $hamper['Hamper']['notes']);
+		}
         ?>
     </div>
 
