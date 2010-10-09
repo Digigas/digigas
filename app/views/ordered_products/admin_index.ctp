@@ -63,7 +63,7 @@
             <td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
             <td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
             <td>
-				<?php echo date('d/m/Y', strtotime($orderedProduct['Hamper']['delivery_date_on'])); ?>
+				<?php echo $this->Html->link(date('d/m/Y', strtotime($orderedProduct['Hamper']['delivery_date_on'])), array('action' => 'index_hamper', $orderedProduct['Hamper']['id']), array('title' => __('visualizza gli ordini di questo paniere', true))); ?>
             </td>
             <td class="actions"><?php
 				if ($orderedProduct['OrderedProduct']['paid']) {
