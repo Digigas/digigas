@@ -53,10 +53,10 @@
             <th><?php __('Data di consegna'); ?></th>
             <th><?php __('Totale'); ?></th>
         </tr>
-        <?php foreach($totalsByHamper as $date => $total): ?>
+        <?php foreach($totalsByHamper as $id => $data): ?>
         <tr class="total">
-            <td class="date"><?php echo digi_date($date); ?></td>
-            <td class="value"><?php echo $total; ?> &euro;</td>
+            <td class="date"><?php echo $this->Html->link(digi_date($data['date']), array('action' => 'index_hamper', $id)); ?></td>
+            <td class="value"><?php echo $data['total']; ?> &euro;</td>
         </tr>
         <?php endforeach; ?>
     </table>

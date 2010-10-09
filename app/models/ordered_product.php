@@ -121,7 +121,7 @@ class OrderedProduct extends AppModel {
         
         $_users = $this->User->find('all', array(
             'conditions' => array('User.id' => $user_ids),
-            'order' => 'User.last_name asc',
+            'order' => array('User.last_name asc', 'User.first_name asc'),
             'contain' => array()
         ));
 
@@ -133,6 +133,28 @@ class OrderedProduct extends AppModel {
 
         return $users;
     }
+
+	function getPendingHampers($full = false) {
+		$pendingProducts = $this->getPending();
+		$pendingHampersIds = array_unique(Set::extract('/OrderedProduct/hamper_id', $pendingProducts));
+
+		$_pendingHampers = $this->Hamper->find('all', array(
+			'conditions' => array('Hamper.id' => $pendingHampersIds),
+			'contain' => array('Seller.name')
+		));
+
+		if($full) {
+			return $_pendingHampers;
+		}
+
+		$pendingHampers = array();
+		foreach($_pendingHampers as $hamper) {
+			$pendingHampers[$hamper['Hamper']['id']] = $hamper['Hamper']['name']
+				. ' ' . __('di', true) . ' ' . $hamper['Seller']['name']
+				. ' ' . __('di', true) . ' ' . digi_date($hamper['Hamper']['delivery_date_on']);
+		}
+		return $pendingHampers;
+	}
     
     function getPendingSellers($full = false) {
         $orderedProducts = $this->getPending();
@@ -161,12 +183,14 @@ class OrderedProduct extends AppModel {
                     'or' => array(
                         'paid' => 0,
                         'retired' => 0)),
-                'fields' => array('id', 'user_id', 'seller_id', 'hamper_id')
+                'fields' => array('id', 'user_id', 'seller_id', 'hamper_id'),
+				'recursive' => -1
             ));
         }
         return $this->pendingProducts;
     }
 
+	//restiruisce i prodotti pendenti per utente
     function getPendingForUser($user_id) {
         $pendings = $this->find('all', array(
             'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),

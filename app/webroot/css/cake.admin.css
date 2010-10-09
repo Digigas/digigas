@@ -205,6 +205,10 @@ td.actions a
     text-decoration:none;
     text-shadow:none;
 }
+.small-w
+{
+    width:70px;
+}
 
 div.actions ul li a:hover {
     text-decoration:none;
