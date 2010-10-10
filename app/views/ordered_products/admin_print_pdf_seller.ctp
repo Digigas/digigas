@@ -24,17 +24,17 @@ $pdf->SetDrawColor(200,200,200);
 //ordini pendenti
 $pdf->h1(__('Ordini pendenti', true));
 $pdf->SetFont('Arial','B',9);
-$pdf->Cell(80,5, __('Prodotto', true));
-$pdf->Cell(30,5, __('Quantita', true));
-$pdf->Cell(40,5, __('Totale', true));
-$pdf->Cell(50,5, __('Data di consegna', true));
+$pdf->Cell(80,6, __('Prodotto', true));
+$pdf->Cell(30,6, __('Quantita', true));
+$pdf->Cell(40,6, __('Totale', true));
+$pdf->Cell(50,6, __('Data di consegna', true));
 $pdf->SetFont('Arial','',9);
 $pdf->Ln();
 foreach($totals as $product) {
-    $pdf->Cell(80,4, $product['Product']['name']);
-    $pdf->Cell(30,4, $product['0']['quantity']);
-    $pdf->Cell(40,4, $product['0']['total']);
-    $pdf->Cell(50,4, digi_date($product['Hamper']['delivery_date_on']));
+    $pdf->Cell(80,6, $product['Product']['name']);
+    $pdf->Cell(30,6, $product['0']['quantity']);
+    $pdf->Cell(40,6, $product['0']['total']);
+    $pdf->Cell(50,6, digi_date($product['Hamper']['delivery_date_on']));
     $pdf->Ln();
     $h = $pdf->GetY();
     $pdf->Line(10,$h, 200,$h);
@@ -44,13 +44,13 @@ foreach($totals as $product) {
 //totali per consegna
 $pdf->h1(__('Totali per consegna', true));
 $pdf->SetFont('Arial','B',9);
-$pdf->Cell(100,5, __('Data di consegna', true));
-$pdf->Cell(100,5, __('Totale', true));
+$pdf->Cell(100,6, __('Data di consegna', true));
+$pdf->Cell(100,6, __('Totale', true));
 $pdf->SetFont('Arial','',9);
 $pdf->Ln();
 foreach($totalsByHamper as $date => $total) {
-    $pdf->Cell(100,4, digi_date($date));
-    $pdf->Cell(100,4, $total);
+    $pdf->Cell(100,6, digi_date($date));
+    $pdf->Cell(100,6, $total);
     $pdf->Ln();
     $h = $pdf->GetY();
     $pdf->Line(10,$h, 200,$h);
@@ -60,17 +60,17 @@ foreach($totalsByHamper as $date => $total) {
 //dettaglio
 $pdf->h1(__('Dettaglio', true));
 $pdf->SetFont('Arial','B',9);
-$pdf->Cell(70,5, __('Acquirente', true));
-$pdf->Cell(80,5, __('Prodotto', true));
-$pdf->Cell(20,5, __('Quantita', true));
-$pdf->Cell(30,5, __('Totale', true));
+$pdf->Cell(70,6, __('Acquirente', true));
+$pdf->Cell(80,6, __('Prodotto', true));
+$pdf->Cell(20,6, __('Quantita', true));
+$pdf->Cell(30,6, __('Totale', true));
 $pdf->SetFont('Arial','',9);
 $pdf->Ln();
 foreach ($orderedProducts as $orderedProduct) {
-    $pdf->Cell(70,4, $orderedProduct['User']['fullname']);
-    $pdf->Cell(80,4, $orderedProduct['Product']['name']);
-    $pdf->Cell(20,4, $orderedProduct['OrderedProduct']['quantity']);
-    $pdf->Cell(30,4, $orderedProduct['OrderedProduct']['value']);
+    $pdf->Cell(70,6, $orderedProduct['User']['fullname']);
+    $pdf->Cell(80,6, $orderedProduct['Product']['name']);
+    $pdf->Cell(20,6, $orderedProduct['OrderedProduct']['quantity']);
+    $pdf->Cell(30,6, $orderedProduct['OrderedProduct']['value']);
     $pdf->Ln();
     $h = $pdf->GetY();
     $pdf->Line(10,$h, 200,$h);

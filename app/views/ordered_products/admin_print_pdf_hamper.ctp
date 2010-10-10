@@ -32,19 +32,28 @@ $pdf->SetDrawColor(200,200,200);
 //ordini pendenti
 $pdf->h1(__('Ordine', true));
 $pdf->SetFont('Arial','B',9);
-$pdf->Cell(130,5, __('Prodotto', true));
-$pdf->Cell(30,5, __('Quantita', true));
-$pdf->Cell(40,5, __('Totale euro', true));
+$pdf->Cell(130,6, __('Prodotto', true));
+$pdf->Cell(30,6, __('Quantita', true));
+$pdf->Cell(40,6, __('Totale euro', true));
 $pdf->SetFont('Arial','',9);
 $pdf->Ln();
 foreach($totals as $product) {
-    $pdf->Cell(130,4, $product['Product']['name']);
-    $pdf->Cell(30,4, $product['0']['quantity']);
-    $pdf->Cell(40,4, $product['0']['total']);
+    $pdf->Cell(130,6, $product['Product']['name']);
+    $pdf->Cell(30,6, $product['0']['quantity']);
+    $pdf->Cell(40,6, $product['0']['total']);
     $pdf->Ln();
     $h = $pdf->GetY();
     $pdf->Line(10,$h, 200,$h);
 }
+//totale
+$pdf->SetFont('Arial','B',9);
+$pdf->Cell(130,6, __('Totale', true));
+$pdf->Cell(30,6, '');
+$pdf->Cell(40,6, $total);
+$pdf->Ln();
+$h = $pdf->GetY();
+$pdf->Line(10,$h, 200,$h);
+$pdf->SetFont('Arial','',9);
 
 //dettaglio
 $pdf->h1(__('Dettaglio per utente', true));
@@ -52,31 +61,32 @@ $pdf->h1(__('Dettaglio per utente', true));
 //dettaglio utente
 foreach($orderedProducts as $products) {
 	//utente
+	$pdf->Ln(4);
 	$pdf->h2($products['User']['fullname']);
 
 	$pdf->SetFont('Arial','B',9);
-	$pdf->Cell(130,5, __('Prodotto', true));
-	$pdf->Cell(30,5, __('Quantita', true));
-	$pdf->Cell(40,5, __('Totale euro', true));
+	$pdf->Cell(130,6, __('Prodotto', true));
+	$pdf->Cell(30,6, __('Quantita', true));
+	$pdf->Cell(40,6, __('Totale euro', true));
 	$pdf->SetFont('Arial','',9);
 	$pdf->Ln();
 	foreach ($products['Products'] as $orderedProduct) {
-		$pdf->Cell(130,4, $orderedProduct['Product']['name']);
-		$pdf->Cell(30,4, $orderedProduct['OrderedProduct']['quantity']);
-		$pdf->Cell(40,4, $orderedProduct['OrderedProduct']['value']);
+		$pdf->Cell(130,6, $orderedProduct['Product']['name']);
+		$pdf->Cell(30,6, $orderedProduct['OrderedProduct']['quantity']);
+		$pdf->Cell(40,6, $orderedProduct['OrderedProduct']['value']);
 		$pdf->Ln();
 		$h = $pdf->GetY();
 		$pdf->Line(10,$h, 200,$h);
 	}
 
+	//totale
 	$pdf->SetFont('Arial','B',9);
-	$pdf->Cell(130,4, __('Totale', true));
-	$pdf->Cell(30,4, '');
-	$pdf->Cell(40,4, $products['Total']);
+	$pdf->Cell(130,6, __('Totale', true));
+	$pdf->Cell(30,6, '');
+	$pdf->Cell(40,6, $products['Total']);
 	$pdf->Ln();
 	$h = $pdf->GetY();
 	$pdf->Line(10,$h, 200,$h);
-
 	$pdf->SetFont('Arial','',9);
 }
 
