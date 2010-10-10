@@ -592,7 +592,8 @@ class OrderedProductsController extends AppController {
         $this->OrderedProduct->recursive = 0;
         $orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
-            'contain' => array(
+            'order' => array('OrderedProduct.user_id'),
+			'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
                 'Product' => array('fields' => array('id', 'name')))
@@ -623,5 +624,62 @@ class OrderedProductsController extends AppController {
         $pageTitle = Inflector::slug(Configure::read('GAS.name').'_'.__('ordini pendenti', true).'_'.$seller['Seller']['name']).'.pdf';
         $this->set('pageTitle', $pageTitle);
     }
+
+	function admin_print_pdf_hamper($hamper_id) {
+		Configure::write('debug', 0);
+        $this->layout = 'pdf';
+
+		//dettagli paniere
+		$hamper = $this->OrderedProduct->Hamper->find('first', array(
+			'conditions' => array('Hamper.id' => $hamper_id),
+			'contain' => array(
+				'Seller.name'
+			)
+		));
+
+		//dettagli prodotti ordinati
+		$_orderedProducts = $this->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
+			'order' => array('User.last_name asc', 'User.first_name asc'),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname')),
+                'Product' => array('fields' => array('id', 'name')))
+        ));
+		$orderedProducts = array();
+		foreach($_orderedProducts as $product) {
+			$user_id = $product['User']['id'];
+			$orderedProducts[$user_id]['User']['fullname'] = $product['User']['fullname'];
+			$orderedProducts[$user_id]['Products'][] = $product;
+
+			//calcolo il totale per utente
+			if(isset($orderedProducts[$user_id]['Total'])) {
+				$orderedProducts[$user_id]['Total'] += $product['OrderedProduct']['value'];
+			} else {
+				$orderedProducts[$user_id]['Total'] = $product['OrderedProduct']['value'];
+			}
+		}
+
+		//trovo il totale per ogni prodotto
+        $totals = $this->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
+            'fields' => array('hamper_id', 'product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id'),
+            'order' => array('hamper_id desc'),
+            'contain' => array('Product.name', 'Hamper.delivery_date_on')
+        ));
+
+		// totale
+		$total = array_sum(Set::extract('/0/total', $totals));
+
+		//trovo l'elenco degli utenti con ordini attivi
+        $users = $this->OrderedProduct->getPendingUsers();
+
+        //trovo l'elenco dei produttori con ordini attivi
+        $sellers = $this->OrderedProduct->getPendingSellers();
+
+		$this->set(compact('orderedProducts', 'hamper', 'users', 'sellers', 'totals', 'total'));
+
+		$pageTitle = Inflector::slug(Configure::read('GAS.name').'_'.$hamper['Seller']['name'].'_'.date('d-m-Y', strtotime($hamper['Hamper']['delivery_date_on']))).'.pdf';
+        $this->set('pageTitle', $pageTitle);
+	}
 }
-?>

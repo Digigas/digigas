@@ -42,5 +42,14 @@ class PDF extends FPDF {
         $this->SetFont('Arial','',9);
         $this->SetTextColor(0, 0, 0);
     }
+
+	function h2($text) {
+        $this->SetFont('Arial','',12);
+        $this->SetTextColor(153, 153, 153);
+        $this->Cell(0, 15, $text);
+        $this->Ln();
+        $this->SetFont('Arial','',9);
+        $this->SetTextColor(0, 0, 0);
+    }
     
 }
