@@ -320,4 +320,3 @@ class OrderedProduct extends AppModel {
         return $this->MoneyBox->save($data);
     }
 }
-?>
