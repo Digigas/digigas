@@ -1,6 +1,6 @@
 <?php
 $config = array(
-    'GAS.name' => 'data[Installer][website_name]',
+    'GAS.name' => '%website_name%',
     'language' => array('it'),
     'default_language' => 'it',
     'date.format' => 'D j M Y, H:i',
@@ -16,7 +16,7 @@ $config = array(
          */
         'root', 'admin', 'fornitore', 'utente'
     ),
-    'email.from' => '',
+    'email.from' => '%website_email%',
     'email.SMTPoptions' => array(
         /* 
          * 'port' => '',
