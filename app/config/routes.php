@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Short description for file.
  *
@@ -27,15 +28,21 @@
  * to use (in this case, /app/views/pages/home.ctp)...
  */
 
+if (file_exists(APP . 'config' . DS . 'installed.txt')) {
+	// the routes for when the application has been installed
+
 	Router::connect('/', array('controller' => 'pages', 'action' => 'index'));
-    Router::connect('/pages/*',
-        array('controller'=>'pages', 'action'=>'view'));
-    Router::connect('/:language/pages/*',
-        array('controller' => 'pages', 'action' => 'view'),
-        array('language' => '[a-z]{2}'));
-    Router::connect('/digigas',
-        array('controller'=>'hampers', 'action'=>'index'));
+	Router::connect('/pages/*',
+			array('controller' => 'pages', 'action' => 'view'));
+	Router::connect('/:language/pages/*',
+			array('controller' => 'pages', 'action' => 'view'),
+			array('language' => '[a-z]{2}'));
+	Router::connect('/digigas',
+			array('controller' => 'hampers', 'action' => 'index'));
 
-    Router::connect('/admin', array('controller' => 'ordered_products', 'action' => 'index', 'admin' => true));
-
+	Router::connect('/admin', array('controller' => 'ordered_products', 'action' => 'index', 'admin' => true));
+} else {
+	Router::connect('/', array('controller' => 'installer', 'action' => 'index'));
+	Router::connect(':controller/:action', array('controller' => 'installer'));
+}
 ?>
