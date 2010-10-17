@@ -11,6 +11,10 @@
             echo $this->Form->input('username');
             echo $this->Form->input('password', array('value' => ''));
             echo $this->Form->input('email');
+
+			echo $this->Form->input('address', array('label' => __('Indirizzo', true)));
+			echo $this->Form->input('phone', array('label' => __('Telefono', true)));
+			echo $this->Form->input('mobile', array('label' => __('Cellulare', true)));
             ?>
         </div>
 

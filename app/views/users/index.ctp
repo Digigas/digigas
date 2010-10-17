@@ -19,7 +19,7 @@ $class = ' class="altrow"';?>
             </dd>
             <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Gruppo'); ?></dt>
             <dd<?php if ($i++ % 2 == 0) echo $class;?>>
-<?php echo $user['User']['usergroup_id']; ?>
+<?php echo $user['Usergroup']['name']; ?>
                 &nbsp;
             </dd>
             <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Registrato il'); ?></dt>
@@ -54,6 +54,24 @@ $class = ' class="altrow"';?>
             <dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Email'); ?></dt>
             <dd<?php if ($i++ % 2 == 0) echo $class;?>>
 <?php echo $user['User']['email']; ?>
+                &nbsp;
+            </dd>
+
+			<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Indirizzo'); ?></dt>
+            <dd<?php if ($i++ % 2 == 0) echo $class;?>>
+<?php echo $user['User']['address']; ?>
+                &nbsp;
+            </dd>
+
+			<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Telefono'); ?></dt>
+            <dd<?php if ($i++ % 2 == 0) echo $class;?>>
+<?php echo $user['User']['phone']; ?>
+                &nbsp;
+            </dd>
+
+			<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Cellulare'); ?></dt>
+            <dd<?php if ($i++ % 2 == 0) echo $class;?>>
+<?php echo $user['User']['mobile']; ?>
                 &nbsp;
             </dd>
             
