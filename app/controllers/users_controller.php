@@ -37,7 +37,7 @@ class UsersController extends AppController {
 
         $user = $this->User->find('first', array(
                 'conditions' => array('User.id' => $id),
-                'contain' => array('Seller')
+                'contain' => array('Seller', 'Usergroup.name')
             ));
 
         $this->set(compact('user'));
