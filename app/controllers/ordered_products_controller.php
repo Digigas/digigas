@@ -517,7 +517,9 @@ class OrderedProductsController extends AppController {
     }
 
     function admin_order_for_user() {
-        $users = $this->OrderedProduct->User->find('list', array('User.active' => 1));
+        $users = $this->OrderedProduct->User->find('list', array(
+			'conditions' => array('User.active' => 1),
+			'order' => array('User.Last_name asc', 'User.First_name asc')));
         $hampers = $this->OrderedProduct->Hamper->find('all', array(
             'conditions' => $this->OrderedProduct->Hamper->getActiveConditions(),
             'contain' => array('Seller.name')
