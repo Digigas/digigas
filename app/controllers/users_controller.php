@@ -3,6 +3,7 @@
 class UsersController extends AppController {
 
     var $name = 'Users';
+	var $paginate = array('order' => array('User.Last_name asc', 'User.first_name Asc'));
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -109,7 +110,7 @@ class UsersController extends AppController {
         $this->User->recursive = 0;
 
         if (!is_null($role) && is_numeric($role)) {
-            $this->paginate = array('conditions' => array('role' => $role));
+            $this->paginate = am($this->paginate, array('conditions' => array('role' => $role)));
             $this->set('role', Configure::read('roles.' . $role));
         }
 
