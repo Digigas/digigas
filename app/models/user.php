@@ -38,7 +38,9 @@ class User extends AppModel {
     var $validate = array(
         'first_name'    => array('rule' => 'notEmpty', 'on' => 'create'),
         'last_name'     => array('rule' => 'notEmpty', 'on' => 'create'),
-        'username'      => array('rule' => 'notEmpty', 'on' => 'create'),
+        'username'      => array(
+			'notEmpty'	=> array('rule' => 'notEmpty', 'on' => 'create'),
+			'unique'	=> array('rule' => 'isUnique', 'on' => 'create', 'message' => 'Questo username è già utilizzato per un altro utente')),
         'password'      => array('rule' => 'notEmpty', 'on' => 'create'),
         'email'         => array('rule' => 'notEmpty', 'on' => 'create')
     );
