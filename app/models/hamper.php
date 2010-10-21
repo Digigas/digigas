@@ -14,7 +14,10 @@ class Hamper extends AppModel {
 		)
 	);
 
-    var $hasMany = array('OrderedProduct');
+    var $hasMany = array(
+		'OrderedProduct' => array(
+			'dependent'=> true
+		));
 
 	var $hasAndBelongsToMany = array(
 		'Product' => array(
