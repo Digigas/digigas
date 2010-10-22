@@ -50,7 +50,7 @@ class Product extends AppModel {
                             array(
                                 'image' => array(
                                     'field' => 'image',
-                                    'dir' => "documents{DS}image{DS}product", //markers: '{APP}', '{DS}', '{IMAGES}', '{WWW_ROOT}', '{FILES}'
+                                    'dir' => "{WWW_ROOT}documents{DS}image{DS}product", //markers: '{APP}', '{DS}', '{IMAGES}', '{WWW_ROOT}', '{FILES}'
                                     'deleteMainFile' => false,
 									'randomFilenames' => true,
                                     'thumbsizes' => array()

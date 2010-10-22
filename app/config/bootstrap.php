@@ -49,6 +49,11 @@
  *
  */
 
+//imposto locale a IT
+setlocale(LC_ALL, 'it_IT');
+//imposto timezone italia
+date_default_timezone_set('Europe/Rome');
+
 Configure::load('config');
 
 include_once('date_functions.php');

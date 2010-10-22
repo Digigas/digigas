@@ -1,8 +1,5 @@
 <?php
 
-//imposto timezone italia
-date_default_timezone_set('Europe/Rome');
-
 function isDefaultLanguage() {
     if(Configure::read('language') == Configure::read('default_language'))
         return true;
