@@ -16,6 +16,7 @@
             echo $this->Form->input('email', array('label' => 'e-mail'));
             echo $this->Form->input('website', array('label' => 'Sito web'));
             echo $this->Form->input('notes', array('label' => 'Note'));
+			echo $this->Form->input('active', array('label' => __('Attivo', true)));
             ?>
         </div>
 
