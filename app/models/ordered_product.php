@@ -73,7 +73,7 @@ class OrderedProduct extends AppModel {
         if(!empty($existing)) {
             $data['OrderedProduct']['id'] = $existing['OrderedProduct']['id'];
             $data['OrderedProduct']['quantity'] = $data['OrderedProduct']['quantity'] + $existing['OrderedProduct']['quantity'];
-            $data['OrderedProduct']['value'] = $data['OrderedProduct']['value'] + $existing['OrderedProduct']['value'];
+            $data['OrderedProduct']['value'] = str_replace(',', '.', $data['OrderedProduct']['value'] + $existing['OrderedProduct']['value']);
         }
 
         return parent::save($data, $validate, $fieldList);
@@ -95,7 +95,7 @@ class OrderedProduct extends AppModel {
         //imposto il modello
         $data['OrderedProduct']['user_id'] = $user['User']['id'];
 
-        $data['OrderedProduct']['value'] = $product['Product']['value'] * $data['OrderedProduct']['quantity'];
+        $data['OrderedProduct']['value'] = str_replace(',', '.', ($product['Product']['value'] * $data['OrderedProduct']['quantity']));
 
         $data['OrderedProduct']['paid'] = 0;
         $data['OrderedProduct']['retired'] = 0;
