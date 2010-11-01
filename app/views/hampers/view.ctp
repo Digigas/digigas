@@ -105,7 +105,23 @@ $this->Layout->blockEnd();
                         for($i = 1; $i < 11; $i ++) {
                             $selectOptions[$i] = $i;
                         }
+                        
                         echo $this->Form->input('quantity', array('options' => $selectOptions, 'label' => __('Quantità', true)));
+                        if($product['option_list_1'])
+                        {
+                            $options = array();
+                            foreach(explode(';', $product['option_list_1']) as $opt)
+                                $options[$opt] = $opt;
+                            
+                            echo $this->Form->input('option_1', array('type' => 'select', 'options' => $options, 'label' => __($product['option_1'], true)));
+                        }
+                        if($product['option_list_2'])
+                        {
+                            $options = array();
+                            foreach(explode(';', $product['option_list_2']) as $opt)
+                                $options[$opt] = $opt;
+                            echo $this->Form->input('option_2', array('type' => 'select', 'options' => $options, 'label' => __($product['option_2'], true)));
+                        }
                         echo $this->Form->end('Acquista');
                         ?>
             </div>
