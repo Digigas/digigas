@@ -122,6 +122,7 @@ $this->Layout->blockEnd();
                                 $options[$opt] = $opt;
                             echo $this->Form->input('option_2', array('type' => 'select', 'options' => $options, 'label' => __($product['option_2'], true)));
                         }
+                        echo $this->Form->input('note', array('type' => 'text', 'label' => __('Note', true)));
                         echo $this->Form->end('Acquista');
                         ?>
             </div>

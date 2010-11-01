@@ -37,7 +37,6 @@ $pdf->Cell(30,6, __('Quantita', true));
 $pdf->Cell(40,6, __('Totale euro', true));
 $pdf->SetFont('Arial','',9);
 $pdf->Ln();
-// print_r($totals); die();
 foreach($totals as $product) {
     $pdf->Cell(130,6, $product['Product']['name']);
     $pdf->Cell(30,6, $product['0']['quantity']);
@@ -97,7 +96,7 @@ foreach($orderedProducts as $products) {
 		
 		if($orderedProduct['OrderedProduct']['option_1'].$orderedProduct['OrderedProduct']['option_2'])
         {
-            $pdf->Ln(3);
+            $pdf->Ln(4);
             $option_string = "";
             if($orderedProduct['OrderedProduct']['option_1'])
                 $option_string .= $orderedProduct['Product']['option_1'].": ".$orderedProduct['OrderedProduct']['option_1'];
@@ -109,11 +108,16 @@ foreach($orderedProducts as $products) {
             }
             $pdf->SetFont('Arial','',7);
             $pdf->Cell(130,6, $option_string);
-            $pdf->Ln();
             $pdf->SetFont('Arial','',9);
         }
-        else 
-            $pdf->Ln();
+        if($orderedProduct['OrderedProduct']['note']) 
+        {
+            $pdf->Ln(4);
+            $pdf->SetFont('Arial','I',7);
+            $pdf->Cell(130,3, $orderedProduct['OrderedProduct']['note']);
+            $pdf->SetFont('Arial','',9);
+        }
+        $pdf->Ln();
 		$h = $pdf->GetY();
 		$pdf->Line(10,$h, 200,$h);
 	}
