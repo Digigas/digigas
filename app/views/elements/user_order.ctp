@@ -15,6 +15,13 @@
             ?>
         </div>
         <div class="value">
+        <?php
+            echo $order['Product']['option_1']. ": <strong>".$order['OrderedProduct']['option_1']."</strong>";
+            echo "<br>";
+            echo $order['Product']['option_2']. ":  <strong>".$order['OrderedProduct']['option_2']."</strong>";
+            ?>
+        </div>
+        <div class="value">
             <?php
             __('Costo totale: ');
             echo $order['OrderedProduct']['value'];

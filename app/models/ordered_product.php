@@ -66,6 +66,8 @@ class OrderedProduct extends AppModel {
                     'OrderedProduct.seller_id' => $data['OrderedProduct']['seller_id'],
                     'OrderedProduct.product_id' => $data['OrderedProduct']['product_id'],
                     'OrderedProduct.hamper_id' => $data['OrderedProduct']['hamper_id'],
+                    'OrderedProduct.option_1' => $data['OrderedProduct']['option_1'],
+                    'OrderedProduct.option_2' => $data['OrderedProduct']['option_2']
                 ),
                 'contain' => array()));
         }
