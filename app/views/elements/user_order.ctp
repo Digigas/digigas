@@ -19,6 +19,11 @@
             echo $order['Product']['option_1']. ": <strong>".$order['OrderedProduct']['option_1']."</strong>";
             echo "<br>";
             echo $order['Product']['option_2']. ":  <strong>".$order['OrderedProduct']['option_2']."</strong>";
+            if($order['OrderedProduct']['note'])
+            {
+                echo "<br>";
+                echo $order['OrderedProduct']['note'];
+            }
             ?>
         </div>
         <div class="value">
