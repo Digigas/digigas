@@ -642,10 +642,10 @@ class OrderedProductsController extends AppController {
 		//dettagli prodotti ordinati
 		$_orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
-			'order' => array('User.last_name asc', 'User.first_name asc'),
+			'order' => array('User.last_name asc', 'User.first_name asc', 'Product.name'),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
-                'Product' => array('fields' => array('id', 'name')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
         ));
 		$orderedProducts = array();
 		foreach($_orderedProducts as $product) {
@@ -664,10 +664,10 @@ class OrderedProductsController extends AppController {
 		//trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
-            'fields' => array('hamper_id', 'product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
-            'group' => array('hamper_id', 'product_id'),
-            'order' => array('hamper_id desc'),
-            'contain' => array('Product.name', 'Hamper.delivery_date_on')
+            'fields' => array('hamper_id', 'product_id', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
+            'order' => array('hamper_id desc', 'Product.name'),
+            'contain' => array('Product.name','Product.option_1', 'Product.option_2' ,'Hamper.delivery_date_on')
         ));
 
 		// totale
