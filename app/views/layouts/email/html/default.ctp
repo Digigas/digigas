@@ -20,67 +20,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
     <head>
-        <title><?php echo $title_for_layout;?></title>
-
-        <style type="text/css">
-
-            body
-            {
-                margin:0;
+        <title><?php echo $title_for_layout; ?></title>
+    </head>
+    <body style="margin:0; padding:0;">
+		<div style="margin:0;
                 padding:0;
                 color:#333;
-            }
-            .header
-            {
-                background:#7CAF00; color:#fff; padding:10px 20px; font-size:20px; text-align:left;
-            }
-            h1
-            {
-                font-size:18px;
-            }
-            div.date
-            {
-                background:#7CAF00;
-                color:#fff;
-                padding:5px 8px;
-                width:auto;
-                float:right;
-            }
-            table
-            {
-                width:100%;
-            }
-            th 
-            {
-                border-bottom:2px solid #999;
-                padding:5px;
-                text-align:left;
-            }
-            td
-            {
-                border-bottom:1px solid #ccc;
-                padding:3px;
-                text-align:left;
-            }
-            .content
-            {
-                padding:20px;
-            }
-            .footer
-            {
-                background:#7CAF00; color:#fff; padding:10px 20px; font-size:10px; text-align:right;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="header">
-        <?php 
-        echo Configure::read('GAS.name');
-        ?>
-        </div>
-        <div class="content">
-        <?php echo $content_for_layout;?>
-        </div>
-        <div class="footer">Email inviata tramite <?php echo $this->Html->link('digigas3', 'http://'.$_SERVER['HTTP_HOST']); ?></div>
-    </body>
+				font-family: Arial, sans-serif;
+				font-size: 12px;">
+			<div class="header" style="background:#7CAF00; color:#fff; padding:10px 20px; font-size:20px; text-align:left;">
+				<?php
+				echo Configure::read('GAS.name');
+				?>
+			</div>
+			<div class="content" style="padding:20px;">
+				<?php echo $content_for_layout; ?>
+			</div>
+			<div class="footer" style="background:#7CAF00; color:#fff; padding:10px 20px; font-size:10px; text-align:right;">
+				Email inviata tramite <?php echo $this->Html->link('digigas3', 'http://' . $_SERVER['HTTP_HOST']); ?>
+			</div>
+		</div>
+	</body>
 </html>
