@@ -7,7 +7,7 @@
     foreach ($orderedProducts as $orderedProduct): 
     ?>
     <div class="product">
-        <?php echo $this->Image->resize('/documents/image/product/'.$orderedProduct['Product']['image'], '150', '120');?>
+        <?php echo $this->Image->resize('/documents/image/product/'.$orderedProduct['Product']['image'], '160', '120');?>
         <div class="name">
                 <?php echo $orderedProduct['Product']['name'];?>
         </div>

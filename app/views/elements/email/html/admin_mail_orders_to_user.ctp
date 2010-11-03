@@ -60,8 +60,12 @@
             __('si');
         } else {
             echo '<strong>';
-            __('Ritiralo ');
-            echo digi_date($orderedProduct['Hamper']['delivery_date_on']);
+			if(!date_is_empty($orderedProduct['Hamper']['delivery_date_on'])) {
+				__('Ritiralo ');
+				echo digi_date($orderedProduct['Hamper']['delivery_date_on']);
+			} else {
+				echo __('La data per il ritiro non è ancora stata comunicata');
+			}
             echo '</strong>';
         }
         ?></td>

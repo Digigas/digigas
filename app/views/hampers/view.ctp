@@ -25,17 +25,24 @@ $this->Layout->blockEnd();
         __(' fino a ');
         echo  digi_date($hamper['Hamper']['end_date']);
 
-        echo '<br/>';
-        __('Questo acquisto deve essere pagato entro ');
-        echo  digi_date($hamper['Hamper']['checkout_date']);
+		if($hamper['Hamper']['checkout_date'] != '1970-01-01 00:00:00') {
+			echo '<br/>';
+			__('Questo acquisto deve essere pagato entro ');
+			echo  digi_date($hamper['Hamper']['checkout_date']);
+		}
 
         echo '<br/>';
         __('Ritira la merce presso ');
         echo $hamper['Hamper']['delivery_position'];
-        __(' da ');
-        echo  digi_date($hamper['Hamper']['delivery_date_on']);
-        __(' a ');
-        echo  digi_date($hamper['Hamper']['delivery_date_off']);
+
+		if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+			__(' da ');
+			echo  digi_date($hamper['Hamper']['delivery_date_on']);
+		}
+		if(!date_is_empty($hamper['Hamper']['delivery_date_off'])) {
+			__(' a ');
+			echo  digi_date($hamper['Hamper']['delivery_date_off']);
+		}
 
 		$_notes = strip_tags($hamper['Hamper']['notes']);
 		if(!empty($_notes)) {
@@ -50,7 +57,7 @@ $this->Layout->blockEnd();
             <?php foreach ($hamper['Product'] as $product): ?>
         <div class="product">
             <a href="<?php echo $this->Html->url(array('controller' => 'products', 'action' => 'view', $product['id'])); ?>">
-                <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '150', '120');?>
+                <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '160', '120');?>
             </a>
             <div class="name"><?php echo $product['name'];?></div>
 
@@ -105,7 +112,26 @@ $this->Layout->blockEnd();
                         for($i = 1; $i < 11; $i ++) {
                             $selectOptions[$i] = $i;
                         }
-                        echo $this->Form->input('quantity', array('options' => $selectOptions, 'label' => __('Quantità', true)));
+                        
+                        echo $this->Form->input('quantity', array('options' => $selectOptions, 'label' => ucfirst($product['units'])));
+                        if($product['option_list_1'])
+                        {
+                            $options = array();
+                            foreach(explode(';', $product['option_list_1']) as $opt)
+                                $options[$opt] = $opt;
+                            
+                            echo $this->Form->input('option_1', array('type' => 'select', 'options' => $options, 'label' => __($product['option_1'], true)));
+                        }
+                        if($product['option_list_2'])
+                        {
+                            $options = array();
+                            foreach(explode(';', $product['option_list_2']) as $opt)
+                                $options[$opt] = $opt;
+                            echo $this->Form->input('option_2', array('type' => 'select', 'options' => $options, 'label' => __($product['option_2'], true)));
+                        }
+						if($product['show_note'] == 1) {
+							echo $this->Form->input('note', array('type' => 'text', 'label' => __('Note', true)));
+						}
                         echo $this->Form->end('Acquista');
                         ?>
             </div>

@@ -61,11 +61,21 @@ class OrderedProduct extends AppModel {
         $data['OrderedProduct']['product_id'],
         $data['OrderedProduct']['hamper_id']
         )) {
+			if(!isset($data['OrderedProduct']['option_1'])) {
+				$data['OrderedProduct']['option_1'] =  null;
+			}
+			if(!isset($data['OrderedProduct']['option_2'])) {
+				$data['OrderedProduct']['option_2'] =  null;
+			}
+
             $existing = $this->find('first', array('conditions' => array(
                     'OrderedProduct.user_id' => $data['OrderedProduct']['user_id'],
                     'OrderedProduct.seller_id' => $data['OrderedProduct']['seller_id'],
                     'OrderedProduct.product_id' => $data['OrderedProduct']['product_id'],
                     'OrderedProduct.hamper_id' => $data['OrderedProduct']['hamper_id'],
+                    'OrderedProduct.option_1' => $data['OrderedProduct']['option_1'],
+                    'OrderedProduct.option_2' => $data['OrderedProduct']['option_2'],
+                    'OrderedProduct.note' => $data['OrderedProduct']['note']
                 ),
                 'contain' => array()));
         }
@@ -197,8 +207,8 @@ class OrderedProduct extends AppModel {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name')),
-                'Hamper' => array('fields' => array('delivery_date_on')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
+                'Hamper' => array('fields' => array('id', 'delivery_date_on')))
         ));
         return $pendings;
     }

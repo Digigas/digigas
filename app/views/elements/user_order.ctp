@@ -15,6 +15,22 @@
             ?>
         </div>
         <div class="value">
+        <?php
+		if(!empty($order['Product']['option_1'])) {
+            echo $order['Product']['option_1']. ": <strong>".$order['OrderedProduct']['option_1']."</strong>";
+            }
+		if(!empty($order['Product']['option_2'])) {
+            echo " | ";
+			echo $order['Product']['option_2']. ":  <strong>".$order['OrderedProduct']['option_2']."</strong>";
+		}
+		if($order['OrderedProduct']['note'])
+		{
+			echo "<br/>";
+			echo '('. $order['OrderedProduct']['note'] .')';
+		}
+		?>
+        </div>
+        <div class="value">
             <?php
             __('Costo totale: ');
             echo $order['OrderedProduct']['value'];

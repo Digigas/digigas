@@ -222,3 +222,10 @@ function date_it($format, $ts = null) {
 
     return $data;
 }
+
+function date_is_empty($date) {
+	if(date('Ymd', strtotime($date)) == '19700101') {
+		return true;
+	}
+	return false;
+}
