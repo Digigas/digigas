@@ -224,7 +224,8 @@ function date_it($format, $ts = null) {
 }
 
 function date_is_empty($date) {
-	if(date('Ymd', strtotime($date)) == '19700101') {
+	//da verificare... 1971 non è proprio il massimo...
+	if(strtotime($date) < strtotime('1971-01-01')) {
 		return true;
 	}
 	return false;
