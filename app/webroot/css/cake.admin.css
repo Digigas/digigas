@@ -552,3 +552,10 @@ div.note
 {
     color:#f90;
 }
+
+.product_details
+{
+    clear:left;
+    color:#999;
+    font-size:10px;
+}

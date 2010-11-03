@@ -18,7 +18,7 @@
 		<div class="name">
         <?php
         if(!empty($hamper['Hamper']['name'])) {
-            echo $hamper['Hamper']['name'];
+            echo $html->link($hamper['Hamper']['name'], array('action' => 'view', $hamper['Hamper']['id']));
         }
         ?>
         </div>
@@ -38,10 +38,14 @@
             <?php
             __('In consegna presso ');
             echo $hamper['Hamper']['delivery_position'];
-            __(' da ');
-            echo  digi_date($hamper['Hamper']['delivery_date_on']);
-            __(' a ');
-            echo  digi_date($hamper['Hamper']['delivery_date_off']);
+			if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+				__(' da ');
+				echo  digi_date($hamper['Hamper']['delivery_date_on']);
+			} 
+			if(!date_is_empty($hamper['Hamper']['delivery_date_off'])) {
+				__(' a ');
+				echo  digi_date($hamper['Hamper']['delivery_date_off']);
+			}
             ?>
         </div>
 		<div class="options">

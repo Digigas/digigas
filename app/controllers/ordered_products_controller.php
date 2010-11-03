@@ -90,7 +90,7 @@ class OrderedProductsController extends AppController {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name')),
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
                 'Hamper' => array('fields' => array('id', 'delivery_date_on')))
         );
         $this->OrderedProduct->recursive = 0;
@@ -158,7 +158,7 @@ class OrderedProductsController extends AppController {
 			'order' => array('User.last_name asc', 'User.first_name asc'),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
-                'Product' => array('fields' => array('id', 'name')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
         ));
 		$orderedProducts = array();
 		foreach($_orderedProducts as $product) {
@@ -177,10 +177,10 @@ class OrderedProductsController extends AppController {
 		//trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
-            'fields' => array('hamper_id', 'product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
-            'group' => array('hamper_id', 'product_id'),
+            'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
             'order' => array('hamper_id desc'),
-            'contain' => array('Product.name', 'Hamper.delivery_date_on')
+            'contain' => array('Product' => array('name', 'option_1', 'option_2'), 'Hamper.delivery_date_on')
         ));
 
 		// totale
@@ -205,16 +205,16 @@ class OrderedProductsController extends AppController {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
         ));
 
         //trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
-            'fields' => array('hamper_id', 'product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
-            'group' => array('hamper_id', 'product_id'),
+            'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
             'order' => array('hamper_id desc'),
-            'contain' => array('Product.name', 'Hamper.delivery_date_on')
+            'contain' => array('Product' => array('name', 'option_1', 'option_2'), 'Hamper.delivery_date_on')
         ));
 
         $totalsByHamper = array();
@@ -303,6 +303,71 @@ class OrderedProductsController extends AppController {
             $this->Session->setFlash(__('ERRORE durante l\'invio della mail', true));
         }
         $this->redirect($this->referer());
+    }
+
+	function admin_mail_hamper_to_users($hamper_id) {
+        //dettagli paniere
+		$hamper = $this->OrderedProduct->Hamper->find('first', array(
+			'conditions' => array('Hamper.id' => $hamper_id),
+			'contain' => array(
+				'Seller.name'
+			)
+		));
+
+		//dettagli prodotti ordinati
+		$_orderedProducts = $this->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
+			'order' => array('User.id asc'),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname', 'email')),
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
+        ));
+		$orderedProducts = array();
+		foreach($_orderedProducts as $product) {
+			$user_id = $product['User']['id'];
+			$orderedProducts[$user_id]['User'] = $product['User'];
+			$orderedProducts[$user_id]['Products'][] = $product;
+
+			//calcolo il totale per utente
+			if(isset($orderedProducts[$user_id]['Total'])) {
+				$orderedProducts[$user_id]['Total'] += $product['OrderedProduct']['value'];
+			} else {
+				$orderedProducts[$user_id]['Total'] = $product['OrderedProduct']['value'];
+			}
+		}
+
+		$failed = false;
+		foreach($orderedProducts as $userOrder) {
+			$products = $userOrder['Products'];
+			$total = $userOrder['Total'];
+			$this->set(compact('products', 'hamper', 'total'));
+
+			//compongo il messaggio nella view che si trova nella cartella email
+			//invio l'email
+			//$this->Email->delivery = 'debug';
+			$this->Email->to = $userOrder['User']['email'];
+			$this->Email->subject = '['.Configure::read('GAS.name').'] '.__('Ordine ', true)
+				.$hamper['Hamper']['name']
+				.' di '.$hamper['Seller']['name'];
+			$this->Email->from = Configure::read('email.from');
+			$this->Email->sendAs = 'html';
+			$this->Email->template = 'admin_mail_hamper_to_users';
+
+			if($this->Email->send()) {
+				//mail ok
+			} else {
+				//mail error
+				$failed = true;
+			}
+
+			if($failed) {
+				$this->Session->setFlash('Si sono verificati degli errori');
+			} else {
+				$this->Session->setFlash('Tutte le email sono state inviate correttamente');
+			}
+
+			$this->redirect($this->referer());
+		}
     }
 
     function admin_mass_mail_orders_to_users() {
@@ -642,10 +707,10 @@ class OrderedProductsController extends AppController {
 		//dettagli prodotti ordinati
 		$_orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
-			'order' => array('User.last_name asc', 'User.first_name asc'),
+			'order' => array('User.last_name asc', 'User.first_name asc', 'Product.name'),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
-                'Product' => array('fields' => array('id', 'name')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
         ));
 		$orderedProducts = array();
 		foreach($_orderedProducts as $product) {
@@ -664,10 +729,10 @@ class OrderedProductsController extends AppController {
 		//trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
-            'fields' => array('hamper_id', 'product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
-            'group' => array('hamper_id', 'product_id'),
-            'order' => array('hamper_id desc'),
-            'contain' => array('Product.name', 'Hamper.delivery_date_on')
+            'fields' => array('hamper_id', 'product_id', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
+            'order' => array('hamper_id desc', 'Product.name'),
+            'contain' => array('Product.name','Product.option_1', 'Product.option_2' ,'Hamper.delivery_date_on')
         ));
 
 		// totale

@@ -104,8 +104,13 @@ h1
 .hamper .name
 {
     color: #f90;
-    font-size:14px;
+    font-size:16px;
     margin-bottom:10px;
+}
+.hamper .name a
+{
+    color: #f90;
+    text-decoration:none;
 }
 .hamper .seller
 {
@@ -162,8 +167,8 @@ h1
     margin-bottom:10px;
     padding:10px;
     border:1px solid #ccc;
-    width:150px;
-    height:260px;
+    width:160px;
+    height:360px;
     overflow:hidden;
 }
 .product-detail
@@ -201,7 +206,7 @@ h1
 }
 .product-detail .name
 {
-    width:140px;
+    width:150px;
 }
 .product .text,
 .product-detail .text
@@ -218,7 +223,7 @@ h1
     display:block;
     position:absolute;
     bottom:10px;
-    width:150px;
+    width:160px;
     background:#eee;
 }
 .product .options h4,
@@ -242,15 +247,23 @@ h1
 .product .options form
 {
     position:relative;
-    width:150px;
+    width:160px;
     margin:0;
     padding:10px 0;
     border-top:1px solid #333;
+}
+.product .options form div
+{
+    margin:0;
 }
 .product .options input,
 .product .options
 {
     margin:0;
+}
+.product .options input
+{
+    width:135px;
 }
 .product .options .submit
 {
@@ -259,7 +272,7 @@ h1
 .product .options .submit input
 {
     right:5px;
-    width:135px;
+    width:145px;
     margin:0;
 }
 

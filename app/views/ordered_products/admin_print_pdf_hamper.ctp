@@ -41,7 +41,25 @@ foreach($totals as $product) {
     $pdf->Cell(130,6, $product['Product']['name']);
     $pdf->Cell(30,6, $product['0']['quantity']);
     $pdf->Cell(40,6, $product['0']['total']);
-    $pdf->Ln();
+    if($product['OrderedProduct']['option_1'].$product['OrderedProduct']['option_2'])
+    {
+            $pdf->Ln(3);
+            $option_string = "";
+        if($product['OrderedProduct']['option_1'])
+            $option_string .= $product['Product']['option_1'].": ".$product['OrderedProduct']['option_1'];
+        if($product['OrderedProduct']['option_2'])
+        {
+            if($option_string)
+                $option_string .= "; ";
+            $option_string .= $product['Product']['option_2'].": ".$product['OrderedProduct']['option_2'];
+        }
+        $pdf->SetFont('Arial','',7);
+        $pdf->Cell(130,6, $option_string);
+        $pdf->Ln();
+        $pdf->SetFont('Arial','',9);
+    }
+    else 
+        $pdf->Ln();
     $h = $pdf->GetY();
     $pdf->Line(10,$h, 200,$h);
 }
@@ -71,10 +89,36 @@ foreach($orderedProducts as $products) {
 	$pdf->SetFont('Arial','',9);
 	$pdf->Ln();
 	foreach ($products['Products'] as $orderedProduct) {
-		$pdf->Cell(130,6, $orderedProduct['Product']['name']);
+        $name = $orderedProduct['Product']['name'];
+        $pdf->Cell(130,6, $name);
 		$pdf->Cell(30,6, $orderedProduct['OrderedProduct']['quantity']);
 		$pdf->Cell(40,6, $orderedProduct['OrderedProduct']['value']);
-		$pdf->Ln();
+		
+		if($orderedProduct['OrderedProduct']['option_1'].$orderedProduct['OrderedProduct']['option_2'])
+        {
+            $pdf->Ln(4);
+            $option_string = "";
+            if($orderedProduct['OrderedProduct']['option_1']) {
+                $option_string .= $orderedProduct['Product']['option_1'].": ".$orderedProduct['OrderedProduct']['option_1'];
+			}
+			if($orderedProduct['OrderedProduct']['option_2']) {
+                if($option_string) {
+                    $option_string .= "; ";
+				}
+                $option_string .= $orderedProduct['Product']['option_2'].": ".$orderedProduct['OrderedProduct']['option_2'];
+            }
+            $pdf->SetFont('Arial','',7);
+            $pdf->Cell(130,6, $option_string);
+            $pdf->SetFont('Arial','',9);
+        }
+        if($orderedProduct['OrderedProduct']['note']) 
+        {
+            $pdf->Ln(4);
+            $pdf->SetFont('Arial','I',7);
+            $pdf->Cell(130,3, $orderedProduct['OrderedProduct']['note']);
+            $pdf->SetFont('Arial','',9);
+        }
+        $pdf->Ln();
 		$h = $pdf->GetY();
 		$pdf->Line(10,$h, 200,$h);
 	}
@@ -93,4 +137,4 @@ foreach($orderedProducts as $products) {
 $pdf->Ln();
 
 //stampa pdf
-echo $pdf->output($pageTitle, 'D');
+echo $pdf->output($pageTitle, 'I');

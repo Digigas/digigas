@@ -20,6 +20,13 @@
 		echo $this->Form->input('weight', array('label' => __('Peso (specifica unità di misura)', true)));
 		echo $this->Form->input('number', array('label' => __('Numero di pezzi per collo', true)));
 		echo $this->Form->input('value', array('label' => __('Prezzo &euro; per collo', true)));
+		echo $this->Form->input('units', array('label' => __('Unità di misura per l\'acquisto', true), 'options' => Configure::read('Product.units')));
+        echo $this->Form->input('option_1', array('label' => __('Opzioni 1: etichetta', true)));
+        echo $this->Form->input('option_list_1', array('label' => __("Opzioni 1: elenco opzioni (separate da ';')", true)));
+        echo $this->Form->input('option_2', array('label' => __('Opzioni 2: etichetta', true)));
+        echo $this->Form->input('option_list_2', array('label' => __("Opzioni 2: elenco opzioni (separate da ';')", true)));
+        echo $this->Form->input('show_note', array('label' => __('Visualizza un campo di testo per le note', true)));
+
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Salva', true));?>
