@@ -55,22 +55,30 @@ class OrderedProduct extends AppModel {
     function save($data = null, $validate = true, $fieldList = array()) {
         // se esiste un altro ordine uguale, sommo all'ordine precedente
         $existing = false;
+//         debug($data);
+//         die();
         if(isset(
         $data['OrderedProduct']['user_id'],
         $data['OrderedProduct']['seller_id'],
         $data['OrderedProduct']['product_id'],
         $data['OrderedProduct']['hamper_id']
+        
         )) {
-            $existing = $this->find('first', array('conditions' => array(
+            $conditions =  array(
                     'OrderedProduct.user_id' => $data['OrderedProduct']['user_id'],
                     'OrderedProduct.seller_id' => $data['OrderedProduct']['seller_id'],
                     'OrderedProduct.product_id' => $data['OrderedProduct']['product_id'],
-                    'OrderedProduct.hamper_id' => $data['OrderedProduct']['hamper_id'],
-                    'OrderedProduct.option_1' => $data['OrderedProduct']['option_1'],
-                    'OrderedProduct.option_2' => $data['OrderedProduct']['option_2'],
-                    'OrderedProduct.note' => $data['OrderedProduct']['note']
-                ),
-                'contain' => array()));
+                    'OrderedProduct.hamper_id' => $data['OrderedProduct']['hamper_id']
+                );
+            
+            if(isset($data['OrderedProduct']['option_1']))
+                $conditions['OrderedProduct.option_1'] = $data['OrderedProduct']['option_1'];
+            if(isset($data['OrderedProduct']['option_2']))
+                $conditions['OrderedProduct.option_2'] = $data['OrderedProduct']['option_2'];
+            if(isset($data['OrderedProduct']['note']))
+                $conditions['OrderedProduct.note'] = $data['OrderedProduct']['note'];
+                
+            $existing = $this->find('first',array('conditions' => $conditions , 'contain' => array()));
         }
 
         if(!empty($existing)) {
