@@ -98,12 +98,13 @@ foreach($orderedProducts as $products) {
         {
             $pdf->Ln(4);
             $option_string = "";
-            if($orderedProduct['OrderedProduct']['option_1'])
+            if($orderedProduct['OrderedProduct']['option_1']) {
                 $option_string .= $orderedProduct['Product']['option_1'].": ".$orderedProduct['OrderedProduct']['option_1'];
-            if($orderedProduct['OrderedProduct']['option_2'])
-            {
-                if($option_string)
+			}
+			if($orderedProduct['OrderedProduct']['option_2']) {
+                if($option_string) {
                     $option_string .= "; ";
+				}
                 $option_string .= $orderedProduct['Product']['option_2'].": ".$orderedProduct['OrderedProduct']['option_2'];
             }
             $pdf->SetFont('Arial','',7);

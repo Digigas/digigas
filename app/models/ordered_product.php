@@ -55,36 +55,35 @@ class OrderedProduct extends AppModel {
     function save($data = null, $validate = true, $fieldList = array()) {
         // se esiste un altro ordine uguale, sommo all'ordine precedente
         $existing = false;
-//         debug($data);
-//         die();
         if(isset(
         $data['OrderedProduct']['user_id'],
         $data['OrderedProduct']['seller_id'],
         $data['OrderedProduct']['product_id'],
         $data['OrderedProduct']['hamper_id']
-        
         )) {
-            $conditions =  array(
+			if(!isset($data['OrderedProduct']['option_1'])) {
+				$data['OrderedProduct']['option_1'] =  null;
+			}
+			if(!isset($data['OrderedProduct']['option_2'])) {
+				$data['OrderedProduct']['option_2'] =  null;
+			}
+
+            $existing = $this->find('first', array('conditions' => array(
                     'OrderedProduct.user_id' => $data['OrderedProduct']['user_id'],
                     'OrderedProduct.seller_id' => $data['OrderedProduct']['seller_id'],
                     'OrderedProduct.product_id' => $data['OrderedProduct']['product_id'],
-                    'OrderedProduct.hamper_id' => $data['OrderedProduct']['hamper_id']
-                );
-            
-            if(isset($data['OrderedProduct']['option_1']))
-                $conditions['OrderedProduct.option_1'] = $data['OrderedProduct']['option_1'];
-            if(isset($data['OrderedProduct']['option_2']))
-                $conditions['OrderedProduct.option_2'] = $data['OrderedProduct']['option_2'];
-            if(isset($data['OrderedProduct']['note']))
-                $conditions['OrderedProduct.note'] = $data['OrderedProduct']['note'];
-                
-            $existing = $this->find('first',array('conditions' => $conditions , 'contain' => array()));
+                    'OrderedProduct.hamper_id' => $data['OrderedProduct']['hamper_id'],
+                    'OrderedProduct.option_1' => $data['OrderedProduct']['option_1'],
+                    'OrderedProduct.option_2' => $data['OrderedProduct']['option_2'],
+                    'OrderedProduct.note' => $data['OrderedProduct']['note']
+                ),
+                'contain' => array()));
         }
 
         if(!empty($existing)) {
             $data['OrderedProduct']['id'] = $existing['OrderedProduct']['id'];
             $data['OrderedProduct']['quantity'] = $data['OrderedProduct']['quantity'] + $existing['OrderedProduct']['quantity'];
-            $data['OrderedProduct']['value'] = $data['OrderedProduct']['value'] + $existing['OrderedProduct']['value'];
+            $data['OrderedProduct']['value'] = str_replace(',', '.', $data['OrderedProduct']['value'] + $existing['OrderedProduct']['value']);
         }
 
         return parent::save($data, $validate, $fieldList);
@@ -106,7 +105,7 @@ class OrderedProduct extends AppModel {
         //imposto il modello
         $data['OrderedProduct']['user_id'] = $user['User']['id'];
 
-        $data['OrderedProduct']['value'] = $product['Product']['value'] * $data['OrderedProduct']['quantity'];
+        $data['OrderedProduct']['value'] = str_replace(',', '.', ($product['Product']['value'] * $data['OrderedProduct']['quantity']));
 
         $data['OrderedProduct']['paid'] = 0;
         $data['OrderedProduct']['retired'] = 0;
@@ -208,8 +207,8 @@ class OrderedProduct extends AppModel {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name')),
-                'Hamper' => array('fields' => array('delivery_date_on')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
+                'Hamper' => array('fields' => array('id', 'delivery_date_on')))
         ));
         return $pendings;
     }

@@ -12,6 +12,9 @@
                 <?php echo $this->Html->image('oxygen/16x16/mimetypes/pdf.png'); ?>
                 <?php __('Salva in PDF'); ?>
             </a></li>
+		<li><?php
+        echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
+        echo $this->Html->link(__('email algli utenti', true), array('action' => 'admin_mail_hamper_to_users', $hamper['Hamper']['id'])); ?></li>
     </ul>
 </div>
 
@@ -22,8 +25,10 @@
         echo $hamper['Hamper']['name'];
 		__(' di ');
 		echo $hamper['Seller']['name'];
-		__(' in consegna ');
-		echo digi_date($hamper['Hamper']['delivery_date_on']);
+		if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+			__(' in consegna ');
+			echo digi_date($hamper['Hamper']['delivery_date_on']);
+		}
         ?>
     </h2>
 
@@ -35,7 +40,25 @@
         </tr>
         <?php foreach($totals as $product): ?>
         <tr class="total">
-            <td class="name"><?php echo $product['Product']['name']; ?></td>
+            <td class="name">
+			<?php 
+			echo $product['Product']['name'];
+
+			$details = '';
+			if(!empty($product['OrderedProduct']['option_1'])) {
+				$details .= $product['Product']['option_1'] . ': ' . $product['OrderedProduct']['option_1'];
+			}
+			if(!empty($product['OrderedProduct']['option_2'])) {
+				$details .= ' | ' . $product['Product']['option_2'] . ': ' . $product['OrderedProduct']['option_2'];
+			}
+			if(!empty($product['OrderedProduct']['note'])) {
+				$details .= '<br/>' . $product['OrderedProduct']['option_2'];
+			}
+			if(!empty($details)) {
+				echo $html->div('product_details', $details);
+			}
+			?>
+			</td>
             <td class="quantity"><?php echo $product['0']['quantity']; ?></td>
             <td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
         </tr>

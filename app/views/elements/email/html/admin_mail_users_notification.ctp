@@ -1,8 +1,12 @@
-<div class="date">
+<div class="date" style="background:#7CAF00;
+                color:#fff;
+                padding:5px 8px;
+                width:auto;
+                float:right;">
 <?php __('Inviata il'); ?>:
 <?php echo digi_date(date('D j M Y, H:i')); ?>
 </div>
-<h1>
+<h1 style="font-size:18px;">
     <?php __('Ciao'); echo ' '.$user['User']['fullname']; ?>!
     <?php echo __('Benvenuto in', true).' '.Configure::read('GAS.name'); ?>
 </h1>
