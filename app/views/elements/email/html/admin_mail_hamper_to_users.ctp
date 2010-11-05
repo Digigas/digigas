@@ -6,14 +6,22 @@
 <?php __('Inviata il'); ?>:
 <?php echo digi_date(date('D j M Y, H:i')); ?>
 </div>
-<?php echo $this->Html->tag('h1', __('Invio riepilogo ordini', true), array('style' => 'font-size:18px;')); ?>
+<h1 style="font-size:18px;">
+Riepilogo ordine per il paniere <?php echo $hamper['Hamper']['name'] ?>
+ di <?php echo $hamper['Seller']['name']; ?>
+ del <?php echo digi_date($hamper['Hamper']['delivery_date_on']); ?>
+</h1>
 
+Devi ritirare i prodotti ordinati presso  <?php echo $hamper['Hamper']['delivery_position']; ?>
+ dal <?php echo digi_date($hamper['Hamper']['delivery_date_on']); ?>
+ al <?php echo digi_date($hamper['Hamper']['delivery_date_off']); ?>.
+ Il termine ultimo per il pagamento è <?php echo digi_date($hamper['Hamper']['checkout_date']); ?>
+
+<br/><br/>
+<strong>Hai ordinato:</strong>
 
 <table cellpadding="0" cellspacing="0" width="100%">
 	<tr>
-			<th style="border-bottom:2px solid #999;
-                padding:5px;
-                text-align:left;"><?php __('Produttore');?></th>
 			<th style="border-bottom:2px solid #999;
                 padding:5px;
                 text-align:left;"><?php __('Prodotto');?></th>
@@ -30,13 +38,8 @@
                 padding:5px;
                 text-align:left;"><?php __('Ritirato?');?></th>
 	</tr>
-<?php foreach($orderedProducts as $orderedProduct): ?>
+<?php foreach($products as $orderedProduct): ?>
     <tr>
-		<td style="border-bottom:1px solid #ccc;
-                padding:3px;
-                text-align:left;">
-			<?php echo $orderedProduct['Seller']['name']; ?>
-		</td>
 		<td style="border-bottom:1px solid #ccc;
                 padding:3px;
                 text-align:left;">
@@ -59,10 +62,10 @@
         if($orderedProduct['OrderedProduct']['retired']) {
             __('si');
         } else {
-            echo '<strong>';
-			if(!date_is_empty($orderedProduct['Hamper']['delivery_date_on'])) {
+			echo '<strong>';
+			if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
 				__('Ritiralo ');
-				echo digi_date($orderedProduct['Hamper']['delivery_date_on']);
+				echo digi_date($hamper['Hamper']['delivery_date_on']);
 			} else {
 				echo __('La data per il ritiro non è ancora stata comunicata');
 			}
@@ -71,4 +74,21 @@
         ?></td>
 	</tr>
 <?php endforeach; ?>
+	<tr>
+		<td style="border-bottom:1px solid #ccc;
+                padding:3px;
+                text-align:left;" colspan="2">
+			<strong>Totale</strong>
+		</td>
+		<td style="border-bottom:1px solid #ccc;
+                padding:3px;
+                text-align:left;">
+			<?php echo $total; ?>&nbsp;&euro;
+		</td>
+		<td style="border-bottom:1px solid #ccc;
+                padding:3px;
+                text-align:left;" colspan="2">
+			&nbsp;
+		</td>
+	</tr>
 </table>

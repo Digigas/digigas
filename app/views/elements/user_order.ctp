@@ -16,21 +16,19 @@
         </div>
         <div class="value">
         <?php
-            if($order['OrderedProduct']['option_1'])
-            {
-                echo $order['Product']['option_1']. ": <strong>".$order['OrderedProduct']['option_1']."</strong>";
-                echo "<br>";
+		if(!empty($order['Product']['option_1'])) {
+            echo $order['Product']['option_1']. ": <strong>".$order['OrderedProduct']['option_1']."</strong>";
             }
-            if($order['OrderedProduct']['option_2'])
-            {
-                echo $order['Product']['option_2']. ":  <strong>".$order['OrderedProduct']['option_2']."</strong>";
-            }
-            if($order['OrderedProduct']['note'])
-            {
-                echo "<br>";
-                echo $order['OrderedProduct']['note'];
-            }
-            ?>
+		if(!empty($order['Product']['option_2'])) {
+            echo " | ";
+			echo $order['Product']['option_2']. ":  <strong>".$order['OrderedProduct']['option_2']."</strong>";
+		}
+		if($order['OrderedProduct']['note'])
+		{
+			echo "<br/>";
+			echo '('. $order['OrderedProduct']['note'] .')';
+		}
+		?>
         </div>
         <div class="value">
             <?php

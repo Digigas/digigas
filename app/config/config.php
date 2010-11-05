@@ -26,5 +26,17 @@ $config = array(
          * 'password' => '',
          * 'client' => ''
          */
-    )
+    ),
+
+	'Product.units' => array(
+		'pezzi' => 'pezzi',
+		'kg' => 'kg',
+		'etti' => 'etti',
+		'litri' => 'litri',
+		'fette' => 'fette',
+		'scatole' => 'scatole',
+		'bottiglie' => 'bottiglie',
+		'cassette' => 'cassette',
+		'paia' => 'paia'
+	)
 );

@@ -41,11 +41,35 @@
 			<?php echo $this->Html->link($orderedProduct['Seller']['name'], array('action' => 'index_seller', $orderedProduct['Seller']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false)); ?>
+			<?php
+			echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false));
+
+			$details = '';
+			if(!empty($orderedProduct['OrderedProduct']['option_1'])) {
+				$details .= $orderedProduct['Product']['option_1'] . ': ' . $orderedProduct['OrderedProduct']['option_1'];
+			}
+			if(!empty($orderedProduct['OrderedProduct']['option_2'])) {
+				$details .= ' | ' . $orderedProduct['Product']['option_2'] . ': ' . $orderedProduct['OrderedProduct']['option_2'];
+			}
+			if(!empty($orderedProduct['OrderedProduct']['note'])) {
+				$details .= '<br/>' . $orderedProduct['OrderedProduct']['option_2'];
+			}
+			if(!empty($details)) {
+				echo $html->div('product_details', $details);
+			}
+			?>
 		</td>
 		<td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
 		<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
-        <td><?php echo digi_date($orderedProduct['Hamper']['delivery_date_on']); ?>&nbsp;</td>
+        <td>
+		<?php
+		if(!date_is_empty($orderedProduct['Hamper']['delivery_date_on'])) {
+			echo $this->Html->link(date('d/m/Y', strtotime($orderedProduct['Hamper']['delivery_date_on'])), array('action' => 'index_hamper', $orderedProduct['Hamper']['id']), array('title' => __('visualizza gli ordini di questo paniere', true)));
+		} else {
+			echo $this->Html->link(__('Data non assegnata', true), array('action' => 'index_hamper', $orderedProduct['Hamper']['id']), array('title' => __('visualizza gli ordini di questo paniere', true)));
+		}
+		?>
+		</td>
 		<td class="actions"><?php
         if($orderedProduct['OrderedProduct']['paid']) {
             echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $orderedProduct['OrderedProduct']['id'])));
