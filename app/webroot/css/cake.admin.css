@@ -360,6 +360,12 @@ h4
     color:#666;
     margin:0;
 }
+
+div.actions li
+{
+    white-space:normal;
+}
+
 .submit
 {
     text-align:right;

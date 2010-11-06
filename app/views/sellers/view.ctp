@@ -64,7 +64,7 @@
             <?php foreach ($seller['Product'] as $product): ?>
         <div class="product-detail">
             <div class="detail-1">
-                        <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '150', '120');?>
+                        <?php echo $this->Image->resize('/documents/image/product/'.$product['image'], '160', '120');?>
                 <div class="name"><?php echo $product['name'];?></div>
 
                 <div class="weight"><?php __('Peso: ');

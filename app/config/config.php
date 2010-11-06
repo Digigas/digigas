@@ -14,7 +14,7 @@ $config = array(
          *
          * - puoi modificare i nomi qui sotto come preferisci, ma mantieni lo stesso ordine
          */
-        'root', 'admin', 'fornitore', 'utente'
+        'root', 'admin', 'referente', 'utente'
     ),
     'email.from' => 'alessandro.falezza@gmail.com',
     'email.SMTPoptions' => array(
@@ -32,11 +32,12 @@ $config = array(
 		'pezzi' => 'pezzi',
 		'kg' => 'kg',
 		'etti' => 'etti',
-		'litri' => 'litri',
-		'fette' => 'fette',
+		'litri' => 'litri',		
+		'cassette' => 'cassette',
 		'scatole' => 'scatole',
 		'bottiglie' => 'bottiglie',
-		'cassette' => 'cassette',
+		'barattoli' => 'barattoli',
+		'fette' => 'fette',
 		'paia' => 'paia'
 	)
 );

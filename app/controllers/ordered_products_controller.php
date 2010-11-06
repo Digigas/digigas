@@ -620,13 +620,16 @@ class OrderedProductsController extends AppController {
         $user = $this->OrderedProduct->User->read(null, $this->data['OrderedProduct']['user_id']);
 
         $errors = false;
-        foreach($this->data['Product'] as $product_id => $quantity) {
-            if(!empty($quantity)) {
+        foreach($this->data['Product'] as $product_id => $data) {
+            if(!empty($data['quantity'])) {
                 $dataToValidate = array('OrderedProduct' => array(
                         'product_id' => $product_id,
                         'hamper_id' => $this->data['OrderedProduct']['hamper_id'],
                         'seller_id' => $this->data['OrderedProduct']['seller_id'],
-                        'quantity' => $quantity
+						'option_1' => $data['option_1'],
+						'option_2' => $data['option_2'],
+						'note' => $data['note'],
+                        'quantity' => $data['quantity']
                 ));
                 //debug($dataToValidate);
                 $dataToSave = $this->OrderedProduct->buildOrder($dataToValidate, $user);

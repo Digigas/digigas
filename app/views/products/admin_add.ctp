@@ -10,8 +10,8 @@
 		echo $this->Form->input('packing', array('label' => __('Descrizione dell\'imballaggio', true)));
 		echo $this->Form->input('image', array('type' => 'file', 'label' => __('Immagine', true)));
 		echo $this->Form->input('weight', array('label' => __('Peso (specifica unità di misura)', true)));
-		echo $this->Form->input('number', array('label' => __('Numero di pezzi per collo', true), 'value' => 1));
-		echo $this->Form->input('value', array('label' => __('Prezzo &euro; per collo', true)));
+		echo $this->Form->input('number', array('label' => __('Unità minima di prodotto (se non sai come usarlo, lascia il valore 1)', true), 'value' => 1));
+		echo $this->Form->input('value', array('label' => __('Prezzo &euro; per unità', true)));
 		echo $this->Form->input('units', array('label' => __('Unità di misura per l\'acquisto', true), 'options' => Configure::read('Product.units')));
         echo $this->Form->input('option_1', array('label' => __('Opzioni 1: etichetta', true)));
         echo $this->Form->input('option_list_1', array('label' => __("Opzioni 1: elenco opzioni (separate da ';')", true)));
