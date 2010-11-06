@@ -43,7 +43,8 @@ class Product extends AppModel {
 
     var $validate = array(
         'name' => array('rule' => 'notEmpty', 'on' => 'create'),
-        'value' => array('rule' => 'notEmpty', 'on' => 'create')
+        'value' => array('rule' => 'notEmpty', 'on' => 'create'),
+		'number' => array('numeric')
     );
 
     var $actsAs = array('Containable', 'MultipleUpload' =>
@@ -59,6 +60,9 @@ class Product extends AppModel {
                         );
 
     function beforeSave() {
+		$number = str_replace(',', '.', $this->data['Product']['number']);
+        $this->data['Product']['number'] = $number;
+
         $value = str_replace(',', '.', $this->data['Product']['value']);
         $this->data['Product']['value'] = $value;
         return parent::beforeSave();
