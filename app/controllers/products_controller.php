@@ -70,6 +70,10 @@ class ProductsController extends AppController {
 				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product'));
 			}
 		}
+
+		if(isset($this->params['named']['seller'])) {
+			$this->data['Product']['seller_id'] = $this->params['named']['seller'];
+		}
 		$productCategories = $this->Product->ProductCategory->generateTreeList(array(), '{n}.ProductCategory.id', '{n}.ProductCategory.name', ' - ');
 		$sellers = $this->Product->Seller->find('list');
 		$this->set(compact('productCategories', 'sellers'));

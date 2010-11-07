@@ -58,7 +58,13 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>        
-        <li><?php echo $this->Html->link(__('Nuovo prodotto', true), array('action' => 'add')); ?></li>
+        <li><?php 
+		if(isset($this->params['named']['seller'])) {
+			echo $this->Html->link(__('Nuovo prodotto', true), array('action' => 'add', 'seller' => $this->params['named']['seller']));
+		} else {
+			echo $this->Html->link(__('Nuovo prodotto', true), array('action' => 'add'));
+		}
+		?></li>
 		<li><?php echo $this->Html->link(__('Gestisci i produttori', true), array('controller' => 'sellers', 'action' => 'index')); ?> </li>
         <li class="dropdown">
             <?php __('Visualizza per produttore'); ?>

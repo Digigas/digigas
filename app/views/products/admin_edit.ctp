@@ -34,6 +34,6 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-        <li><?php echo $this->Html->link(__('Torna a prodotti', true), array('action' => 'index'));?></li>
+        <li><?php echo $this->Html->link(__('Torna a prodotti', true), array('action' => 'index', 'seller' => $this->data['Product']['seller_id']));?></li>
     </ul>
 </div>
