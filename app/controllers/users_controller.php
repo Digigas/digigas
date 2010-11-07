@@ -206,9 +206,13 @@ class UsersController extends AppController {
             }
         }
 
+		$families = $this->User->find('list', array('conditions' => array('User.parent_id' => null), 'order' => 'User.last_name asc'));
+
         $usergroups = $this->User->Usergroup->generatetreelist(array('Usergroup.active' => 1), '{n}.Usergroup.id', '{n}.Usergroup.name', ' - ');
 
-        $this->set(compact('usergroups'));
+		$sellers = $this->User->Seller->find('list');
+
+        $this->set(compact('families', 'usergroups', 'sellers'));
     }
 
     function admin_edit($id = null) {
@@ -243,6 +247,9 @@ class UsersController extends AppController {
         $this->set(compact('families', 'roles', 'usergroups'));
 
         if ($this->data['User']['role'] == 2) {
+			$sellers = $this->User->Seller->find('list');
+			$this->set('sellers', $sellers);
+
             $this->render('admin_editseller');
         }
     }

@@ -114,7 +114,7 @@ if(isset($role)) {
             </ul>
         </li>
         <li><?php echo $this->Html->link(sprintf(__('Nuovo %s', true), __('utente', true)), array('action' => 'add')); ?></li>
-        <li><?php echo $this->Html->link(sprintf(__('Nuovo %s', true), __('fornitore', true)), array('action' => 'addseller')); ?></li>
+        <li><?php echo $this->Html->link(sprintf(__('Nuovo %s', true), __('referente', true)), array('action' => 'addseller')); ?></li>
         <li><?php echo $this->Html->link(__('Gestisci i gruppi', true), array('controller' => 'usergroups', 'action' => 'index')); ?></li>
     </ul>
 </div>
