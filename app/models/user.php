@@ -52,18 +52,18 @@ class User extends AppModel {
             && $this->data['User']['password'] == Security::hash('', null, true)) {
             unset($this->data['User']['password']);
         } 
-
-        // salvo il nuovo profilo azienda
-        if(isset($this->data['Seller']) && $this->data['User']['role'] == 2) {
-            if($this->Seller->save($this->data)) {
-                $this->data['User'] = am(
-                    $this->data['User'],
-                    array(
-                    'seller_id' => $this->Seller->id
-                    )
-                );
-            }
-        }
+//
+//        // salvo il nuovo profilo azienda
+//        if(isset($this->data['Seller']) && $this->data['User']['role'] == 2) {
+//            if($this->Seller->save($this->data)) {
+//                $this->data['User'] = am(
+//                    $this->data['User'],
+//                    array(
+//                    'seller_id' => $this->Seller->id
+//                    )
+//                );
+//            }
+//        }
 
         //modificao il campo hash
         $this->data['User']['hash'] = $this->randomString();

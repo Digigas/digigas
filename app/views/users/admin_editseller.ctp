@@ -1,7 +1,7 @@
 <div class="users form">
     <?php echo $this->Form->create('User');?>
     <fieldset>
-        <h2><?php __('Modifica fornitore'); ?></h2>
+        <h2><?php __('Modifica referente'); ?></h2>
 
         <h3 class="expander"><?php __('Dati profilo utente'); ?></h3>
         <div class="accordion">
@@ -15,27 +15,17 @@
 			echo $this->Form->input('User.address', array('label' => __('Indirizzo', true)));
 			echo $this->Form->input('User.phone', array('label' => __('Telefono', true)));
 			echo $this->Form->input('User.mobile', array('label' => __('Cellulare', true)));
-			echo $this->Form->input('User.usergroup_id', array('label' => __('Gruppo', true)));
-            echo $this->Form->input('User.role', array('label' => __('Ruolo', true)));
-            echo $this->Form->input('User.active', array('label' => 'Attivo'));
             ?>
         </div>
 
-        <h3 class="expander"><?php __('Dati profilo aziendale'); ?></h3>
+        <h3 class="expander"><?php __('Altro'); ?></h3>
         <div class="accordion">
             <?php
-            echo $this->Html->div('note', __('Imposta i dati aziendali che verranno visualizzati sul sito', true));
-            echo $this->Form->input('Seller.id');
-            echo $this->Form->input('Seller.name');
-            echo $this->Form->input('Seller.business_name');
-            echo $this->Form->input('Seller.address');
-            echo $this->Form->input('Seller.phone');
-            echo $this->Form->input('Seller.mobile');
-            echo $this->Form->input('Seller.fax');
-            echo $this->Form->input('Seller.email');
-            echo $this->Form->input('Seller.website');
-            echo $this->Form->input('Seller.notes');
-            echo $this->Form->input('Seller.active', array('label' => __('Attiva il profio aziendale', true)));
+			echo $this->Form->input('User.role', array('label' => __('Ruolo', true)));
+			echo $this->Form->input('User.seller_id', array('label' => __('Azienda di cui è referente', true)));
+            echo $this->Form->input('User.parent_id', array('label' => __('Appartiene alla famiglia di', true), 'empty' => 'Nessuno: è capofamiglia', 'options' => $families));
+            echo $this->Form->input('User.usergroup_id', array('label' => __('Gruppo', true)));
+            echo $this->Form->input('User.active', array('label' => 'Attivo', 'checked' => 'checked'));
             ?>
         </div>
 
