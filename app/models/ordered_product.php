@@ -92,6 +92,17 @@ class OrderedProduct extends AppModel {
         return parent::save($data, $validate, $fieldList);
     }
 
+	function beforeFind($queryData) {
+		if(Configure::read('ReferentUser.allowed_sellers')) {
+			$queryData = array_merge_recursive(
+				array(
+					'conditions' => array('OrderedProduct.seller_id' => Configure::read('ReferentUser.allowed_sellers'))
+				),
+				$queryData);
+		}
+		return $queryData;
+	}
+
     function buildOrder($data, $user) {
 
         $this->Product->recursive = -1;

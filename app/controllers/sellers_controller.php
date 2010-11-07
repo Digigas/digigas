@@ -46,6 +46,13 @@ class SellersController extends AppController {
 	}
 
 	function admin_add() {
+
+		//nego l'accesso agli utenti non amministratori
+		if($this->Auth->user('role') > 1) {
+			$this->Session->setFlash(__('Non puoi accedere a questa funzione', true));
+			$this->redirect($this->referer());
+		}
+
 		if (!empty($this->data)) {
 			$this->Seller->create();
 			if ($this->Seller->save($this->data)) {
