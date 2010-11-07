@@ -85,7 +85,7 @@
 				if(!date_is_empty($orderedProduct['Hamper']['delivery_date_on'])) {
 					echo $this->Html->link(date('d/m/Y', strtotime($orderedProduct['Hamper']['delivery_date_on'])), array('action' => 'index_hamper', $orderedProduct['Hamper']['id']), array('title' => __('visualizza gli ordini di questo paniere', true)));
 				} else {
-					__('Data non assegnata');
+					echo $this->Html->link(__('Data non assegnata', true), array('action' => 'index_hamper', $orderedProduct['Hamper']['id']), array('title' => __('visualizza gli ordini di questo paniere', true)));
 				}
 				?>
             </td>

@@ -61,6 +61,19 @@
         <li><?php echo $this->Html->link(__('Nuovo prodotto', true), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('Gestisci i produttori', true), array('controller' => 'sellers', 'action' => 'index')); ?> </li>
         <li class="dropdown">
+            <?php __('Visualizza per produttore'); ?>
+            <ul>
+                <li><?php echo $this->Html->link('Tutti i produttore', array('action' => 'index')) ?></li>
+                <?php
+                foreach($sellers as $id => $seller) {
+                    echo $this->Html->tag('li',
+                        $this->Html->link($seller,
+                            array('seller' => $id)));
+                }
+                ?>
+            </ul>
+        </li>
+		<li class="dropdown">
             <?php __('Visualizza per categoria'); ?>
             <ul>
                 <li><?php echo $this->Html->link('Tutte le categorie', array('action' => 'index')) ?></li>

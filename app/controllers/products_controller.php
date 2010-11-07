@@ -33,6 +33,7 @@ class ProductsController extends AppController {
 
 	function admin_index() {
 		$this->Product->recursive = 0;
+		$this->paginate = array('limit' => 50);
 
         //aggiungo filtro per categoria
         if(isset($this->params['named']['category'])) {
@@ -53,8 +54,10 @@ class ProductsController extends AppController {
 		$this->set('products', $this->paginate());
 
         $productCategories = $this->Product->ProductCategory->generateTreeList(array(), '{n}.ProductCategory.id', '{n}.ProductCategory.name', ' - ');
-        $this->set('productCategories', $productCategories);
+        
+		$sellers = $this->Product->Seller->find('list');
 
+		$this->set(compact('productCategories', 'sellers'));
 	}
 
 	function admin_add() {
@@ -62,7 +65,7 @@ class ProductsController extends AppController {
 			$this->Product->create();
 			if ($this->Product->save($this->data)) {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'index', 'seller' => $this->data['Product']['seller_id']));
 			} else {
 				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product'));
 			}
@@ -80,7 +83,7 @@ class ProductsController extends AppController {
 		if (!empty($this->data)) {
 			if ($this->Product->save($this->data)) {
 				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'index', 'seller' => $this->data['Product']['seller_id']));
 			} else {
 				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product'));
 			}
@@ -98,12 +101,14 @@ class ProductsController extends AppController {
 			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'product'));
 			$this->redirect(array('action'=>'index'));
 		}
+
+		$seller_id = $this->Product->field('seller_id', $id);
 		if ($this->Product->delete($id)) {
 			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Product'));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action'=>'index', 'seller' => $seller_id));
 		}
 		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Product'));
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array('action' => 'index', 'seller' => $seller_id));
 	}
 }
 ?>
