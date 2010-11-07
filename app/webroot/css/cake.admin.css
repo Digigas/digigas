@@ -195,7 +195,9 @@ td.actions a
 {
     position:relative;
     left:-8px;
+    border-radius:0;
     -moz-border-radius:0;
+    -webkit-border-radius:0;
     background:none;
     border:none;
     color:#333;
@@ -535,29 +537,66 @@ div.note
     padding:0;
     list-style-type:none;
 }
+.tools-list li ul
+{
+    position:absolute;
+    top:0;
+    right:0;
+}
 .tools-list li
+{
+    position:relative;
+    display:block;
+    clear:left;
+    margin: 10px 0 0 0;
+    padding:10px;
+    text-align:left;
+    background:#eee;
+    border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    box-shadow: 1px 1px 1px #ccc;
+    -moz-box-shadow: 1px 1px 1px #ccc;
+    -webkit-box-shadow: 1px 1px 1px #ccc;
+}
+.tools-list li ul li
+{
+    margin:0;
+    padding:0 10px 0 0;
+    float:left;
+    width:auto;
+    background: transparent;
+    border-radius:0;
+    -moz-border-radius:0;
+    -webkit-border-radius:0;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.tools-list li img
 {
     display:block;
     float:left;
-    margin: 0 10px 10px 0;
-    padding:10px;
-    width:100px;
-    height:120px;
-    overflow:hidden;
-    text-align:center;
+    margin-right:15px;
 }
 .tools-list li a
 {
     display:block;
-    padding:4px;
+    line-height: 32px;
     text-decoration:none;
     font-size:14px;
-    color:#666;
+    color:#333;
 }
 .tools-list li a:hover
 {
     color:#f90;
 }
+.tools-list li ul li a
+{
+    line-height:55px;
+    font-weight:normal;
+}
+
 
 .product_details
 {
