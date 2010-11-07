@@ -58,11 +58,11 @@
 				<td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
 				<td class="date">
 				<?php
-				if(!date_is_empty($product['Hamper']['delivery_date_on'])) {
-					echo digi_date($product['Hamper']['delivery_date_on']);
-				} else {
-					__('Data non assegnata');
-				}
+					if (!date_is_empty($product['Hamper']['delivery_date_on'])) {
+						echo digi_date($product['Hamper']['delivery_date_on']);
+					} else {
+						__('Data non assegnata');
+					}
 				?>
 				</td>
 			</tr>
@@ -82,16 +82,16 @@
 		<?php foreach ($totalsByHamper as $id => $data): ?>
 						<tr class="total">
 							<td class="date">
-							<?php
-							if(!date_is_empty($data['date'])) {
-								echo $this->Html->link(digi_date($data['date']), array('action' => 'index_hamper', $id)); 
-							} else {
-								echo $this->Html->link(__('Data non assegnata', true), array('action' => 'index_hamper', $id));
-							}
-							?>
-							</td>
-							<td class="value"><?php echo $data['total']; ?> &euro;</td>
-						</tr>
+				<?php
+						if (!date_is_empty($data['date'])) {
+							echo $this->Html->link(digi_date($data['date']), array('action' => 'index_hamper', $id));
+						} else {
+							echo $this->Html->link(__('Data non assegnata', true), array('action' => 'index_hamper', $id));
+						}
+				?>
+					</td>
+					<td class="value"><?php echo $data['total']; ?> &euro;</td>
+				</tr>
 		<?php endforeach; ?>
 					</table>
 
@@ -178,7 +178,14 @@
 				<?php foreach ($sellers as $id => $seller): ?>
 									<li><?php echo $this->Html->link($seller, array('action' => 'index_seller', $id)); ?></li>
 				<?php endforeach; ?>
-            </ul>
-        </li>
+					            </ul>
+					        </li>
+							<li class="dropdown"><?php __('Vedi ordini per paniere'); ?>
+								<ul>
+				<?php foreach ($hampers as $id => $hamper): ?>
+										<li><?php echo $this->Html->link($hamper, array('action' => 'index_hamper', $id)); ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</li>
     </ul>
 </div>
