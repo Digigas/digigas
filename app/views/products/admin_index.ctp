@@ -69,7 +69,7 @@
         <li class="dropdown">
             <?php __('Visualizza per produttore'); ?>
             <ul>
-                <li><?php echo $this->Html->link('Tutti i produttore', array('action' => 'index')) ?></li>
+                <li><?php echo $this->Html->link('Tutti i produttori', array('action' => 'index')) ?></li>
                 <?php
                 foreach($sellers as $id => $seller) {
                     echo $this->Html->tag('li',

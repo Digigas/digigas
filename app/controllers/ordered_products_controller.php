@@ -113,7 +113,10 @@ class OrderedProductsController extends AppController {
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
-        $this->set(compact('sellers', 'users'));
+		//trovo l'elenco dei panieri con ordini attivi
+        $hampers = $this->OrderedProduct->getPendingHampers();
+
+        $this->set(compact('users', 'sellers', 'hampers'));
     }
 
     function admin_index_user($user_id) {
@@ -140,7 +143,10 @@ class OrderedProductsController extends AppController {
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
-        $this->set(compact('orderedProducts', 'user', 'users', 'sellers', 'total'));
+		//trovo l'elenco dei panieri con ordini attivi
+        $hampers = $this->OrderedProduct->getPendingHampers();
+
+        $this->set(compact('orderedProducts', 'user', 'users', 'sellers', 'hampers', 'total'));
     }
 
 	function admin_index_hamper($hamper_id) {
@@ -192,7 +198,10 @@ class OrderedProductsController extends AppController {
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
-		$this->set(compact('orderedProducts', 'hamper', 'users', 'sellers', 'totals', 'total'));
+		//trovo l'elenco dei panieri con ordini attivi
+        $hampers = $this->OrderedProduct->getPendingHampers();
+
+		$this->set(compact('orderedProducts', 'hamper', 'users', 'sellers', 'hampers', 'totals', 'total'));
 	}
 
     function admin_index_seller($seller_id) {
@@ -235,7 +244,10 @@ class OrderedProductsController extends AppController {
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
-        $this->set(compact('orderedProducts', 'seller', 'users', 'sellers', 'totals', 'totalsByHamper'));
+		//trovo l'elenco dei panieri con ordini attivi
+        $hampers = $this->OrderedProduct->getPendingHampers();
+
+        $this->set(compact('orderedProducts', 'seller', 'users', 'sellers', 'hampers', 'totals', 'totalsByHamper'));
     }
 
     function admin_mass_actions($action = false, $hamper_id = false) {
