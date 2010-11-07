@@ -33,16 +33,23 @@
         </div>
         <div class="hamperdata">
             <?php
-            __('Questo acquisto deve essere pagato entro ');
-            echo  digi_date($orderedProduct['Hamper']['checkout_date']);
+			if(!date_is_empty($orderedProduct['Hamper']['checkout_date'])) {
+				__('Questo acquisto deve essere pagato entro ');
+				echo  digi_date($orderedProduct['Hamper']['checkout_date']);
+			}
 
-            echo '<br/>';
-            __('Ritira la merce presso ');
-            echo $orderedProduct['Hamper']['delivery_position'];
-            __(' da ');
-            echo  digi_date($orderedProduct['Hamper']['delivery_date_on']);
-            __(' a ');
-            echo  digi_date($orderedProduct['Hamper']['delivery_date_off']);
+			if(!empty($orderedProduct['Hamper']['delivery_position'])) {
+				echo '<br/>';
+				__('Ritira la merce presso ');
+				echo $orderedProduct['Hamper']['delivery_position'];
+			}
+
+			if(!date_is_empty($orderedProduct['Hamper']['delivery_date_on'])) {
+				__(' da ');
+				echo  digi_date($orderedProduct['Hamper']['delivery_date_on']);
+				__(' a ');
+				echo  digi_date($orderedProduct['Hamper']['delivery_date_off']);
+			}
             ?>
         </div>
         <div class="delete">

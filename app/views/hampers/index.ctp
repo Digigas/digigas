@@ -36,21 +36,26 @@
 			</div>
 			<div class="delivery">
 				<?php
-				__('In consegna presso ');
 
+				if(!empty($hamper['Hamper']['delivery_position'])) {
+				__('In consegna presso ');
 				echo $hamper['Hamper']['delivery_position'];
 				echo ' ';
-				if (date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_on'])) == date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_off']))) {
-					echo date_it("D d M Y", strtotime($hamper['Hamper']['delivery_date_on']));
-					__(' dalle ');
-					echo date("H:i", strtotime($hamper['Hamper']['delivery_date_on']));
-					__(' alle ');
-					echo date("H:i", strtotime($hamper['Hamper']['delivery_date_off']));
-				} else {
-					__(' da ');
-					echo digi_date($hamper['Hamper']['delivery_date_on']);
-					__(' a ');
-					echo digi_date($hamper['Hamper']['delivery_date_off']);
+				}
+
+				if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+					if (date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_on'])) == date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_off']))) {
+						echo date_it("D d M Y", strtotime($hamper['Hamper']['delivery_date_on']));
+						__(' dalle ');
+						echo date("H:i", strtotime($hamper['Hamper']['delivery_date_on']));
+						__(' alle ');
+						echo date("H:i", strtotime($hamper['Hamper']['delivery_date_off']));
+					} else {
+						__(' da ');
+						echo digi_date($hamper['Hamper']['delivery_date_on']);
+						__(' a ');
+						echo digi_date($hamper['Hamper']['delivery_date_off']);
+					}
 				}
 				?>
 			</div>
