@@ -13,7 +13,7 @@
 <?php echo $this->Html->css('cake.admin'); ?>
 <?php echo $this->Html->css('digigas/filemanager.css'); ?>
 
-<?php echo $this->Javascript->link('jquery-1.4.2.min'); ?>
+<?php echo $this->Javascript->link('jquery-1.4.3.min'); ?>
 <?php echo $this->Javascript->link('jquery.ifixpng'); ?>
 
 <?php echo $this->Javascript->link('ckeditor/ckeditor.js'); ?>

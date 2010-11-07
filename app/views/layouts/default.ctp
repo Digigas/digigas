@@ -14,7 +14,7 @@
         echo $this->Html->css('cake.website');
         echo $this->Html->css('jquery.lightbox');
         echo $this->Html->css('digigas/jquery.treeTable');
-        echo $this->Html->css('jquery-ui-themeroller');
+        echo $this->Html->css('jquery-ui-1.8.6.custom');
 
 	?>
 </head>
@@ -55,9 +55,9 @@
 
     <?php
 
-        echo $this->Javascript->link('jquery-1.4.2.min');
+        echo $this->Javascript->link('jquery-1.4.3.min');
         echo $this->Javascript->link('jquery.ifixpng');
-        echo $this->Javascript->link('jquery.ui');
+        echo $this->Javascript->link('jquery-ui-1.8.6.custom.min');
         echo $this->Javascript->link('ckeditor/ckeditor');
         echo $this->Javascript->link('ckeditor/adapters/jquery');
         echo $this->Javascript->link('jquery.lightbox');
