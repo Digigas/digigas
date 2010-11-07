@@ -7,7 +7,6 @@
         <div class="accordion">
             <?php
             echo $this->Form->input('User.id');
-            echo $this->Form->hidden('User.role');
             echo $this->Form->input('User.first_name', array('label' => __('Nome', true)));
             echo $this->Form->input('User.last_name', array('label' => __('Cognome', true)));
             echo $this->Form->input('User.username');
@@ -16,7 +15,8 @@
 			echo $this->Form->input('User.address', array('label' => __('Indirizzo', true)));
 			echo $this->Form->input('User.phone', array('label' => __('Telefono', true)));
 			echo $this->Form->input('User.mobile', array('label' => __('Cellulare', true)));
-            echo $this->Form->input('User.usergroup_id', array('label' => __('Gruppo', true)));
+			echo $this->Form->input('User.usergroup_id', array('label' => __('Gruppo', true)));
+            echo $this->Form->input('User.role', array('label' => __('Ruolo', true)));
             echo $this->Form->input('User.active', array('label' => 'Attivo'));
             ?>
         </div>

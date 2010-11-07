@@ -54,13 +54,12 @@ class User extends AppModel {
         } 
 
         // salvo il nuovo profilo azienda
-        if(isset($this->data['Seller'])) {
+        if(isset($this->data['Seller']) && $this->data['User']['role'] == 2) {
             if($this->Seller->save($this->data)) {
                 $this->data['User'] = am(
                     $this->data['User'],
                     array(
-                    'seller_id' => $this->Seller->id,
-                    'role' => 2
+                    'seller_id' => $this->Seller->id
                     )
                 );
             }
