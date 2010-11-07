@@ -172,6 +172,13 @@ class UsersController extends AppController {
         if (!empty($this->data)) {
             $this->User->create();
             if ($this->User->save($this->data)) {
+
+				//mando una mail di notifica all'utente
+				$this->User->recursive = -1;
+				$user = $this->User->read(null, $this->User->id);
+				$users = array($user);
+				$this->_send_users_notification($users);
+
                 $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -262,7 +269,17 @@ class UsersController extends AppController {
             $users = array($user);
         }
 
-        foreach ($users as $user) {
+        $this->_send_users_notification($users);
+
+        $this->redirect(array('action' => 'index'));
+    }
+
+	function _send_users_notification($users) {
+		if(!$users) {
+			return false;
+		}
+		
+		foreach ($users as $user) {
             $this->Email->reset();
 
             $this->Email->to = $user['User']['email'];
@@ -284,8 +301,7 @@ class UsersController extends AppController {
         } else {
             $this->Session->setFlash(__('Si sono verificati degli errori nell\'invio delle email', true));
         }
-        $this->redirect(array('action' => 'index'));
-    }
+	}
 
 }
 
