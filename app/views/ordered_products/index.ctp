@@ -15,7 +15,7 @@
                 <?php __('Produttore: '); echo $orderedProduct['Seller']['name']; ?>
         </div>
         <div class="quantity">
-                <?php __('Quantità: '); echo $orderedProduct['OrderedProduct']['quantity'];?>
+                <?php echo $orderedProduct['Product']['units'] . ': ' . rtrim($orderedProduct['OrderedProduct']['quantity'], '.0');?>
         </div>
         <div class="value">
                 <?php

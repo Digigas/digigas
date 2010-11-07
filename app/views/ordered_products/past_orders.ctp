@@ -28,7 +28,7 @@
 		<td>
 			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'])); ?>
 		</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
+		<td><?php echo rtrim($orderedProduct['OrderedProduct']['quantity'], '.0'); ?>&nbsp;</td>
 		<td><?php echo $orderedProduct['OrderedProduct']['value']; ?> &euro;</td>
 		<td class="actions"><?php
         if($orderedProduct['OrderedProduct']['paid']) {
