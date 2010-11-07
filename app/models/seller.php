@@ -58,6 +58,17 @@ class Seller extends AppModel {
 //        return parent::afterSave($created);
 //    }
 
+	function beforeFind($queryData) {
+		if(Configure::read('ReferentUser.allowed_sellers')) {
+			$queryData = array_merge_recursive(
+				array(
+					'conditions' => array('Seller.id' => Configure::read('ReferentUser.allowed_sellers'))
+				),
+				$queryData);
+		}
+		return $queryData;
+	}
+
     function getSellers($options = null) {
 
         $_options = array(

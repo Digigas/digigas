@@ -59,6 +59,17 @@ class Product extends AppModel {
                             )
                         );
 
+	function beforeFind($queryData) {
+		if(Configure::read('ReferentUser.allowed_sellers')) {
+			$queryData = array_merge_recursive(
+				array(
+					'conditions' => array('Product.seller_id' => Configure::read('ReferentUser.allowed_sellers'))
+				),
+				$queryData);
+		}
+		return $queryData;
+	}
+
     function beforeSave() {
 		$number = str_replace(',', '.', $this->data['Product']['number']);
         $this->data['Product']['number'] = $number;

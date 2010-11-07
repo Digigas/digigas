@@ -44,6 +44,17 @@ class Hamper extends AppModel {
 
     var $actsAs = array('Containable');
 
+	function beforeFind($queryData) {
+		if(Configure::read('ReferentUser.allowed_sellers')) {
+			$queryData = array_merge_recursive(
+				array(
+					'conditions' => array('Hamper.id' => Configure::read('ReferentUser.allowed_sellers'))
+				),
+				$queryData);
+		}
+		return $queryData;
+	}
+
     function formatDates($data) {
         $dateTimeFields = array();
         foreach($this->_schema as $field => $type) {

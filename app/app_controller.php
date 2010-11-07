@@ -43,6 +43,28 @@ class AppController extends Controller {
         if(isset($this->params['admin']) && $this->Auth->user('role') > 2) {
             return false;
         }
+
+		//restringo i permessi di accesso per i referenti (role == 2)
+		if(isset($this->params['admin']) && $this->Auth->user('role') == 2) {
+			if(!in_array($this->name, Configure::read('ReferentUser.alloewd_controllers'))) {
+				$this->Session->setFlash(__('Non puoi accedere a questa funzione', true));
+				return false;
+			}
+
+			//estraggo l'array dei seller abilitati e li metto in Session
+			if(!$this->Session->read('Auth.User.allowed_sellers')) {
+				$this->User = $this->Auth->getModel();
+				$allowed_sellers = $this->User->find('all', array(
+					'conditions' => array('User.id' => $this->Auth->User('id')),
+					'fields' => 'id',
+					'contain' => 'Seller.id'
+				));
+				$allowed_sellers = Set::extract('/Seller/id', $allowed_sellers);
+				$this->Session->write('Auth.User.allowed_sellers', $allowed_sellers);
+			}
+			Configure::write('ReferentUser.allowed_sellers', $this->Session->read('Auth.User.allowed_sellers'));
+		}
+
         return true;
     }
 

@@ -26,5 +26,24 @@ $config = array(
          * 'password' => '',
          * 'client' => ''
          */
-    )
+    ),
+
+	//unità di misura per le schede prodotto
+	'Product.units' => array(
+		'pezzi' => 'pezzi',
+		'kg' => 'kg',
+		'etti' => 'etti',
+		'litri' => 'litri',
+		'cassette' => 'cassette',
+		'scatole' => 'scatole',
+		'bottiglie' => 'bottiglie',
+		'barattoli' => 'barattoli',
+		'fette' => 'fette',
+		'paia' => 'paia'
+	),
+
+	//controller alla cui gestione possono accedere i referenti - non modificare
+	'ReferentUser' => array(
+		'alloewd_controllers' => array('OrderedProducts', 'Hampers', 'Products', 'Sellers'),
+		'allowed_sellers' => false)
 );

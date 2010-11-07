@@ -81,7 +81,7 @@ class OrderedProductsController extends AppController {
     }
 
     function admin_index() {
-        $this->paginate = array('conditions' => array(
+        $this->paginate = array_merge_recursive($this->paginate, array('conditions' => array(
                 'or' => array(
                     'paid' => 0,
                     'retired' => 0
@@ -92,7 +92,7 @@ class OrderedProductsController extends AppController {
                 'Seller' => array('fields' => array('id', 'name')),
                 'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
                 'Hamper' => array('fields' => array('id', 'delivery_date_on')))
-        );
+        ));
         $this->OrderedProduct->recursive = 0;
         $orderedProducts = $this->paginate();
         $this->set('orderedProducts', $orderedProducts);
