@@ -67,6 +67,9 @@ class OrderedProduct extends AppModel {
 			if(!isset($data['OrderedProduct']['option_2'])) {
 				$data['OrderedProduct']['option_2'] =  null;
 			}
+			if(!isset($data['OrderedProduct']['note'])) {
+				$data['OrderedProduct']['note'] =  null;
+			}
 
             $existing = $this->find('first', array('conditions' => array(
                     'OrderedProduct.user_id' => $data['OrderedProduct']['user_id'],
