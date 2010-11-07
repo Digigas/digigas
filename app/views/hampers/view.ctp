@@ -25,34 +25,35 @@ $this->Layout->blockEnd();
 		__(' fino a ');
 		echo digi_date($hamper['Hamper']['end_date']);
 
-		if ($hamper['Hamper']['checkout_date'] != '1970-01-01 00:00:00') {
+		if(!date_is_empty($hamper['Hamper']['checkout_date'])) {
 			echo '<br/>';
 			__('Questo acquisto deve essere pagato entro ');
 			echo digi_date($hamper['Hamper']['checkout_date']);
 		}
-
-		echo '<br/>';
-		__('Questo acquisto deve essere pagato entro ');
-		echo digi_date($hamper['Hamper']['checkout_date']);
 		?>
 		<br/>
 		<strong>
 		<?php
-		__('Ritira la merce presso ');
-		echo $hamper['Hamper']['delivery_position'];
-		echo  ' ';
-		if (date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_on'])) == date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_off']))) {
-			echo date_it("D d M Y", strtotime($hamper['Hamper']['delivery_date_on']));
-			__(' dalle ');
-			echo date("H:i", strtotime($hamper['Hamper']['delivery_date_on']));
-			__(' alle ');
-			echo date("H:i", strtotime($hamper['Hamper']['delivery_date_off']));
-		} else {
-			__(' da ');
-			echo digi_date($hamper['Hamper']['delivery_date_on']);
-			__(' a ');
-			echo digi_date($hamper['Hamper']['delivery_date_off']);
+		if(!empty($hamper['Hamper']['delivery_position'])) {
+			__('Ritira la merce presso ');
+			echo $hamper['Hamper']['delivery_position'];
 		}
+		if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+			echo  ' ';
+			if (date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_on'])) == date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_off']))) {
+				echo date_it("D d M Y", strtotime($hamper['Hamper']['delivery_date_on']));
+				__(' dalle ');
+				echo date("H:i", strtotime($hamper['Hamper']['delivery_date_on']));
+				__(' alle ');
+				echo date("H:i", strtotime($hamper['Hamper']['delivery_date_off']));
+			} else {
+				__(' da ');
+				echo digi_date($hamper['Hamper']['delivery_date_on']);
+				__(' a ');
+				echo digi_date($hamper['Hamper']['delivery_date_off']);
+			}
+		}
+		
 		$_notes = strip_tags($hamper['Hamper']['notes']);
 		if (!empty($_notes)) {
 			echo $this->Html->div('attention', $hamper['Hamper']['notes']);
