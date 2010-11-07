@@ -21,7 +21,7 @@
         <h3 class="expander"><?php __('Altro'); ?></h3>
         <div class="accordion">
             <?php
-			echo $this->Form->input('User.seller_id', array('label' => __('Azienda di cui è referente', true)));
+			echo $this->Form->input('Seller', array('label' => __('Aziende di cui è referente', true), 'multiple' => 'checkbox'));
             echo $this->Form->input('User.parent_id', array('label' => __('Appartiene alla famiglia di', true), 'empty' => 'Nessuno: è capofamiglia', 'options' => $families));
             echo $this->Form->input('User.usergroup_id', array('label' => __('Gruppo', true)));
             echo $this->Form->hidden('User.role', array('value' => 2));

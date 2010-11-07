@@ -43,31 +43,20 @@ class Seller extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		),
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'seller_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
 		)
 	);
 
-    var $actsAs = array('Containable');
+	var $hasAndBelongsToMany = array('User');
 
-    function afterSave($created) {
-        if(isset($this->data['Seller']['User'])) {
-            $this->User->updateAll(array('seller_id' => 0), array('User.seller_id' => $this->id));
-            $this->User->updateAll(array('seller_id' => $this->id), array('User.id' => $this->data['Seller']['User']));
-        }
-        return parent::afterSave($created);
-    }
+    var $actsAs = array('Containable');
+//
+//    function afterSave($created) {
+//        if(isset($this->data['Seller']['User'])) {
+//            $this->User->updateAll(array('seller_id' => 0), array('User.seller_id' => $this->id));
+//            $this->User->updateAll(array('seller_id' => $this->id), array('User.id' => $this->data['Seller']['User']));
+//        }
+//        return parent::afterSave($created);
+//    }
 
     function getSellers($options = null) {
 
@@ -85,12 +74,11 @@ class Seller extends AppModel {
 
     function getUserEmails($id) {
         $users = $this->User->find('all', array(
-            'conditions' => array(
-                'User.active' => 1,
-                'User.seller_id' => $id),
-            'fields' => array('email'),
-            'contain' => array()
-        ));
+			'contain' => array(
+				'User' => array(
+					'conditions' => array(
+						'User.active' => 1),
+					'fields' => array('email')))));
         $emails = Set::extract('/User/email', $users);
         return $emails;
     }

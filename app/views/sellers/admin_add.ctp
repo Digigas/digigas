@@ -19,10 +19,10 @@
             ?>
         </div>
 
-        <h3 class="expander"><?php __('Profili fornitore che gestiranno questa azienda'); ?></h3>
+        <h3 class="expander"><?php __('Referenti per questa azienda'); ?></h3>
         <div class="accordion">
             <?php
-            echo $this->Form->input('User', array('multiple' => 'checkbox', 'label' => 'Fornitori'));
+            echo $this->Form->input('User', array('multiple' => 'checkbox', 'label' => __('Utenti abilitati a gestire gli ordini', true)));
             ?>
         </div>
         
