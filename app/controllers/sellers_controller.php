@@ -56,7 +56,7 @@ class SellersController extends AppController {
 			}
 		}
 
-        $users = $this->Seller->User->find('list', array('conditions' => array('seller_id' => 0, 'role' => 2)));
+        $users = $this->Seller->User->find('list', array('conditions' => array('role' => 2)));
         $this->set(compact('users'));
 	}
 
@@ -80,7 +80,7 @@ class SellersController extends AppController {
                 'contain' => array('User')));
 		}
 
-        $users = $this->Seller->User->find('list', array('conditions' => array('seller_id' => array(0, $id), 'role' => 2)));
+        $users = $this->Seller->User->find('list', array('conditions' => array('role' => 2)));
         $this->set(compact('users'));
 	}
 
