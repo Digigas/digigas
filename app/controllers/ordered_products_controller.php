@@ -90,7 +90,7 @@ class OrderedProductsController extends AppController {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2', 'units')),
                 'Hamper' => array('fields' => array('id', 'delivery_date_on')))
         ));
         $this->OrderedProduct->recursive = 0;
@@ -164,7 +164,7 @@ class OrderedProductsController extends AppController {
 			'order' => array('User.last_name asc', 'User.first_name asc'),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2', 'units')))
         ));
 		$orderedProducts = array();
 		foreach($_orderedProducts as $product) {
@@ -186,7 +186,7 @@ class OrderedProductsController extends AppController {
             'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
             'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
             'order' => array('hamper_id desc'),
-            'contain' => array('Product' => array('name', 'option_1', 'option_2'), 'Hamper.delivery_date_on')
+            'contain' => array('Product' => array('name', 'option_1', 'option_2', 'units'), 'Hamper.delivery_date_on')
         ));
 
 		// totale
@@ -214,7 +214,7 @@ class OrderedProductsController extends AppController {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2', 'units')))
         ));
 
         //trovo il totale per ogni prodotto
@@ -223,7 +223,7 @@ class OrderedProductsController extends AppController {
             'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
             'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
             'order' => array('hamper_id desc'),
-            'contain' => array('Product' => array('name', 'option_1', 'option_2'), 'Hamper.delivery_date_on')
+            'contain' => array('Product' => array('name', 'option_1', 'option_2', 'units'), 'Hamper.delivery_date_on')
         ));
 
         $totalsByHamper = array();

@@ -78,7 +78,11 @@
 				}
 				?>
             </td>            
-            <td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
+            <td>
+				<?php echo $orderedProduct['OrderedProduct']['quantity']; ?>
+				&nbsp;
+				<?php echo $orderedProduct['Product']['units']; ?>
+			</td>
             <td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
             <td>
 				<?php
@@ -150,7 +154,11 @@
 				<td>
 				<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false)); ?>
 				</td>
-				<td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
+				<td>
+					<?php echo $orderedProduct['OrderedProduct']['quantity']; ?>
+					&nbsp;
+					<?php echo $orderedProduct['Product']['units']; ?>
+				</td>
 				<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
 				<td class="actions"><?php
 					if ($orderedProduct['OrderedProduct']['paid']) {

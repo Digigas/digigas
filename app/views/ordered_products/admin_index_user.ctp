@@ -59,7 +59,11 @@
 				}
 				?>
 			</td>
-			<td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
+			<td>
+				<?php echo $orderedProduct['OrderedProduct']['quantity']; ?>
+				&nbsp;
+				<?php echo $orderedProduct['Product']['units']; ?>
+			</td>
 			<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
 			<td>
 				<?php

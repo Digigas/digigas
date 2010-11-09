@@ -54,7 +54,11 @@
 					}
 				?>
 				</td>
-				<td class="quantity"><?php echo $product['0']['quantity']; ?></td>
+				<td class="quantity">
+					<?php echo $product['0']['quantity']; ?>
+					&nbsp;
+					<?php echo $product['Product']['units']; ?>
+				</td>
 				<td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
 				<td class="date">
 				<?php
@@ -141,7 +145,11 @@
 							}
 				?>
 						</td>
-						<td><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
+						<td>
+							<?php echo $orderedProduct['OrderedProduct']['quantity']; ?>
+							&nbsp;
+							<?php echo $orderedProduct['Product']['units']; ?>
+						</td>
 						<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
 						<td class="actions"><?php
 							if ($orderedProduct['OrderedProduct']['paid']) {

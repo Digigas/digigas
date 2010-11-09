@@ -221,7 +221,7 @@ class OrderedProduct extends AppModel {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2', 'units')),
                 'Hamper' => array('fields' => array('id', 'delivery_date_on')))
         ));
         return $pendings;
