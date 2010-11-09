@@ -1,5 +1,6 @@
 <div class="hampers index">
     <h2><?php __('Panieri');?></h2>
+	<?php //echo __('Data attuale', true) . ': ' . date('D j M Y, H:i'); ?>
     <table cellpadding="0" cellspacing="0">
         <tr>
             <th><?php __('Stato'); ?></th>
@@ -8,6 +9,7 @@
             <th><?php echo $this->Paginator->sort(__('Data di apertura', true), 'start_date');?></th>
             <th><?php echo $this->Paginator->sort(__('Data di chiusura', true), 'end_date');?></th>
             <th class="actions"><?php __('Azioni');?></th>
+			<th class="actions"><?php __('Esporta');?></th>
         </tr>
         <?php
         $i = 0;
@@ -31,6 +33,11 @@
                     echo $this->Html->image('oxygen/16x16/actions/alarmclock.png', array(
                         'alt' => __('In consegna entro ', true).digi_date($hamper['Hamper']['delivery_date_off']),
                         'title' => __('In consegna entro ', true).digi_date($hamper['Hamper']['delivery_date_off'])));
+                } else if(strtotime($hamper['Hamper']['end_date']) < $now && date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+                    //paniere in consegna,ma la data di consegna non è specificata
+                    echo $this->Html->image('oxygen/16x16/actions/alarmclock.png', array(
+                        'alt' => __('In attesa di consegna', true),
+                        'title' => __('In attesa di consegna', true)));
                 } else {
                     //paniere chiuso
                     echo $this->Html->image('oxygen/16x16/actions/button_cancel.png', array(
@@ -49,7 +56,9 @@
                     <?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $hamper['Hamper']['id'])); ?>
                     <?php echo $this->Html->link(__('Dettaglio ordini', true), array('controller' => 'ordered_products', 'action' => 'index_hamper', $hamper['Hamper']['id'])); ?>
                     <?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $hamper['Hamper']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $hamper['Hamper']['id'])); ?>
-                    <?php echo $this->Html->image('oxygen/16x16/mimetypes/pdf.png', array('url' => array('controller' => 'ordered_products', 'action' => 'print_pdf_hamper', $hamper['Hamper']['id']), 'title' => __('stampa', true))); ?>
+			</td>
+			<td class="actions">
+					<?php echo $this->Html->image('oxygen/16x16/mimetypes/pdf.png', array('url' => array('controller' => 'ordered_products', 'action' => 'print_pdf_hamper', $hamper['Hamper']['id']), 'title' => __('PDF', true))); ?>
                     <?php echo $this->Html->image('oxygen/16x16/mimetypes/application_vnd.ms_excel.png', array('url' => array('controller' => 'ordered_products', 'action' => 'export_excel_hamper', $hamper['Hamper']['id']), 'title' => __('esporta excel', true))); ?>
             </td>
         </tr>
