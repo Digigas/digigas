@@ -10,4 +10,5 @@ syntax: glob
 app/tmp
 app/webroot/documents
 app/webroot/img/imagecache
+app/config/database.php
 nbproject

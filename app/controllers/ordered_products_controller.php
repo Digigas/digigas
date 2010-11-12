@@ -764,4 +764,68 @@ class OrderedProductsController extends AppController {
 		$pageTitle = Inflector::slug(Configure::read('GAS.name').'_'.$hamper['Seller']['name'].'_'.date('d-m-Y', strtotime($hamper['Hamper']['delivery_date_on']))).'.pdf';
         $this->set('pageTitle', $pageTitle);
 	}
+	
+	
+	function admin_export_excel_hamper($hamper_id) 
+	{
+//         Configure::write('debug', 2);
+        $this->layout = 'excel';
+        $hamper = $this->OrderedProduct->Hamper->find('first', array(
+            'conditions' => array('Hamper.id' => $hamper_id),
+            'contain' => array(
+                'Seller.name'
+            )
+        ));
+        
+        $users = $this->OrderedProduct->find
+        (
+            'all', array
+            (
+                'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
+                'fields' => array('user_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+                'group' => array('user_id'),
+                'order' => array('User.id'),
+                'contain' => array
+                (
+                    'User' => array('fields' => array('id', 'first_name', 'last_name'))
+                )
+            )
+        );
+        
+        $totals = $this->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
+            'fields' => array('hamper_id', 'product_id', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
+            'order' => array('hamper_id desc', 'Product.name'),
+            'contain' => array('Product.name','Product.option_1', 'Product.option_2', 'Product.units', 'Product.value' ,'Hamper.delivery_date_on')
+        ));
+        
+        foreach($totals as $key => $product)
+        {
+            foreach($users as $user)
+            {
+                $partial = $this->OrderedProduct->find('all', array(
+                'conditions' => array
+                (
+                    'OrderedProduct.hamper_id' => $hamper_id, 
+                    'user_id' => $user['User']['id'],
+                    'OrderedProduct.product_id' => $product['Product']['id'], 
+                    'OrderedProduct.option_1' => $product['OrderedProduct']['option_1'],
+                    'OrderedProduct.option_2' => $product['OrderedProduct']['option_2']
+                ),
+                'fields' => array('SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+                'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
+                'order' => array('hamper_id desc', 'Product.name'),
+                'contain' => array('Product.name','Product.option_1' ,'Product.option_2' ,'Hamper.delivery_date_on')
+                ));
+                if(!isset($partial[0]))
+                    $partial[0] = '';
+                $totals[$key]['Users'][$user['User']['id']] = $partial[0];
+                    
+            }
+        }
+        $this->set(compact( 'hamper', 'totals', 'users'));
+    }
+
 }
+
