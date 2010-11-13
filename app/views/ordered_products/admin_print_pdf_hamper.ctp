@@ -123,7 +123,7 @@ foreach($orderedProducts as $products) {
 	foreach ($products['Products'] as $orderedProduct) {
 	
         $name = $orderedProduct['Product']['name'];
-        $pdf->Cell(20,6, $product['Product']['code']);
+        $pdf->Cell(20,6, $orderedProduct['Product']['code']);
         $pdf->Cell(110,6, $name);
 		$pdf->Cell(20,6, $orderedProduct['OrderedProduct']['quantity']);
 		$pdf->Cell(10,6, $orderedProduct['Product']['units']);
@@ -162,7 +162,7 @@ foreach($orderedProducts as $products) {
 
 	//totale
 	$pdf->SetFont('Arial','B',9);
-	$pdf->Cell(130,6, __('Totale', true));
+	$pdf->Cell(130,6, __('Totale ', true).$products['User']['fullname']);
 	$pdf->Cell(30,6, '');
 	$pdf->Cell(28,6, money_format('%.2n', $products['Total']), '', '',  'R');
 	$pdf->Ln();
