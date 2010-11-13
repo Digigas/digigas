@@ -724,13 +724,15 @@ class OrderedProductsController extends AppController {
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
 			'order' => array('User.last_name asc', 'User.first_name asc', 'Product.name'),
             'contain' => array(
-                'User' => array('fields' => array('id', 'fullname')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
+                'User' => array('fields' => array('id', 'fullname', 'phone', 'mobile')),
+                'Product' => array('fields' => array('id', 'name', 'code', 'units',   'option_1', 'option_2')))
         ));
 		$orderedProducts = array();
 		foreach($_orderedProducts as $product) {
 			$user_id = $product['User']['id'];
 			$orderedProducts[$user_id]['User']['fullname'] = $product['User']['fullname'];
+			$orderedProducts[$user_id]['User']['phone'] = $product['User']['phone'];
+			$orderedProducts[$user_id]['User']['mobile'] = $product['User']['mobile'];
 			$orderedProducts[$user_id]['Products'][] = $product;
 
 			//calcolo il totale per utente
@@ -747,7 +749,7 @@ class OrderedProductsController extends AppController {
             'fields' => array('hamper_id', 'product_id', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
             'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
             'order' => array('hamper_id desc', 'Product.name'),
-            'contain' => array('Product.name','Product.option_1', 'Product.option_2' ,'Hamper.delivery_date_on')
+            'contain' => array('Product.name','Product.code','Product.units','Product.option_1', 'Product.option_2' ,'Hamper.delivery_date_on')
         ));
 
 		// totale

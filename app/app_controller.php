@@ -14,7 +14,8 @@ class AppController extends Controller {
         'Javascript',
         'Layout',
         'Image',
-        'Menu'
+        'Menu',
+        'Number'
     );
     var $allowedActions = array();
 

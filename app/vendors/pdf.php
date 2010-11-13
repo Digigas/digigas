@@ -14,6 +14,7 @@ class PDF extends FPDF {
         }
 
     function footer() {
+        $this->SetY(-10);
         $this->SetFont('Arial','',8);
         $this->SetTextColor(124, 175, 0);
         $this->Cell(0,0,'Digigas3');
@@ -47,6 +48,15 @@ class PDF extends FPDF {
 		$this->Ln(1);
         $this->SetFont('Arial','',12);
         $this->SetTextColor(153, 153, 153);		
+        $this->Cell(0, 6, $text);
+        $this->Ln();
+        $this->SetFont('Arial','',9);
+        $this->SetTextColor(0, 0, 0);
+    }
+    
+    function h3($text) {
+        $this->SetFont('Arial','',10);
+        $this->SetTextColor(153, 153, 153);     
         $this->Cell(0, 6, $text);
         $this->Ln();
         $this->SetFont('Arial','',9);
