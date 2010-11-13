@@ -78,7 +78,9 @@
                     filebrowserBrowseUrl : '<?php echo $this->Html->url('/admin/filemanager/ckselect/uploads') ?>',
                     filebrowserImageBrowseUrl : '<?php echo $this->Html->url('/admin/filemanager/ckselect/image') ?>',
                     filebrowserWindowWidth : '100%',
-                    filebrowserWindowHeight : '100%'
+                    filebrowserWindowHeight : '100%',
+                    toolbar : 'Basic',
+
                 };
             $('textarea[class!=plaintext]').ckeditor(CKconfig);
 

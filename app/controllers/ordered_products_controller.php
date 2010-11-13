@@ -689,7 +689,7 @@ class OrderedProductsController extends AppController {
             'order' => array('hamper_id desc'),
             'contain' => array('Product.name', 'Hamper.delivery_date_on')
         )); 
-
+        
         $totalsByHamper = array();
         foreach($totals as $tot) {
             if(isset($totalsByHamper[$tot['Hamper']['delivery_date_on']])) {
@@ -708,7 +708,7 @@ class OrderedProductsController extends AppController {
     }
 
 	function admin_print_pdf_hamper($hamper_id) {
-		Configure::write('debug', 0);
+// 		Configure::write('debug', 0);
         $this->layout = 'pdf';
 
 		//dettagli paniere
@@ -743,17 +743,31 @@ class OrderedProductsController extends AppController {
 			}
 		}
 
-		//trovo il totale per ogni prodotto
-        $totals = $this->OrderedProduct->find('all', array(
+        $categories = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
             'fields' => array('hamper_id', 'product_id', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
-            'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
-            'order' => array('hamper_id desc', 'Product.name'),
-            'contain' => array('Product.name','Product.code','Product.units','Product.option_1', 'Product.option_2' ,'Hamper.delivery_date_on')
+            'group' => array('Product.product_category_id'),
+            'order' => array('product_category_id'),
+            'contain' => array('Product.name', 'Product.ProductCategory.id', 'Product.ProductCategory.name')
         ));
-
+//         debug($categories); 
+        foreach($categories as $key => $category)
+		//trovo il totale per ogni prodotto
+        {
+            $product_category_id = $category['Product']['product_category_id'];
+            $totals = $this->OrderedProduct->find('all', array(
+                'conditions' => array('OrderedProduct.hamper_id' => $hamper_id, 'Product.product_category_id' => $product_category_id),
+                'fields' => array('hamper_id', 'product_id', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+                'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
+                'order' => array('hamper_id desc', 'Product.name'),
+                'contain' => array('Product.name',  'Product.ProductCategory.name','Product.code','Product.units','Product.option_1', 'Product.option_2' ,'Hamper.delivery_date_on')
+            ));
+            $categories[$key]['Product']['ProductCategory']['totals']  = $totals;
+            $categories[$key]['Product']['ProductCategory']['total']  = array_sum(Set::extract('/0/total', $totals));
+        }
+//         debug($categories); die();
 		// totale
-		$total = array_sum(Set::extract('/0/total', $totals));
+		$total = array_sum(Set::extract('/0/total', $categories));
 
 		//trovo l'elenco degli utenti con ordini attivi
         $users = $this->OrderedProduct->getPendingUsers();
@@ -761,7 +775,7 @@ class OrderedProductsController extends AppController {
         //trovo l'elenco dei produttori con ordini attivi
         $sellers = $this->OrderedProduct->getPendingSellers();
 
-		$this->set(compact('orderedProducts', 'hamper', 'users', 'sellers', 'totals', 'total'));
+		$this->set(compact('categories', 'orderedProducts', 'hamper', 'users', 'sellers',  'total'));
 
 		$pageTitle = Inflector::slug(Configure::read('GAS.name').'_'.$hamper['Seller']['name'].'_'.date('d-m-Y', strtotime($hamper['Hamper']['delivery_date_on']))).'.pdf';
         $this->set('pageTitle', $pageTitle);

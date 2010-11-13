@@ -35,7 +35,7 @@ class PDF extends FPDF {
     }
 
     function h1($text) {
-        $this->Ln();
+        $this->Ln(1);
         $this->SetFont('Arial','B',12);
         $this->SetTextColor(255, 153, 0);
         $this->Cell(0, 15, $text);

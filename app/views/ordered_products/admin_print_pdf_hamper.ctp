@@ -29,47 +29,64 @@ $pdf->SetDrawColor(200,200,200);
 
 //ordini pendenti
 $pdf->h1(__('Ordine', true));
-$pdf->SetFont('Arial','B',9);
-$pdf->Cell(20,6, __('Codice', true));
-$pdf->Cell(110,6, __('Descrizione', true));
-$pdf->Cell(20,6, __('Quantita', true));
-$pdf->Cell(10,6, __('UM', true));
-$pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
-$pdf->SetFont('Arial','',9);
-$pdf->Ln();
-foreach($totals as $product) {
-    $pdf->Cell(20,6, $product['Product']['code']);
-    $pdf->Cell(110,6, $product['Product']['name']);
-    $pdf->Cell(20,6, $product['0']['quantity']);
-    $pdf->Cell(10,6, $product['Product']['units']);
-    $pdf->Cell(28,6, $product['0']['total'], '', '',  'R');
-    if($product['OrderedProduct']['option_1'].$product['OrderedProduct']['option_2'])
-    {
-        
-            $pdf->Ln(3);
-            $option_string = "";
-        if($product['OrderedProduct']['option_1'])
-            $option_string .= $product['Product']['option_1'].": ".$product['OrderedProduct']['option_1'];
-        if($product['OrderedProduct']['option_2'])
+foreach($categories as $category)
+{
+    $pdf->h1($category['Product']['ProductCategory']['name']);
+    $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(20,6, __('Codice', true));
+    $pdf->Cell(110,6, __('Descrizione', true));
+    $pdf->Cell(20,6, __('Quantita', true));
+    $pdf->Cell(10,6, __('UM', true));
+    $pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
+    $pdf->SetFont('Arial','',9);
+    $pdf->Ln();
+    $totals = $category['Product']['ProductCategory']['totals'];
+    $cat_total = $category['Product']['ProductCategory']['total'];
+    foreach($totals as $product) {
+
+        $pdf->Cell(20,6, $product['Product']['code']);
+        $pdf->Cell(110,6, $product['Product']['name']);
+        $pdf->Cell(20,6, $product['0']['quantity']);
+        $pdf->Cell(10,6, $product['Product']['units']);
+        $pdf->Cell(28,6, $product['0']['total'], '', '',  'R');
+        if($product['OrderedProduct']['option_1'].$product['OrderedProduct']['option_2'])
         {
-            if($option_string)
-                $option_string .= "; ";
-            $option_string .= $product['Product']['option_2'].": ".$product['OrderedProduct']['option_2'];
+            
+                $pdf->Ln(3);
+                $option_string = "";
+            if($product['OrderedProduct']['option_1'])
+                $option_string .= $product['Product']['option_1'].": ".$product['OrderedProduct']['option_1'];
+            if($product['OrderedProduct']['option_2'])
+            {
+                if($option_string)
+                    $option_string .= "; ";
+                $option_string .= $product['Product']['option_2'].": ".$product['OrderedProduct']['option_2'];
+            }
+            $pdf->SetFont('Arial','',7);
+            $pdf->Cell(20,6, '');
+            $pdf->Cell(110,6, $option_string);
+            $pdf->Ln();
+            $pdf->SetFont('Arial','',9);
         }
-        $pdf->SetFont('Arial','',7);
-        $pdf->Cell(20,6, '');
-        $pdf->Cell(110,6, $option_string);
-        $pdf->Ln();
-        $pdf->SetFont('Arial','',9);
+        else 
+            $pdf->Ln();
+        $h = $pdf->GetY();
+        $pdf->Line(10,$h, 200,$h);
     }
-    else 
-        $pdf->Ln();
-    $h = $pdf->GetY();
-    $pdf->Line(10,$h, 200,$h);
+    //totale
+    $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(130,6, __('Totale', true));
+    $pdf->Cell(30,6, '');
+    // $pdf->Cell(40,6, $this->Number->currency($total, 'EUR', array('escape' => true)));
+    $pdf->Cell(28,6, money_format('%.2n', $cat_total), '', '',  'R');
+
+    $pdf->Ln();
+
 }
-//totale
+//Gran totale
+$pdf->Ln();
 $pdf->SetFont('Arial','B',9);
-$pdf->Cell(130,6, __('Totale', true));
+$pdf->Cell(130,6, __('Gran Totale', true));
 $pdf->Cell(30,6, '');
 // $pdf->Cell(40,6, $this->Number->currency($total, 'EUR', array('escape' => true)));
 $pdf->Cell(28,6, money_format('%.2n', $total), '', '',  'R');
@@ -79,6 +96,7 @@ $h = $pdf->GetY();
 $pdf->Line(10,$h, 200,$h);
 $pdf->SetFont('Arial','',9);
 
+$pdf->AddPage();
 //dettaglio
 $pdf->h1(__('Dettaglio per utente', true));
 
