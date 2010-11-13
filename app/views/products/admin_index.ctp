@@ -14,6 +14,7 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort(__('Categoria', true), 'product_category_id');?></th>
+			<th><?php echo $this->Paginator->sort(__('Codice', true), 'code');?></th>
 			<th><?php echo $this->Paginator->sort(__('Nome', true), 'name');?></th>
 			<th><?php echo $this->Paginator->sort(__('Produttore', true), 'seller_id');?></th>
 			<th class="actions"><?php __('Azioni');?></th>
@@ -30,7 +31,8 @@
 		<td>
 			<?php echo $this->Html->link($product['ProductCategory']['name'], array('category' => $product['ProductCategory']['id']), array('title' => __('Visualizza solo questa categoria di prodotti', true))); ?>
 		</td>		
-		<td><?php echo $product['Product']['name']; ?>&nbsp;</td>
+		<td><?php echo $product['Product']['code']; ?>&nbsp;</td>
+        <td><?php echo $product['Product']['name']; ?>&nbsp;</td>
         <td>
 			<?php echo $this->Html->link($product['Seller']['name'], array('seller' => $product['Seller']['id']), array('title' => __('Visualizza solo prodotti di questo produttore', true))); ?>
 		</td>
