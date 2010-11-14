@@ -161,12 +161,14 @@ class OrderedProductsController extends AppController {
 		//dettagli prodotti ordinati
 		$_orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
-			'order' => array('User.last_name asc', 'User.first_name asc'),
+			'order' => array('User.last_name asc', 'User.first_name asc', 'Product.product_category_id'),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
+                'Product.ProductCategory' => array('fields' => array('id', 'name'))
+                )
         ));
-		$orderedProducts = array();
+        $orderedProducts = array();
 		foreach($_orderedProducts as $product) {
 			$user_id = $product['User']['id'];
 			$orderedProducts[$user_id]['User']['fullname'] = $product['User']['fullname'];
@@ -185,8 +187,11 @@ class OrderedProductsController extends AppController {
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
             'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
             'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
-            'order' => array('hamper_id desc'),
-            'contain' => array('Product' => array('name', 'option_1', 'option_2'), 'Hamper.delivery_date_on')
+            'order' => array('Product.product_category_id', 'hamper_id desc'),
+            'contain' => array(
+                'Product' => array('name', 'option_1', 'option_2'), 'Hamper.delivery_date_on',
+                'Product.ProductCategory' => array('fields' => array('id', 'name'))
+                )
         ));
 
 		// totale
