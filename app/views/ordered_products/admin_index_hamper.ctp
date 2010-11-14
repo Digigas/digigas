@@ -35,9 +35,11 @@
 		    <table cellpadding="0" cellspacing="0">
 		        <tr>
 		            <th><?php __('Prodotto'); ?></th>
+		            <th><?php __('Categoria'); ?></th>
 		            <th><?php __('Quantità'); ?></th>
 		            <th><?php __('Totale'); ?></th>
 		        </tr>
+		        
 		<?php foreach ($totals as $product): ?>
 			        <tr class="total">
 			            <td class="name">
@@ -52,13 +54,14 @@
 						$details .= ' | ' . $product['Product']['option_2'] . ': ' . $product['OrderedProduct']['option_2'];
 					}
 					if (!empty($product['OrderedProduct']['note'])) {
-						$details .= '<br/>' . $product['OrderedProduct']['option_2'];
+						$details .= '<br/>' . $product['OrderedProduct']['note'];
 					}
 					if (!empty($details)) {
 						echo $html->div('product_details', $details);
 					}
 				?>
 				</td>
+				<td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
 	            <td class="quantity"><?php echo $product['0']['quantity']; ?></td>
 	            <td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
 	        </tr>
@@ -67,6 +70,7 @@
 						<td colspan="2">
 							<strong><?php __('Totale') ?></strong>
 						</td>
+						<td></td>
 						<td>
 							<strong><?php echo $total; ?> &euro;</strong>
 						</td>
@@ -88,10 +92,12 @@
 				    <table cellpadding="0" cellspacing="0">
 				        <tr>
 				            <th><?php __('Prodotto'); ?></th>
+				            <th><?php __('Categoria'); ?></th>
 				            <th class="small-w"><?php __('Quantità'); ?></th>
 				            <th class="small-w"><?php __('Totale'); ?></th>
 				            <th class="actions small-w"><?php __('Pagato'); ?></th>
 				            <th class="actions small-w"><?php __('Ritirato'); ?></th>
+				            <th class="actions"><?php __('Azioni') ?></th>
 				        </tr>
 		<?php
 						$i = 0;
@@ -103,8 +109,26 @@
 		?>
 					        <tr<?php echo $class; ?>>
 					            <td>
-				<?php echo $product['Product']['name']; ?>
+				<?php
+                    echo $product['Product']['name'];
+
+                    $details = '';
+                    if (!empty($product['OrderedProduct']['option_1'])) {
+                        $details .= $product['Product']['option_1'] . ': ' . $product['OrderedProduct']['option_1'];
+                    }
+                    if (!empty($product['OrderedProduct']['option_2'])) {
+                        $details .= ' | ' . $product['Product']['option_2'] . ': ' . $product['OrderedProduct']['option_2'];
+                    }
+                    if (!empty($product['OrderedProduct']['note'])) {
+                        $details .= '<br/>' . $product['OrderedProduct']['note'];
+                    }
+                    if (!empty($details)) {
+                        echo $html->div('product_details', $details);
+                    }
+                ?>
+				
 			            </td>
+			            <td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
 			            <td><?php echo $product['OrderedProduct']['quantity']; ?>&nbsp;</td>
 			            <td><?php echo $product['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
 			            <td class="actions"><?php
@@ -121,16 +145,20 @@
 								echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_retired', $product['OrderedProduct']['id'])));
 							}
 				?></td>
+				<td>
+                <?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $product['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
+            </td>
 			        </tr>
 		<?php endforeach; ?>
 							<tr>
 								<td colspan="2">
 									<strong><?php __('Totale'); ?></strong>
 								</td>
+								<td></td>
 								<td>
 									<strong><?php echo $products['Total']; ?> &euro;</strong>
 								</td>
-								<td colspan="2"></td>
+								<td colspan="3"></td>
 							</tr>
 					    </table>
 	<?php endforeach; ?>
