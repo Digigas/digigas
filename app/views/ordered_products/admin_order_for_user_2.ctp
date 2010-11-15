@@ -13,7 +13,7 @@
             <th><?php __('Peso'); ?></th>
             <th><?php __('Prezzo unitario'); ?></th>
 			<th><?php __('Opzioni'); ?></th>
-            <th><?php __('Quantità'); ?></th>
+            <th colspan="2"><?php __('Quantità'); ?></th>
         </tr>
 		<?php
 		foreach ($hamper['Product'] as $product):
@@ -63,7 +63,8 @@
 
             <td class="actions">
 				<?php echo $this->Form->select('Product.' . $product['id'] . '.quantity', $selectOptions); ?>
-				&nbsp;
+			</td>
+			<td class="actions" style="text-align:left;">
 				<?php echo ucfirst($product['units']); ?>
             </td>
         </tr>

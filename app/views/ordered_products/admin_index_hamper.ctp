@@ -61,8 +61,14 @@
 					}
 				?>
 				</td>
-				<td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
-	            <td class="quantity"><?php echo $product['0']['quantity']; ?></td>
+				<td class="product_category">
+					<?php echo $product['Product']['ProductCategory']['name']; ?>
+				</td>
+	            <td class="quantity">
+					<?php echo $product['0']['quantity']; ?>
+					&nbsp;
+					<?php echo $product['Product']['units']; ?>
+				</td>
 	            <td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
 	        </tr>
 		<?php endforeach; ?>
@@ -129,7 +135,10 @@
 				
 			            </td>
 			            <td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
-			            <td><?php echo $product['OrderedProduct']['quantity']; ?>&nbsp;</td>
+			            <td>
+							<?php echo $product['OrderedProduct']['quantity']; ?>&nbsp;
+							<?php echo $product['Product']['units']; ?>
+						</td>
 			            <td><?php echo $product['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
 			            <td class="actions"><?php
 							if ($product['OrderedProduct']['paid']) {
