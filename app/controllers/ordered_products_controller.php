@@ -90,7 +90,7 @@ class OrderedProductsController extends AppController {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2', 'units')),
                 'Hamper' => array('fields' => array('id', 'delivery_date_on')))
         ));
         $this->OrderedProduct->recursive = 0;
@@ -164,7 +164,7 @@ class OrderedProductsController extends AppController {
 			'order' => array('User.last_name asc', 'User.first_name asc', 'Product.product_category_id'),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')),
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2', 'units')),
                 'Product.ProductCategory' => array('fields' => array('id', 'name'))
                 )
         ));
@@ -187,9 +187,9 @@ class OrderedProductsController extends AppController {
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
             'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
             'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
-            'order' => array('Product.product_category_id', 'hamper_id desc'),
+            'order' => array('hamper_id desc', 'Product.product_category_id'),
             'contain' => array(
-                'Product' => array('name', 'option_1', 'option_2'), 'Hamper.delivery_date_on',
+                'Product' => array('name', 'option_1', 'option_2', 'units'), 'Hamper.delivery_date_on',
                 'Product.ProductCategory' => array('fields' => array('id', 'name'))
                 )
         ));
@@ -219,7 +219,7 @@ class OrderedProductsController extends AppController {
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
-                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2')))
+                'Product' => array('fields' => array('id', 'name', 'option_1', 'option_2', 'units')))
         ));
 
         //trovo il totale per ogni prodotto
@@ -228,7 +228,7 @@ class OrderedProductsController extends AppController {
             'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
             'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
             'order' => array('hamper_id desc'),
-            'contain' => array('Product' => array('name', 'option_1', 'option_2'), 'Hamper.delivery_date_on')
+            'contain' => array('Product' => array('name', 'option_1', 'option_2', 'units'), 'Hamper.delivery_date_on')
         ));
 
         $totalsByHamper = array();
@@ -787,7 +787,7 @@ class OrderedProductsController extends AppController {
 	}
 	
 	
-	function admin_export_excel_hamper($hamper_id) 
+	function admin_print_excel_hamper($hamper_id)
 	{
 //         Configure::write('debug', 2);
         $this->layout = 'excel';
@@ -845,7 +845,7 @@ class OrderedProductsController extends AppController {
                     
             }
         }
-        $this->set(compact( 'hamper', 'totals', 'users'));
+        $this->set(compact('hamper', 'totals', 'users'));
     }
 
 }
