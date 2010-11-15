@@ -12,14 +12,18 @@
 				<?php echo $this->Html->image('oxygen/16x16/mimetypes/pdf.png'); ?>
 				<?php __('Salva in PDF'); ?>
             </a></li>
+		<li><a href="<?php echo $this->Html->url(array('controller' => 'ordered_products', 'action' => 'print_excel_hamper', $hamper['Hamper']['id'])); ?>">
+				<?php echo $this->Html->image('oxygen/16x16/mimetypes/application_vnd.ms_excel.png'); ?>
+				<?php __('Salva in Excel'); ?>
+            </a></li>
 		<li><?php
 				echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
 				echo $this->Html->link(__('email algli utenti', true), array('action' => 'admin_mail_hamper_to_users', $hamper['Hamper']['id'])); ?></li>
-	    </ul>
+		</ul>
 	</div>
 
 	<div class="orderedProducts index">
-	    <h2>
+		<h2>
 		<?php
 				__('Ordini per il paniere ');
 				echo $hamper['Hamper']['name'];
@@ -30,19 +34,19 @@
 					echo digi_date($hamper['Hamper']['delivery_date_on']);
 				}
 		?>
-		    </h2>
+			</h2>
 
-		    <table cellpadding="0" cellspacing="0">
-		        <tr>
-		            <th><?php __('Prodotto'); ?></th>
-		            <th><?php __('Categoria'); ?></th>
-		            <th><?php __('Quantità'); ?></th>
-		            <th><?php __('Totale'); ?></th>
-		        </tr>
-		        
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<th><?php __('Prodotto'); ?></th>
+					<th><?php __('Categoria'); ?></th>
+					<th><?php __('Quantità'); ?></th>
+					<th><?php __('Totale'); ?></th>
+				</tr>
+
 		<?php foreach ($totals as $product): ?>
-			        <tr class="total">
-			            <td class="name">
+					<tr class="total">
+						<td class="name">
 				<?php
 					echo $product['Product']['name'];
 
@@ -62,15 +66,15 @@
 				?>
 				</td>
 				<td class="product_category">
-					<?php echo $product['Product']['ProductCategory']['name']; ?>
+				<?php echo $product['Product']['ProductCategory']['name']; ?>
 				</td>
-	            <td class="quantity">
-					<?php echo $product['0']['quantity']; ?>
+				<td class="quantity">
+				<?php echo $product['0']['quantity']; ?>
 					&nbsp;
-					<?php echo $product['Product']['units']; ?>
+				<?php echo $product['Product']['units']; ?>
 				</td>
-	            <td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
-	        </tr>
+				<td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
+			</tr>
 		<?php endforeach; ?>
 					<tr>
 						<td colspan="2">
@@ -81,13 +85,13 @@
 							<strong><?php echo $total; ?> &euro;</strong>
 						</td>
 					</tr>
-			    </table>
+				</table>
 
-			    <h2>
+				<h2>
 		<?php
 					__('Dettaglio per utente');
 		?>
-			    </h2>
+				</h2>
 
 	<?php foreach ($orderedProducts as $products): ?>
 						<h3>
@@ -95,16 +99,16 @@
 						echo $products['User']['fullname'];
 		?>
 					</h3>
-				    <table cellpadding="0" cellspacing="0">
-				        <tr>
-				            <th><?php __('Prodotto'); ?></th>
-				            <th><?php __('Categoria'); ?></th>
-				            <th class="small-w"><?php __('Quantità'); ?></th>
-				            <th class="small-w"><?php __('Totale'); ?></th>
-				            <th class="actions small-w"><?php __('Pagato'); ?></th>
-				            <th class="actions small-w"><?php __('Ritirato'); ?></th>
-				            <th class="actions"><?php __('Azioni') ?></th>
-				        </tr>
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<th><?php __('Prodotto'); ?></th>
+							<th><?php __('Categoria'); ?></th>
+							<th class="small-w"><?php __('Quantità'); ?></th>
+							<th class="small-w"><?php __('Totale'); ?></th>
+							<th class="actions small-w"><?php __('Pagato'); ?></th>
+							<th class="actions small-w"><?php __('Ritirato'); ?></th>
+							<th class="actions"><?php __('Azioni') ?></th>
+						</tr>
 		<?php
 						$i = 0;
 						foreach ($products['Products'] as $product):
@@ -113,51 +117,51 @@
 								$class = ' class="altrow"';
 							}
 		?>
-					        <tr<?php echo $class; ?>>
-					            <td>
+							<tr<?php echo $class; ?>>
+								<td>
 				<?php
-                    echo $product['Product']['name'];
+							echo $product['Product']['name'];
 
-                    $details = '';
-                    if (!empty($product['OrderedProduct']['option_1'])) {
-                        $details .= $product['Product']['option_1'] . ': ' . $product['OrderedProduct']['option_1'];
-                    }
-                    if (!empty($product['OrderedProduct']['option_2'])) {
-                        $details .= ' | ' . $product['Product']['option_2'] . ': ' . $product['OrderedProduct']['option_2'];
-                    }
-                    if (!empty($product['OrderedProduct']['note'])) {
-                        $details .= '<br/>' . $product['OrderedProduct']['note'];
-                    }
-                    if (!empty($details)) {
-                        echo $html->div('product_details', $details);
-                    }
-                ?>
-				
-			            </td>
-			            <td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
-			            <td>
-							<?php echo $product['OrderedProduct']['quantity']; ?>&nbsp;
-							<?php echo $product['Product']['units']; ?>
+							$details = '';
+							if (!empty($product['OrderedProduct']['option_1'])) {
+								$details .= $product['Product']['option_1'] . ': ' . $product['OrderedProduct']['option_1'];
+							}
+							if (!empty($product['OrderedProduct']['option_2'])) {
+								$details .= ' | ' . $product['Product']['option_2'] . ': ' . $product['OrderedProduct']['option_2'];
+							}
+							if (!empty($product['OrderedProduct']['note'])) {
+								$details .= '<br/>' . $product['OrderedProduct']['note'];
+							}
+							if (!empty($details)) {
+								echo $html->div('product_details', $details);
+							}
+				?>
+
 						</td>
-			            <td><?php echo $product['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
-			            <td class="actions"><?php
+						<td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
+						<td>
+				<?php echo $product['OrderedProduct']['quantity']; ?>&nbsp;
+				<?php echo $product['Product']['units']; ?>
+						</td>
+						<td><?php echo $product['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+						<td class="actions"><?php
 							if ($product['OrderedProduct']['paid']) {
 								echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $product['OrderedProduct']['id'])));
 							} else {
 								echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_paid', $product['OrderedProduct']['id'])));
 							}
 				?></td>
-			            <td class="actions"><?php
+						<td class="actions"><?php
 							if ($product['OrderedProduct']['retired']) {
 								echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_retired', $product['OrderedProduct']['id'])));
 							} else {
 								echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_retired', $product['OrderedProduct']['id'])));
 							}
 				?></td>
-				<td>
-                <?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $product['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
-            </td>
-			        </tr>
+						<td>
+				<?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $product['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
+			            </td>
+					</tr>
 		<?php endforeach; ?>
 							<tr>
 								<td colspan="2">
@@ -169,29 +173,29 @@
 								</td>
 								<td colspan="3"></td>
 							</tr>
-					    </table>
+						</table>
 	<?php endforeach; ?>
 
 						</div>
 						<div class="actions">
-						    <h3><?php __('Actions'); ?></h3>
-						    <ul>
+							<h3><?php __('Actions'); ?></h3>
+							<ul>
 								<li><?php echo $this->Html->link('<< ' . __('indietro', true), $referer); ?></li>
-						        <li><?php echo $this->Html->link(__('Tutti gli ordini pendenti', true), array('action' => 'index')); ?></li>
-						        <li class="dropdown"><?php __('Vedi ordini per acquirente'); ?>
-						            <ul>
+								<li><?php echo $this->Html->link(__('Tutti gli ordini pendenti', true), array('action' => 'index')); ?></li>
+								<li class="dropdown"><?php __('Vedi ordini per acquirente'); ?>
+									<ul>
 				<?php foreach ($users as $id => $user): ?>
-				                <li><?php echo $this->Html->link($user, array('action' => 'index_user', $id)); ?></li>
+								<li><?php echo $this->Html->link($user, array('action' => 'index_user', $id)); ?></li>
 				<?php endforeach; ?>
-				            </ul>
-				        </li>
-				        <li class="dropdown"><?php __('Vedi ordini per produttore'); ?>
-				            <ul>
+							</ul>
+						</li>
+						<li class="dropdown"><?php __('Vedi ordini per produttore'); ?>
+							<ul>
 				<?php foreach ($sellers as $id => $seller): ?>
-					                <li><?php echo $this->Html->link($seller, array('action' => 'index_seller', $id)); ?></li>
+									<li><?php echo $this->Html->link($seller, array('action' => 'index_seller', $id)); ?></li>
 				<?php endforeach; ?>
-					            </ul>
-					        </li>
+								</ul>
+							</li>
 							<li class="dropdown"><?php __('Vedi ordini per paniere'); ?>
 								<ul>
 				<?php foreach ($hampers as $id => $hamper): ?>
