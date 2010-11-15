@@ -193,7 +193,6 @@ class OrderedProductsController extends AppController {
                 'Product.ProductCategory' => array('fields' => array('id', 'name'))
                 )
         ));
-
 		// totale
 		$total = array_sum(Set::extract('/0/total', $totals));
 		
@@ -570,7 +569,11 @@ class OrderedProductsController extends AppController {
         if (!empty($this->data)) {
             if ($this->OrderedProduct->save($this->data)) {
                 $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'ordered product'));
-                $this->redirect(array('action' => 'index'));
+                if(isset($this->data['Referer'])) {
+					$this->redirect($this->data['Referer']);
+				} else {
+					$this->redirect(array('action' => 'index'));
+				}
             } else {
                 $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'ordered product'));
             }
@@ -578,11 +581,11 @@ class OrderedProductsController extends AppController {
         if (empty($this->data)) {
             $this->data = $this->OrderedProduct->read(null, $id);
         }
-        $users = $this->OrderedProduct->User->find('list');
-        $sellers = $this->OrderedProduct->Seller->find('list');
-        $products = $this->OrderedProduct->Product->find('list');
-        $hampers = $this->OrderedProduct->Hamper->find('list');
-        $this->set(compact('users', 'sellers', 'products', 'hampers'));
+        //$users = $this->OrderedProduct->User->find('list');
+        //$sellers = $this->OrderedProduct->Seller->find('list');
+        //$products = $this->OrderedProduct->Product->find('list');
+        //$hampers = $this->OrderedProduct->Hamper->find('list');
+        //$this->set(compact('users', 'sellers', 'products', 'hampers'));
     }
 
     function admin_delete($id = null) {
@@ -728,16 +731,15 @@ class OrderedProductsController extends AppController {
 		$_orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
 			'order' => array('User.last_name asc', 'User.first_name asc', 'Product.name'),
-            'contain' => array(
+			'contain' => array(
                 'User' => array('fields' => array('id', 'fullname', 'phone', 'mobile')),
-                'Product' => array('fields' => array('id', 'name', 'code', 'units',   'option_1', 'option_2')))
+                'Product' => array('fields' => array('id', 'name', 'units',   'option_1', 'option_2', 'product_category_id')),
+				'Product.ProductCategory.name')
         ));
 		$orderedProducts = array();
 		foreach($_orderedProducts as $product) {
 			$user_id = $product['User']['id'];
-			$orderedProducts[$user_id]['User']['fullname'] = $product['User']['fullname'];
-			$orderedProducts[$user_id]['User']['phone'] = $product['User']['phone'];
-			$orderedProducts[$user_id]['User']['mobile'] = $product['User']['mobile'];
+			$orderedProducts[$user_id]['User'] = $product['User'];
 			$orderedProducts[$user_id]['Products'][] = $product;
 
 			//calcolo il totale per utente
@@ -755,7 +757,6 @@ class OrderedProductsController extends AppController {
             'order' => array('product_category_id'),
             'contain' => array('Product.name', 'Product.ProductCategory.id', 'Product.ProductCategory.name')
         ));
-//         debug($categories); 
         foreach($categories as $key => $category)
 		//trovo il totale per ogni prodotto
         {
@@ -763,16 +764,16 @@ class OrderedProductsController extends AppController {
             $totals = $this->OrderedProduct->find('all', array(
                 'conditions' => array('OrderedProduct.hamper_id' => $hamper_id, 'Product.product_category_id' => $product_category_id),
                 'fields' => array('hamper_id', 'product_id', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
-                'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
+                'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
                 'order' => array('hamper_id desc', 'Product.name'),
-                'contain' => array('Product.name',  'Product.ProductCategory.name','Product.code','Product.units','Product.option_1', 'Product.option_2' ,'Hamper.delivery_date_on')
+                'contain' => array('Product.name',  'Product.ProductCategory.name', 'Product.units', 'Product.option_1', 'Product.option_2' ,'Hamper.delivery_date_on')
             ));
             $categories[$key]['Product']['ProductCategory']['totals']  = $totals;
             $categories[$key]['Product']['ProductCategory']['total']  = array_sum(Set::extract('/0/total', $totals));
         }
-//         debug($categories); die();
+		
 		// totale
-		$total = array_sum(Set::extract('/0/total', $categories));
+		$total = array_sum(Set::extract('/Total', $orderedProducts));
 
 		//trovo l'elenco degli utenti con ordini attivi
         $users = $this->OrderedProduct->getPendingUsers();
