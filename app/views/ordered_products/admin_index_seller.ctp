@@ -55,7 +55,7 @@
 				?>
 				</td>
 				<td class="quantity">
-					<?php echo $product['0']['quantity']; ?>
+					<?php echo clean_number($product['0']['quantity']); ?>
 					&nbsp;
 					<?php echo $product['Product']['units']; ?>
 				</td>
@@ -113,6 +113,7 @@
 							<th><?php __('Totale'); ?></th>
 							<th class="actions"><?php __('Pagato'); ?></th>
 							<th class="actions"><?php __('Ritirato'); ?></th>
+							<th class="actions"><?php __('Azioni') ?></th>
 						</tr>
 		<?php
 						$i = 0;
@@ -146,7 +147,7 @@
 				?>
 						</td>
 						<td>
-							<?php echo $orderedProduct['OrderedProduct']['quantity']; ?>
+							<?php echo clean_number($orderedProduct['OrderedProduct']['quantity']); ?>
 							&nbsp;
 							<?php echo $orderedProduct['Product']['units']; ?>
 						</td>
@@ -165,6 +166,9 @@
 								echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_retired', $orderedProduct['OrderedProduct']['id'])));
 							}
 				?></td>
+						<td class="actions">
+				<?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $orderedProduct['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
+			</td>
 					</tr>
 		<?php endforeach; ?>
 						</table>

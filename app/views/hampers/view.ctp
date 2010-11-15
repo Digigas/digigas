@@ -119,15 +119,17 @@ $this->Layout->blockEnd();
 								echo $this->Form->input('quantity', array('options' => $selectOptions, 'label' => ucfirst($product['units'])));
 								if ($product['option_list_1']) {
 									$options = array();
-									foreach (explode(';', $product['option_list_1']) as $opt)
+									foreach (explode(';', $product['option_list_1']) as $opt) {
 										$options[$opt] = $opt;
+									}
 
 									echo $this->Form->input('option_1', array('type' => 'select', 'options' => $options, 'label' => __($product['option_1'], true)));
 								}
 								if ($product['option_list_2']) {
 									$options = array();
-									foreach (explode(';', $product['option_list_2']) as $opt)
+									foreach (explode(';', $product['option_list_2']) as $opt) {
 										$options[$opt] = $opt;
+									}
 									echo $this->Form->input('option_2', array('type' => 'select', 'options' => $options, 'label' => __($product['option_2'], true)));
 								}
 								if ($product['show_note'] == 1) {

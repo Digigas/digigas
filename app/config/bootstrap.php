@@ -56,4 +56,8 @@ Configure::load('config');
 
 include_once('date_functions.php');
 
+function clean_number($num){
+  return rtrim(rtrim($num, '0'), '.');
+}
+
 ?>

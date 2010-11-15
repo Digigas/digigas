@@ -31,12 +31,11 @@ $pdf->SetDrawColor(200,200,200);
 $pdf->h1(__('Ordine', true));
 foreach($categories as $category)
 {
-    $pdf->h1($category['Product']['ProductCategory']['name']);
+    $pdf->h2($category['Product']['ProductCategory']['name']);
     $pdf->SetFont('Arial','B',9);
     $pdf->Cell(20,6, __('Codice', true));
     $pdf->Cell(110,6, __('Descrizione', true));
-    $pdf->Cell(20,6, __('Quantita', true));
-    $pdf->Cell(10,6, __('UM', true));
+    $pdf->Cell(30,6, __('Quantita', true));
     $pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
     $pdf->SetFont('Arial','',9);
     $pdf->Ln();
@@ -44,10 +43,8 @@ foreach($categories as $category)
     $cat_total = $category['Product']['ProductCategory']['total'];
     foreach($totals as $product) {
 
-        $pdf->Cell(20,6, $product['Product']['code']);
-        $pdf->Cell(110,6, $product['Product']['name']);
-        $pdf->Cell(20,6, $product['0']['quantity']);
-        $pdf->Cell(10,6, $product['Product']['units']);
+        $pdf->Cell(130,6, $product['Product']['name']);
+        $pdf->Cell(30,6, clean_number($product['0']['quantity']) . ' ' . $product['Product']['units']);
         $pdf->Cell(28,6, $product['0']['total'], '', '',  'R');
         if($product['OrderedProduct']['option_1'].$product['OrderedProduct']['option_2'])
         {
@@ -75,7 +72,7 @@ foreach($categories as $category)
     }
     //totale
     $pdf->SetFont('Arial','B',9);
-    $pdf->Cell(130,6, __('Totale', true));
+    $pdf->Cell(130,6, __('Totale categoria', true));
     $pdf->Cell(30,6, '');
     // $pdf->Cell(40,6, $this->Number->currency($total, 'EUR', array('escape' => true)));
     $pdf->Cell(28,6, money_format('%.2n', $cat_total), '', '',  'R');
@@ -86,7 +83,7 @@ foreach($categories as $category)
 //Gran totale
 $pdf->Ln();
 $pdf->SetFont('Arial','B',9);
-$pdf->Cell(130,6, __('Gran Totale', true));
+$pdf->Cell(130,6, __('Totale', true));
 $pdf->Cell(30,6, '');
 // $pdf->Cell(40,6, $this->Number->currency($total, 'EUR', array('escape' => true)));
 $pdf->Cell(28,6, money_format('%.2n', $total), '', '',  'R');
@@ -115,18 +112,15 @@ foreach($orderedProducts as $products) {
 	$pdf->SetFont('Arial','B',9);
 	$pdf->Cell(20,6, __('Codice', true));
     $pdf->Cell(110,6, __('Descrizione', true));
-    $pdf->Cell(20,6, __('Quantita', true));
-    $pdf->Cell(10,6, __('UM', true));
+    $pdf->Cell(30,6, __('Quantita', true));
 	$pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
 	$pdf->SetFont('Arial','',9);
 	$pdf->Ln();
 	foreach ($products['Products'] as $orderedProduct) {
 	
         $name = $orderedProduct['Product']['name'];
-        $pdf->Cell(20,6, $orderedProduct['Product']['code']);
-        $pdf->Cell(110,6, $name);
-		$pdf->Cell(20,6, $orderedProduct['OrderedProduct']['quantity']);
-		$pdf->Cell(10,6, $orderedProduct['Product']['units']);
+        $pdf->Cell(130,6, $name);
+		$pdf->Cell(30,6, clean_number($orderedProduct['OrderedProduct']['quantity']) . ' ' . $orderedProduct['Product']['units']);
 		$pdf->Cell(28,6, $orderedProduct['OrderedProduct']['value'], '', '',  'R');
 		
 		if($orderedProduct['OrderedProduct']['option_1'].$orderedProduct['OrderedProduct']['option_2'])

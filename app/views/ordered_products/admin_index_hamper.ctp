@@ -69,7 +69,7 @@
 				<?php echo $product['Product']['ProductCategory']['name']; ?>
 				</td>
 				<td class="quantity">
-				<?php echo $product['0']['quantity']; ?>
+				<?php echo clean_number($product['0']['quantity']); ?>
 					&nbsp;
 				<?php echo $product['Product']['units']; ?>
 				</td>
@@ -140,7 +140,7 @@
 						</td>
 						<td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
 						<td>
-				<?php echo $product['OrderedProduct']['quantity']; ?>&nbsp;
+				<?php echo clean_number($product['OrderedProduct']['quantity']); ?>&nbsp;
 				<?php echo $product['Product']['units']; ?>
 						</td>
 						<td><?php echo $product['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
@@ -158,7 +158,7 @@
 								echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_retired', $product['OrderedProduct']['id'])));
 							}
 				?></td>
-						<td>
+						<td class="actions">
 				<?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $product['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
 			            </td>
 					</tr>

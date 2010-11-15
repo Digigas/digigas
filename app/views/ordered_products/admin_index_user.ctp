@@ -27,6 +27,7 @@
             <th><?php __('Data di consegna'); ?></th>
 			<th class="actions"><?php __('Pagato', true); ?></th>
 			<th class="actions"><?php __('Ritirato', true); ?></th>
+			<th class="actions"><?php __('Azioni') ?></th>
 		</tr>
 		<?php
 		$i = 0;
@@ -60,7 +61,7 @@
 				?>
 			</td>
 			<td>
-				<?php echo $orderedProduct['OrderedProduct']['quantity']; ?>
+				<?php echo clean_number($orderedProduct['OrderedProduct']['quantity']); ?>
 				&nbsp;
 				<?php echo $orderedProduct['Product']['units']; ?>
 			</td>
@@ -88,10 +89,13 @@
 					echo $this->Html->image('oxygen/16x16/actions/mail_mark_important.png', array('url' => array('action' => 'set_retired', $orderedProduct['OrderedProduct']['id'])));
 				}
 				?></td>
+			<td class="actions">
+				<?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $orderedProduct['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
+			</td>
 		</tr>
 		<?php endforeach; ?>
 				<tr>
-					<td colspan="3">&nbsp;</td>
+					<td colspan="4">&nbsp;</td>
 					<td class="total">
 						<strong>
 					<?php
