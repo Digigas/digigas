@@ -27,24 +27,23 @@ $pdf->Cell(190, 8, digi_date(date('Y-m-d H:i')), '', '',  'R');
 
 $pdf->SetDrawColor(200,200,200);
 
-//ordini pendenti
+
+//ordini pendenti ($categories)
 $pdf->h1(__('Ordine', true));
 foreach($categories as $category)
 {
-    $pdf->h2($category['Product']['ProductCategory']['name']);
+    $pdf->h2($category['ProductCategory']['name']);
     $pdf->SetFont('Arial','B',9);
     $pdf->Cell(130,6, __('Prodotto', true));
     $pdf->Cell(30,6, __('Quantita', true));
     $pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
     $pdf->SetFont('Arial','',9);
     $pdf->Ln();
-    $totals = $category['Product']['ProductCategory']['totals'];
-    $cat_total = $category['Product']['ProductCategory']['total'];
-    foreach($totals as $product) {
+    foreach($category['Product'] as $product) {
 
         $pdf->Cell(130,6, $product['Product']['name']);
-        $pdf->Cell(30,6, clean_number($product['0']['quantity']) . ' ' . $product['Product']['units']);
-        $pdf->Cell(28,6, $product['0']['total'], '', '',  'R');
+        $pdf->Cell(30,6, clean_number($product['OrderedProduct']['quantity']) . ' ' . $product['Product']['units']);
+        $pdf->Cell(28,6, $product['OrderedProduct']['total'], '', '',  'R');
         if($product['OrderedProduct']['option_1'].$product['OrderedProduct']['option_2'])
         {
             
@@ -74,6 +73,7 @@ foreach($categories as $category)
     $pdf->Cell(130,6, __('Totale categoria', true));
     $pdf->Cell(30,6, '');
     // $pdf->Cell(40,6, $this->Number->currency($total, 'EUR', array('escape' => true)));
+	$cat_total = array_sum(Set::extract('/Product/OrderedProduct/total', $category));
     $pdf->Cell(28,6, money_format('%.2n', $cat_total), '', '',  'R');
 
     $pdf->Ln();
@@ -92,8 +92,10 @@ $h = $pdf->GetY();
 $pdf->Line(10,$h, 200,$h);
 $pdf->SetFont('Arial','',9);
 
+
+//dettaglio per utente ($orderedProducts)
 $pdf->AddPage();
-//dettaglio
+
 $pdf->h1(__('Dettaglio per utente', true));
 
 //dettaglio utente
