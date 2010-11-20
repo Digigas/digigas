@@ -34,7 +34,13 @@ class HampersController extends AppController {
             $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
             $this->redirect(array('action' => 'index'));
         }
-        $hamper = $this->Hamper->read(null, $id);
+        $hamper = $this->Hamper->find('first', array(
+			'conditions' => array('Hamper.id' => $id),
+			'contain' => array(
+				'Seller',
+				'Product' => array('order' => 'product_category_id asc'),
+				'Product.ProductCategory.name')
+		));
         $this->set('hamper', $hamper);
         $this->set('title_for_layout', __('Paniere', true).' '.$hamper['Hamper']['name'].' - '.Configure::read('GAS.name'));
     }
