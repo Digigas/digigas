@@ -6,6 +6,13 @@ $('.product .options form', '.products').hide();
 $('.product .options h4', '.products').css({cursor: 'pointer'}).click(function(){
     $(this).next('form').slideToggle();
 });
+$('.product a').tooltip({ 
+    track: true, 
+    delay: 0, 
+    showURL: false, 
+    showBody: ' - ' , 
+    fade: 250 
+});
 JS;
 
 $this->Layout->blockEnd();
@@ -73,12 +80,26 @@ $this->Layout->blockEnd();
                 echo $this->Html->tag('h3', $product['ProductCategory']['name']);
             }
         ?>
-                    <div class="product">
-                        <a href="<?php echo $this->Html->url(array('controller' => 'products', 'action' => 'view', $product['id'])); ?>">
-                <?php echo $this->Image->resize('/documents/image/product/' . $product['image'], '160', '120'); ?>
-                </a>
+                <?php 
+                $title = "";
+                if($product['text'])
+                    $title .= "<strong>Descrizione:</strong>".$product['text']."<br>";
+                if($product['packing'])
+                    $title .= "<strong>Imballaggio:</strong>".$product['packing'];
+                if(!$title)
+                    $title = $product['name'];
+                ?>
+                <div class="product"  >
+                
+                        <a title="<?php echo $title?>" href="<?php echo $this->Html->url(array('controller' => 'products', 'action' => 'view', $product['id'])); ?>">
+                <?php 
+                if($product['image'])
+                    echo $this->Image->resize('/documents/image/product/' . $product['image'], '160', '120'); 
+                
+                ?>
+                
                 <div class="name"><?php echo $product['name']; ?></div>
-
+                </a>
             <?php if (!empty($product['weight'])): ?>
                         <div class="weight">
                 <?php
@@ -96,6 +117,8 @@ $this->Layout->blockEnd();
                 ?>&euro;
                         </div>
             <?php endif; ?>
+            
+            
 
                             <div class="options">
                                 <h4><?php __('Ordina'); ?></h4>
@@ -152,3 +175,6 @@ $this->Layout->blockEnd();
         <li><?php echo $this->Html->link(__('Mandami un promemoria', true), array('controller' => 'ordered_products', 'action' => 'send_me_orders_email')); ?></li>
     </ul>
 </div>
+<?php
+
+?>

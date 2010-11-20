@@ -14,7 +14,7 @@
         echo $this->Html->css('jquery.lightbox');
         echo $this->Html->css('digigas/jquery.treeTable');
         echo $this->Html->css('jquery-ui-1.8.6.custom');
-
+        echo $this->Html->css('jquery.tooltip');
 	?>
 </head>
 <body>
@@ -58,6 +58,7 @@
         echo $this->Javascript->link('jquery.lightbox');
         echo $this->Javascript->link('jquery.treeTable.min');
         echo $this->Javascript->link('jquery.asmselect');
+        echo $this->Javascript->link('jquery.tooltip');
 
 		echo $scripts_for_layout;
 
