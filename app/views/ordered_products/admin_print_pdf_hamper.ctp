@@ -13,12 +13,15 @@ $pdf->SetAutoPageBreak(true ,15);
 $pdf->SetFont('Arial','',14);
 $pdf->SetTextColor(124, 175, 0);
 $pdf->SetY(20);
-$pdf->MultiCell(0, 6, __('Ordini per il paniere ', true)
+$title = __('Ordini per il paniere ', true)
 	.$hamper['Hamper']['name'] . "\n"
-	.$hamper['Seller']['name'] . "\n"
-	.__('in consegna ', true)
-	.digi_date($hamper['Hamper']['delivery_date_on']),
-	0, 2);
+	.$hamper['Seller']['name'];
+if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+	$title .= "\n"
+		.__('in consegna ', true)
+		.digi_date($hamper['Hamper']['delivery_date_on']);
+}
+$pdf->MultiCell(0, 6, $title, 0, 2);
 $pdf->SetFont('Arial','',9);
 $pdf->SetTextColor(0, 0, 0);
 $h = $pdf->GetY();

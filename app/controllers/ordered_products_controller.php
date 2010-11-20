@@ -789,8 +789,12 @@ class OrderedProductsController extends AppController {
 
 		$this->set(compact('categories', 'orderedProducts', 'hamper', 'users', 'sellers',  'total'));
 
-		$pageTitle = Inflector::slug(Configure::read('GAS.name').'_'.$hamper['Seller']['name'].'_'.date('d-m-Y', strtotime($hamper['Hamper']['delivery_date_on']))).'.pdf';
-        $this->set('pageTitle', $pageTitle);
+		if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+			$pageTitle = Inflector::slug(Configure::read('GAS.name').'_'.$hamper['Seller']['name'].'_'.date('d-m-Y', strtotime($hamper['Hamper']['delivery_date_on']))).'.pdf';
+		} else {
+			$pageTitle = Inflector::slug(Configure::read('GAS.name').'_'.$hamper['Seller']['name']).'.pdf';
+		}
+		$this->set('pageTitle', $pageTitle);
 	}
 	
 	function admin_print_excel_hamper($hamper_id)
