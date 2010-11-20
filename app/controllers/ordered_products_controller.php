@@ -732,7 +732,7 @@ class OrderedProductsController extends AppController {
 			'order' => array('Product.product_category_id asc', 'User.last_name asc', 'User.first_name asc', 'Product.name'),
 			'contain' => array(
                 'User' => array('fields' => array('id', 'fullname', 'phone', 'mobile')),
-                'Product' => array('fields' => array('id', 'name', 'units',   'option_1', 'option_2', 'product_category_id')),
+                'Product' => array('fields' => array('id', 'name', 'code', 'units',   'option_1', 'option_2', 'product_category_id')),
 				'Product.ProductCategory.name')
         ));
 
@@ -760,7 +760,7 @@ class OrderedProductsController extends AppController {
             'contain' => array(
 				'Product.id', 'Product.name', 'Product.units', 'Product.option_1', 'Product.option_2' ,
 				'Hamper.delivery_date_on',
-				'Product.ProductCategory.id', 'Product.ProductCategory.name')
+				'Product.ProductCategory.id', 'Product.ProductCategory.name', 'Product.code')
         )); 
 
 		$categories = array();

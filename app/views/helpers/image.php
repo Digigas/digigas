@@ -51,7 +51,6 @@ class ImageHelper extends Helper
             explode(DS, ROOT.DS.APP_DIR.DS.WEBROOT_DIR)
         ), 0, -1);
     $url = implode(DS, am(explode(DS, ROOT.DS.APP_DIR.DS.WEBROOT_DIR), $_webrootpath)).DS.basename($path);
-
     if (!($size = getimagesize($url)))
       return; // image doesn't exist
 
