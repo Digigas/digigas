@@ -1,6 +1,10 @@
 <div class="products view">
     <h2><?php  echo $product['Product']['name']; ?></h2>
+    <div class="code">
+        <?php echo  $product['Product']['code']; ?>
+    </div>
 
+    
     <div class="image">
         <?php echo$this->Image->resize('/documents/image/product/' . $product['Product']['image'], 400, 400); ?>
     </div>

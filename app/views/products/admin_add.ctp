@@ -6,6 +6,7 @@
 		echo $this->Form->input('product_category_id', array('label' => __('Appartiene alla categoria', true)));
 		echo $this->Form->input('seller_id', array('label' => __('Produttore', true)));
 		echo $this->Form->input('name', array('label' => __('Nome del prodotto', true)));
+		echo $this->Form->input('code', array('label' => __('Codice prodotto', true)));
 		echo $this->Form->input('text', array('label' => __('Descrizione', true)));
 		echo $this->Form->input('packing', array('label' => __('Descrizione dell\'imballaggio', true)));
 		echo $this->Form->input('image', array('type' => 'file', 'label' => __('Immagine', true)));

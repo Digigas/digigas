@@ -37,14 +37,15 @@ foreach($categories as $category)
 {
     $pdf->h2($category['ProductCategory']['name']);
     $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(20,6, __('Codice', true));
     $pdf->Cell(130,6, __('Prodotto', true));
     $pdf->Cell(30,6, __('Quantita', true));
     $pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
     $pdf->SetFont('Arial','',9);
     $pdf->Ln();
     foreach($category['Product'] as $product) {
-
-        $pdf->Cell(130,6, $product['Product']['name']);
+        $pdf->Cell(20,6, $product['Product']['code']);
+        $pdf->Cell(110,6, $product['Product']['name']);
         $pdf->Cell(30,6, clean_number($product['OrderedProduct']['quantity']) . ' ' . $product['Product']['units']);
         $pdf->Cell(28,6, $product['OrderedProduct']['total'], '', '',  'R');
         if($product['OrderedProduct']['option_1'].$product['OrderedProduct']['option_2'])
@@ -114,15 +115,16 @@ foreach($orderedProducts as $products) {
     if($tel) $pdf->h3($tel);
     
 	$pdf->SetFont('Arial','B',9);
-    $pdf->Cell(130,6, __('Prodotto', true));
+    $pdf->Cell(20,6, __('codice', true));
+    $pdf->Cell(110,6, __('Prodotto', true));
     $pdf->Cell(30,6, __('Quantita', true));
 	$pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
 	$pdf->SetFont('Arial','',9);
 	$pdf->Ln();
 	foreach ($products['Products'] as $orderedProduct) {
-	
+        $pdf->Cell(20,6, $orderedProduct['Product']['code']);
         $name = $orderedProduct['Product']['name'];
-        $pdf->Cell(130,6, $name);
+        $pdf->Cell(131,6, $name);
 		$pdf->Cell(30,6, clean_number($orderedProduct['OrderedProduct']['quantity']) . ' ' . $orderedProduct['Product']['units']);
 		$pdf->Cell(28,6, $orderedProduct['OrderedProduct']['value'], '', '',  'R');
 		
