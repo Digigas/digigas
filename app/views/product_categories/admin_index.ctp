@@ -45,6 +45,7 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('Nuova categoria', true), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Torna a produttori', true), array('controller' => 'sellers', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('Torna a prodotti', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
 	</ul>
 </div>
