@@ -71,7 +71,15 @@ class NewsController extends AppController
             $conditions = array('News.slug'=>$ref);
         }
         $conditions[] = $this->News->findActive(true);
-        $news = $this->News->find('first', array('conditions'=>$conditions));
+        $news = $this->News->find('first', array
+        (
+            'conditions'=>$conditions, 
+            'recursive' => 2,
+            'contain' => array(
+                'User',
+                'Newscategory',
+                'Comment.User' => array('first_name', 'last_name'))
+        ));
         if($news['News']['active'] != '1')
         {
             $this->Session->setFlash(__('News non disponibile', true));
@@ -90,10 +98,37 @@ class NewsController extends AppController
         $this->set(compact('categories'));
     }
 
+    function add_as_comment()
+    {
+        if (!empty($this->data))
+        {
+            $user_id = $this->Session->read('Auth.User.id');
+            $parent_id = $this->data['News']['parent_id'];
+            if(isset($user_id))
+                $this->data['News']['user_id'] = $user_id;
+            $this->News->create();
+            if ($this->News->save($this->data))
+            {
+                $this->Session->setFlash(__('News aggiunta', true));
+                $id = $this->News->id;
+                
+                $this->redirect(array('controller' => 'news', 'action'=>'view', $parent_id.'#comment_'.$id));
+            }
+            else
+            {
+                $this->Session->setFlash(__('Non è stato possibile salvare la news.', true));
+            }
+        }
+    }
+
+
     function admin_add()
     {
         if (!empty($this->data))
         {
+            $user_id = $this->Session->read('Auth.User.id');
+            if(isset($user_id))
+                $this->data['News']['user_id'] = $user_id;
             $this->News->create();
             if ($this->News->save($this->data))
             {
