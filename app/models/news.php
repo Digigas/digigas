@@ -10,9 +10,18 @@ class News extends AppModel {
 								'conditions' => '',
 								'fields' => '',
 								'order' => ''
-			)
+			),
+			
+			'User',
 	);
-    
+    var $hasMany = array(
+        'Comment' => array('className' => 'News',
+                        'foreignKey' => 'parent_id',
+                                'conditions' => '',
+                                'fields' => '',
+                                'order' => 'created'
+            )
+    );
 	var $actsAs = array(
         'Sluggable'=>array('label'=>array('title'), 'overwrite' => true),
         'Containable'
