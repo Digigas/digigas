@@ -46,8 +46,6 @@ class NewsController extends AppController
                 $conditions[] = array('newscategory_id'=>$newscategory_id['Newscategory']['id']);
             }
             $conditions[] = $this->News->findActive(true);
-               
-            
         }
         $this->paginate = array(
             'conditions'=>$conditions, 
@@ -142,6 +140,9 @@ class NewsController extends AppController
     {
         if (!empty($this->data))
         {
+            $this->data['News']['active'] = 1;
+            $this->data['News']['date_on'] = date('Y-m-d');
+            $this->data['News']['date_off'] = '0000-00-00';
             $user_id = $this->Session->read('Auth.User.id');
             if(isset($user_id))
                 $this->data['News']['user_id'] = $user_id;
@@ -150,7 +151,7 @@ class NewsController extends AppController
             {
                 $this->Session->setFlash(__('News salvata', true));
                 $id = $this->News->id;
-                $this->redirect(array('action'=>'view', $id));
+                $this->redirect(array('action'=>'category'));
                 
             }
             else
@@ -158,6 +159,15 @@ class NewsController extends AppController
                 $this->Session->setFlash(__('Non è stato possibile salvare la news, riprova', true));
             }
         }
+        $newscategories = $this->News->Newscategory->generatetreelist(array(), '{n}.Newscategory.id', '{n}.Newscategory.name', ' - ');
+        //deve esistere almeno una categoria per creare delle news
+        if(empty($newscategories))
+        {
+            $this->Session->setFlash('Prima di creare una news devi aver creato almeno una categoria');
+            $this->redirect(array('controller'=>'newscategories', 'action'=>'add'));
+        }
+
+        $this->set(compact('newscategories'));
     }
 
 
