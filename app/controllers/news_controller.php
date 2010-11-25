@@ -20,34 +20,46 @@ class NewsController extends AppController
      */
     function category($categoria = false)
     {
+        $conditions =  array();
         if(!$categoria)
         {
             $this->News->Newscategory->recursive = 1;
             $categorie = $this->News->Newscategory->find('all', array('conditions'=>array('active'=>1)));
             $this->set('categorie', $categorie);
-            $this->paginate = array('conditions'=>$this->News->findActive(true), 'limit'=>5, 'order'=>array('News.date_on desc , News.created desc, News.id desc'));
-            $news = $this->paginate();
-            $this->set('news', $news);
+            $conditions[] = $this->News->findActive(true);
         }
         else
         {
             $this->News->recursive = 1;
-            if(is_numeric($categoria)) {
-                $conditions = array('newscategory_id'=>$categoria);
-            } else {
+            if(is_numeric($categoria)) 
+            {
+                $conditions[] = array('newscategory_id'=>$categoria);
+            }
+            else 
+            {
                 $newscategory_id = $this->News->Newscategory->find('first',
-                    array(
-                        'fields' => array('id'),
-                        'conditions' => array('Newscategory.slug' => $categoria),
-                        'contain' => array()
-                    ));
-                $conditions = array('newscategory_id'=>$newscategory_id['Newscategory']['id']);
+                array(
+                    'fields' => array('id'),
+                    'conditions' => array('Newscategory.slug' => $categoria),
+                    'contain' => array()
+                ));
+                $conditions[] = array('newscategory_id'=>$newscategory_id['Newscategory']['id']);
             }
             $conditions[] = $this->News->findActive(true);
-            $this->paginate = array('conditions'=>$conditions, 'limit'=>5, 'order'=>array('News.date_on desc , News.created desc, News.id desc'));
-            $news = $this->paginate();
-            $this->set('news', $news);            
+               
+            
         }
+        $this->paginate = array(
+            'conditions'=>$conditions, 
+            'recursive' => 3,
+            'limit'=>5,  
+            'order'=>array('News.date_on desc , News.created desc, News.id desc'),
+            'contain' => array('Comment.id', 'Newscategory.id',  'Newscategory.name')
+        );
+        
+        $news = $this->paginate();
+        
+        $this->set('news', $news);
         $this->set('title_for_layout', __('News', true).' - '.Configure::read('GAS.name'));
     }
 
@@ -121,6 +133,28 @@ class NewsController extends AppController
         }
     }
 
+    function add()
+    {
+        if (!empty($this->data))
+        {
+            $user_id = $this->Session->read('Auth.User.id');
+            if(isset($user_id))
+                $this->data['News']['user_id'] = $user_id;
+            $this->News->create();
+            if ($this->News->save($this->data))
+            {
+                $this->Session->setFlash(__('News salvata', true));
+                $id = $this->News->id;
+                $this->redirect(array('action'=>'view', $id));
+                
+            }
+            else
+            {
+                $this->Session->setFlash(__('Non è stato possibile salvare la news, riprova', true));
+            }
+        }
+    }
+
 
     function admin_add()
     {
@@ -159,6 +193,8 @@ class NewsController extends AppController
 
         $this->set(compact('newscategories'));
     }
+
+
 
     function admin_edit($id = null)
     {
