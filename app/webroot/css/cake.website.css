@@ -498,10 +498,16 @@ dl
 }
 
 
+.comments-number
+{
+    text-align: right;
+    color: #f90
+}
 .news-list .news .news-more
 {
     float:right;
 }
+
 .news-list .news .news-more a
 {
     text-decoration:none;

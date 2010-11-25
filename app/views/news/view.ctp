@@ -91,3 +91,10 @@ endif;
 ?>
 
 </div>
+
+<div class="actions">
+    <ul>
+        <li><?php echo $this->Html->link('<< '.__('indietro', true), $referer); ?></li>
+        <li><?php echo $this->Html->link(__('Nuova news', true), array('action'=>'add')); ?></li>
+    </ul>
+</div>
