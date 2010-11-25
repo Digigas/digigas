@@ -22,7 +22,7 @@
         <div class="summary"><?php echo $one_news['News']['summary']; ?>
             <div class="comments-number">
                 <?php
-                    $comment_number = count($one_news['Comment']);
+                    $comment_number = $one_news['Comment']['count'];
                     if($comment_number)
                     {
                         if($comment_number == 1)

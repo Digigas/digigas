@@ -11,15 +11,16 @@ class News extends AppModel {
 								'fields' => '',
 								'order' => ''
 			),
-			
-			'User',
+            'User'
 	);
     var $hasMany = array(
-        'Comment' => array('className' => 'News',
-                        'foreignKey' => 'parent_id',
-                                'conditions' => '',
-                                'fields' => '',
-                                'order' => 'created'
+        'Comment' => array(
+                'className' => 'News',
+                'counterCache' => true,
+                'foreignKey' => 'parent_id',
+                'conditions' => '',
+                'fields' => '',
+                'order' => 'created'
             )
     );
 	var $actsAs = array(
