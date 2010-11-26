@@ -45,6 +45,10 @@
 				<?php
 				echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false));
 
+				if(!empty($orderedProduct['Product']['code'])){
+					echo ' (' . $orderedProduct['Product']['code'] . ')';
+				}
+
 				$details = '';
 				if (!empty($orderedProduct['OrderedProduct']['option_1'])) {
 					$details .= $orderedProduct['Product']['option_1'] . ': ' . $orderedProduct['OrderedProduct']['option_1'];
