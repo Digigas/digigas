@@ -29,6 +29,7 @@
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<th><?php __('Prodotto'); ?></th>
+					<th><?php __('Codice'); ?></th>
 					<th><?php __('Quantità'); ?></th>
 					<th><?php __('Totale'); ?></th>
 					<th><?php __('Data di consegna'); ?></th>
@@ -54,10 +55,13 @@
 					}
 				?>
 				</td>
+				<td>
+				<?php echo $product['Product']['code']; ?>&nbsp;
+				</td>
 				<td class="quantity">
-					<?php echo clean_number($product['0']['quantity']); ?>
+				<?php echo clean_number($product['0']['quantity']); ?>
 					&nbsp;
-					<?php echo $product['Product']['units']; ?>
+				<?php echo $product['Product']['units']; ?>
 				</td>
 				<td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
 				<td class="date">
@@ -109,6 +113,7 @@
 						<tr>
 							<th><?php __('Acquirente'); ?></th>
 							<th><?php __('Prodotto'); ?></th>
+							<th><?php __('Codice'); ?></th>
 							<th><?php __('Quantità'); ?></th>
 							<th><?php __('Totale'); ?></th>
 							<th class="actions"><?php __('Pagato'); ?></th>
@@ -147,9 +152,12 @@
 				?>
 						</td>
 						<td>
-							<?php echo clean_number($orderedProduct['OrderedProduct']['quantity']); ?>
+							<?php echo $orderedProduct['Product']['code']; ?>&nbsp;
+						</td>
+						<td>
+				<?php echo clean_number($orderedProduct['OrderedProduct']['quantity']); ?>
 							&nbsp;
-							<?php echo $orderedProduct['Product']['units']; ?>
+				<?php echo $orderedProduct['Product']['units']; ?>
 						</td>
 						<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
 						<td class="actions"><?php
@@ -168,7 +176,7 @@
 				?></td>
 						<td class="actions">
 				<?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $orderedProduct['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
-			</td>
+						</td>
 					</tr>
 		<?php endforeach; ?>
 						</table>
@@ -190,8 +198,8 @@
 				<?php foreach ($sellers as $id => $seller): ?>
 									<li><?php echo $this->Html->link($seller, array('action' => 'index_seller', $id)); ?></li>
 				<?php endforeach; ?>
-					            </ul>
-					        </li>
+								</ul>
+							</li>
 							<li class="dropdown"><?php __('Vedi ordini per paniere'); ?>
 								<ul>
 				<?php foreach ($hampers as $id => $hamper): ?>

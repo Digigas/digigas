@@ -61,6 +61,10 @@
 				<?php
 				echo $orderedProduct['Product']['name'];
 
+				if(!empty($orderedProduct['Product']['code'])){
+					echo ' (' . $orderedProduct['Product']['code'] . ')';
+				}
+
 				$details = '';
 				if (!empty($orderedProduct['Product']['option_1'])) {
 					$details .= $orderedProduct['Product']['option_1'] . ": <strong>" . $orderedProduct['OrderedProduct']['option_1'] . "</strong>";
@@ -152,7 +156,12 @@
 				<?php echo $this->Html->link($orderedProduct['Seller']['name'], array('action' => 'index_seller', $orderedProduct['Seller']['id'])); ?>
 				</td>
 				<td>
-				<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false)); ?>
+				<?php 
+				echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'], 'admin' => false));
+				if(!empty($orderedProduct['Product']['code'])){
+					echo ' (' . $orderedProduct['Product']['code'] . ')';
+				}
+				?>
 				</td>
 				<td>
 					<?php echo $orderedProduct['OrderedProduct']['quantity']; ?>

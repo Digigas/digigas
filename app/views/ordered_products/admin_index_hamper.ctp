@@ -39,6 +39,7 @@
 			<table cellpadding="0" cellspacing="0">
 				<tr>
 					<th><?php __('Prodotto'); ?></th>
+					<th><?php __('Codice'); ?></th>
 					<th><?php __('Categoria'); ?></th>
 					<th><?php __('Quantità'); ?></th>
 					<th><?php __('Totale'); ?></th>
@@ -65,6 +66,9 @@
 					}
 				?>
 				</td>
+				<td>
+				<?php echo $product['Product']['code']; ?>&nbsp;
+				</td>
 				<td class="product_category">
 				<?php echo $product['Product']['ProductCategory']['name']; ?>
 				</td>
@@ -77,7 +81,7 @@
 			</tr>
 		<?php endforeach; ?>
 					<tr>
-						<td colspan="2">
+						<td colspan="3">
 							<strong><?php __('Totale') ?></strong>
 						</td>
 						<td></td>
@@ -102,6 +106,7 @@
 					<table cellpadding="0" cellspacing="0">
 						<tr>
 							<th><?php __('Prodotto'); ?></th>
+							<th><?php __('Codice'); ?></th>
 							<th><?php __('Categoria'); ?></th>
 							<th class="small-w"><?php __('Quantità'); ?></th>
 							<th class="small-w"><?php __('Totale'); ?></th>
@@ -138,6 +143,9 @@
 				?>
 
 						</td>
+						<td>
+						<?php echo $product['Product']['code']; ?>&nbsp;
+						</td>
 						<td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
 						<td>
 				<?php echo clean_number($product['OrderedProduct']['quantity']); ?>&nbsp;
@@ -164,7 +172,7 @@
 					</tr>
 		<?php endforeach; ?>
 							<tr>
-								<td colspan="2">
+								<td colspan="3">
 									<strong><?php __('Totale'); ?></strong>
 								</td>
 								<td></td>
