@@ -3,12 +3,22 @@
     font-size: 65%;
 	position: absolute;
 	z-index: 3000;
-	border: 1px solid #111;
-	background-color: #eee;
-	padding: 5px;
-	opacity: ;
-	width: 200px;
+	border: 1px solid #ccc;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+
+	-moz-box-shadow: 5px 5px 5px #888;
+	-webkit-box-shadow: 5px 5px 5px #888;
+	box-shadow: 5px 5px 5px #888;
+
+	background-color: #fff;
+	padding: 10px;
+	opacity: 0.9;
+	width: 250px;
 	text-align: justify;
 }
-#tooltip h3, #tooltip div { margin: 0; padding: 0; color: #000;
+#tooltip h3, #tooltip div, #tooltip a {
+    margin: 0; padding: 0; color: #000;
+    border:none;
     }

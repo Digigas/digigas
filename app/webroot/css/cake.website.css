@@ -171,6 +171,10 @@ h1
     height:360px;
     overflow:hidden;
 }
+.product a
+{
+    text-decoration:none;
+}
 .product-detail
 {
     padding:10px;
