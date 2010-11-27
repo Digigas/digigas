@@ -54,6 +54,26 @@
         ?></h4>
         <?php echo $product['Product']['value']; ?> &euro;
     </div>
+
+	<div class="comments">
+	<?php
+							/*
+							 * COMMENTI
+							 */
+//visualizzo i commenti solo per gli utenti registrati
+							if ($this->Session->read('Auth.User.id')) {
+
+								//elenco dei commenti
+								echo $this->Html->tag('h3', __('Commenti', true));
+								echo $this->Comment->view($product['Comment']);
+
+
+								//form di inserimento commenti
+								echo $this->Comment->add('Product', $product['Product']['id']);
+							}
+	?>
+	</div>
+	
 </div>
 
 <div class="actions">

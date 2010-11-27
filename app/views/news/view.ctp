@@ -35,59 +35,23 @@
             ?>
         </div>
     </div>
-<?php      
-if($this->Session->read('Auth.User.id')):
-echo $form->create('News', array('action' => 'add_as_comment'));
-echo $form->input('parent_id', array('type'=>'hidden', 'value' => $news['News']['id']));
-echo $form->label('Commento').$form->textarea('text', array('label' => 'Commento', 'cols' => 60, 'rows' => 4));
-echo $form->end(array('label' => 'Invia commento'));
+	
+<?php
+/*
+ * COMMENTI
+ */
+//visualizzo i commenti solo per gli utenti registrati
+if($this->Session->read('Auth.User.id')) {
+
+	//elenco dei commenti
+	echo $this->Html->tag('h3', __('Commenti', true));
+	echo $this->Comment->view($news['Comment']);
 
 
+	//form di inserimento commenti
+	echo $this->Comment->add('News', $news['News']['id']);
 
-$i=0;
-foreach ($news['Comment'] as $comments):
-    $class = null;
-    if ($i++ % 2 == 0) {
-        $class = ' altnews';
-    }
-?>
-    <div class="news<?php echo $class ?>">
-        <div class="news-date">
-            <?php
-            
-            if($comments['user_id']);
-                echo "Inserita da <strong>".$comments['User']['first_name']." ".$comments['User']['last_name']."</strong> ";
-            /*if($news['News']['date_on'] != '0000-00-00 00:00:00') {
-                if(date('Y-m-d') == date('Y-m-d', strtotime($news['News']['date_on'])))
-                    echo __('Oggi', true).' '.date('H:i', strtotime($news['News']['date_on']));
-                else
-                    echo date('D d M Y', strtotime($news['News']['date_on']));
-            }
-            else*/ {
-                if(date('Y-m-d') == date('Y-m-d', strtotime($comments['created'])))
-                    echo __('Oggi alle', true).' '.date('H:i', strtotime($comments['created']));
-                else
-                    echo date('D d M Y', strtotime($comments['created']));
-            }
-            ?>
-        </div>
-        
-        <a name = <?php  echo '"comment_'.$comments['id'].'" href="#comment_'.$comments['id'].'"' ?> >
-        <h2>
-        <?php echo __('Commento #', true).$i ?> 
-        </h2>        
-        </a>
-
-        <div class="news-content">
-            <strong><?php echo $comments['summary'] ?></strong>
-            
-            <?php
-            echo $comments['text'];
-            ?>
-        </div>
-    </div>
-<?php endforeach; 
-endif;
+}
 ?>
 
 </div>
@@ -95,6 +59,6 @@ endif;
 <div class="actions">
     <ul>
         <li><?php echo $this->Html->link('<< '.__('indietro', true), $referer); ?></li>
-        <li><?php echo $this->Html->link(__('Nuova news', true), array('action'=>'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Homepage', true), '/'); ?></li>
     </ul>
 </div>

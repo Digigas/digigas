@@ -15,13 +15,16 @@
 				<li><?php echo $this->Html->link(__('Nuova news', true), array('controller' => 'news', 'action' => 'add')); ?></li>
 			</ul>
 		</li>
-        <li><?php
+		<li><?php
         echo $this->Html->image('oxygen/32x32/filesystems/mail_message.png');
         echo $this->Html->link(__('Newsletter', true), array('controller' => 'newsletter_messages')); ?>
 			<ul>
 				<li><?php echo $this->Html->link(__('Nuovo messaggio', true), array('controller' => 'newsletter_messages', 'action' => 'add')); ?></li>
 			</ul>
 		</li>
+        <li><?php
+        echo $this->Html->image('oxygen/32x32/actions/color_line.png');
+        echo $this->Html->link(__('Gestione commenti', true), array('controller' => 'comments')); ?></li>
         <li><?php
         echo $this->Html->image('oxygen/32x32/filesystems/folder.png');
         echo $this->Html->link(__('Filemanager', true), array('controller' => 'filemanager')); ?></li>
