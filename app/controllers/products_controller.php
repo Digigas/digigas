@@ -2,6 +2,8 @@
 class ProductsController extends AppController {
 
 	var $name = 'Products';
+	var $components = array('Comment');
+	var $helpers = array('Html', 'Form', 'Comment');
 
     function beforeFilter()
     {
@@ -25,7 +27,10 @@ class ProductsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 
-        $product = $this->Product->read(null, $id);
+        $product = $this->Product->find('first', array(
+			'conditions' => array('Product.id' => $id),
+			'contain' => array('ProductCategory', 'Seller', 'Comment', 'Comment.User.fullname')
+		));
 		$this->set('product', $product);
         $this->set('title_for_layout', $product['Seller']['name'].' - '.$product['Product']['name'].' - '.Configure::read('GAS.name'));
 

@@ -3,7 +3,8 @@ class NewsController extends AppController
 {
 
     var $name = 'News';
-    var $helpers = array('Html', 'Form');
+    var $helpers = array('Html', 'Form', 'Comment');
+	var $components = array('Comment');
     var $paginate = array('order'=>array('News.date_on desc, News.created desc, News.id desc'));
 
     function beforeFilter()
@@ -86,15 +87,13 @@ class NewsController extends AppController
             $conditions = array('News.slug'=>$ref);
         }
         $conditions[] = $this->News->findActive(true);
-        $news = $this->News->find('first', array
-        (
+        $news = $this->News->find('first', array (
             'conditions'=>$conditions, 
-            'recursive' => 2,
             'contain' => array(
                 'User',
                 'Newscategory',
-                'Comment.User' => array('first_name', 'last_name'))
-        ));
+				'Comment', 'Comment.User.fullname'
+			)));
         if($news['News']['active'] != '1')
         {
             $this->Session->setFlash(__('News non disponibile', true));
@@ -112,64 +111,6 @@ class NewsController extends AppController
         $categories = $this->News->Newscategory->find('list');
         $this->set(compact('categories'));
     }
-
-    function add_as_comment()
-    {
-        if (!empty($this->data))
-        {
-            $user_id = $this->Session->read('Auth.User.id');
-            $parent_id = $this->data['News']['parent_id'];
-            if(isset($user_id))
-                $this->data['News']['user_id'] = $user_id;
-            $this->News->create();
-            if ($this->News->save($this->data))
-            {
-                $this->Session->setFlash(__('News aggiunta', true));
-                $id = $this->News->id;
-                
-                $this->redirect(array('controller' => 'news', 'action'=>'view', $parent_id.'#comment_'.$id));
-            }
-            else
-            {
-                $this->Session->setFlash(__('Non è stato possibile salvare la news.', true));
-            }
-        }
-    }
-
-    function add()
-    {
-        if (!empty($this->data))
-        {
-            $this->data['News']['active'] = 1;
-            $this->data['News']['date_on'] = date('Y-m-d');
-            $this->data['News']['date_off'] = '0000-00-00';
-            $user_id = $this->Session->read('Auth.User.id');
-            if(isset($user_id))
-                $this->data['News']['user_id'] = $user_id;
-            $this->News->create();
-            if ($this->News->save($this->data))
-            {
-                $this->Session->setFlash(__('News salvata', true));
-                $id = $this->News->id;
-                $this->redirect(array('action'=>'category'));
-                
-            }
-            else
-            {
-                $this->Session->setFlash(__('Non è stato possibile salvare la news, riprova', true));
-            }
-        }
-        $newscategories = $this->News->Newscategory->generatetreelist(array(), '{n}.Newscategory.id', '{n}.Newscategory.name', ' - ');
-        //deve esistere almeno una categoria per creare delle news
-        if(empty($newscategories))
-        {
-            $this->Session->setFlash('Prima di creare una news devi aver creato almeno una categoria');
-            $this->redirect(array('controller'=>'newscategories', 'action'=>'add'));
-        }
-
-        $this->set(compact('newscategories'));
-    }
-
 
     function admin_add()
     {

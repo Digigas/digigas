@@ -2,6 +2,8 @@
 class HampersController extends AppController {
 
     var $name = 'Hampers';
+	var $components = array('Comment');
+	var $helpers = array('Html', 'Form', 'Comment');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -41,7 +43,15 @@ class HampersController extends AppController {
 				'Product' => array('order' => 'product_category_id asc'),
 				'Product.ProductCategory.name')
 		));
-        $this->set('hamper', $hamper);
+
+		$comments = $this->Hamper->Comment->find('all', array(
+			'conditions' => array(
+				'Comment.model' => 'Hamper',
+				'Comment.active' => 1),
+			'contain' => array('User.fullname')
+			));
+		
+        $this->set(compact('hamper', 'comments'));
         $this->set('title_for_layout', __('Paniere', true).' '.$hamper['Hamper']['name'].' - '.Configure::read('GAS.name'));
     }
 

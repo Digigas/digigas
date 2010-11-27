@@ -13,20 +13,16 @@ class News extends AppModel {
 			),
             'User'
 	);
-    var $hasMany = array(
-        'Comment' => array(
-                'className' => 'News',
-                'counterCache' => true,
-                'foreignKey' => 'parent_id',
-                'conditions' => '',
-                'fields' => '',
-                'order' => 'created'
-            )
-    );
 	var $actsAs = array(
         'Sluggable'=>array('label'=>array('title'), 'overwrite' => true),
-        'Containable'
+        'Containable',
+		'Commentable'
         );
+
+	function beforeSave() {
+		$this->data['News']['user_id'] =  User::get('id');
+		return parent::beforeSave();
+	}
 
 	function toggle_active($id)
 	{

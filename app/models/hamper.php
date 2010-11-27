@@ -42,7 +42,7 @@ class Hamper extends AppModel {
         'end_date' => array('rule' => 'notEmpty', 'on' => 'create')
     );
 
-    var $actsAs = array('Containable');
+    var $actsAs = array('Containable', 'Commentable');
 
 	function beforeFind($queryData) {
 		if(Configure::read('ReferentUser.allowed_sellers')) {

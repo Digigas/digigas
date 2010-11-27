@@ -47,7 +47,7 @@ class Product extends AppModel {
 		'number' => array('numeric')
     );
 
-    var $actsAs = array('Containable', 'MultipleUpload' =>
+    var $actsAs = array('Containable', 'Commentable', 'MultipleUpload' =>
                             array(
                                 'image' => array(
                                     'field' => 'image',

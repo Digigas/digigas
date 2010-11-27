@@ -2,10 +2,13 @@
 $this->Layout->blockStart('js_on_load');
 
 echo <<<JS
+
 $('.product .options form', '.products').hide();
 $('.product .options h4', '.products').css({cursor: 'pointer'}).click(function(){
     $(this).next('form').slideToggle();
 });
+
+/*
 $('.product a').tooltip({
     track: true,
     delay: 0,
@@ -13,6 +16,8 @@ $('.product a').tooltip({
     showBody: ' - ' ,
     fade: 250
 });
+*/
+
 JS;
 
 $this->Layout->blockEnd();
@@ -97,31 +102,31 @@ $this->Layout->blockEnd();
 						echo $this->Image->resize('/documents/image/product/' . $product['image'], '160', '120');
 				?>
 
-	                <div class="name"><?php echo $product['name']; ?></div>
+					<div class="name"><?php echo $product['name']; ?></div>
 				</a>
-<?php if (!empty($product['weight'])): ?>
-					<div class="weight">
-<?php
+			<?php if (!empty($product['weight'])): ?>
+						<div class="weight">
+				<?php
 						__('Peso: ');
 						echo $product['weight'];
-?>
+				?>
 					</div>
-<?php endif; ?>
+			<?php endif; ?>
 
-<?php if (!empty($product['value'])): ?>
+			<?php if (!empty($product['value'])): ?>
 							<div class="value">
-<?php
+				<?php
 							__('Prezzo unitario: ');
 							echo $product['value'];
-?>&euro;
+				?>&euro;
 						</div>
-<?php endif; ?>
+			<?php endif; ?>
 
 
 
-						<div class="options">
-							<h4><?php __('Ordina'); ?></h4>
-<?php
+							<div class="options">
+								<h4><?php __('Ordina'); ?></h4>
+				<?php
 							echo $this->Form->create('OrderedProduct', array('action' => 'add'));
 							echo $this->Form->hidden('product_id', array('value' => $product['id']));
 							echo $this->Form->hidden('hamper_id', array('value' => $hamper['Hamper']['id']));
@@ -152,27 +157,43 @@ $this->Layout->blockEnd();
 								echo $this->Form->input('note', array('type' => 'text', 'label' => __('Note', true)));
 							}
 							echo $this->Form->end('Acquista');
-?>
+				?>
 						</div>
 
 					</div>
-<?php endforeach; ?>
+		<?php endforeach; ?>
 		<?php endif; ?>
-					    </div>
+						</div>
 
-					</div>
+						<div class="clear"></div>
+	<?php
+							/*
+							 * COMMENTI
+							 */
+//visualizzo i commenti solo per gli utenti registrati
+							if ($this->Session->read('Auth.User.id')) {
 
-					<div class="actions">
-					    <ul>
-					        <li><?php echo $this->Html->link(__('<< Ritorna ai panieri', true), array('action' => 'index')); ?></li>
-					    </ul>
+								//elenco dei commenti
+								echo $this->Html->tag('h3', __('Commenti', true));
+								echo $this->Comment->view($comments);
+
+
+								//form di inserimento commenti
+								echo $this->Comment->add('Hamper', $hamper['Hamper']['id']);
+							}
+	?>
+
+						</div>
+
+						<div class="actions">
+							<ul>
+								<li><?php echo $this->Html->link(__('<< Ritorna ai panieri', true), array('action' => 'index')); ?></li>
+							</ul>
 
 <?php echo $this->element('user_order', array('userOrder' => $userOrder)); ?>
 
-					    <ul>
-					        <li><?php echo $this->Html->link(__('Vai alla tua pagina ordini', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
-						        <li><?php echo $this->Html->link(__('Mandami un promemoria', true), array('controller' => 'ordered_products', 'action' => 'send_me_orders_email')); ?></li>
-						    </ul>
-						</div>
-<?php
-?>
+							<ul>
+								<li><?php echo $this->Html->link(__('Vai alla tua pagina ordini', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
+								<li><?php echo $this->Html->link(__('Mandami un promemoria', true), array('controller' => 'ordered_products', 'action' => 'send_me_orders_email')); ?></li>
+	</ul>
+</div>

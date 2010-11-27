@@ -80,8 +80,7 @@
                     filebrowserImageBrowseUrl : '<?php echo $this->Html->url('/admin/filemanager/ckselect/image') ?>',
                     filebrowserWindowWidth : '100%',
                     filebrowserWindowHeight : '100%',
-                    toolbar : 'Basic',
-
+                    toolbar : 'Full'
                 };
             $('textarea[class!=plaintext]').ckeditor(CKconfig);
 

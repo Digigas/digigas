@@ -459,8 +459,7 @@ dl
     margin-bottom:10px;
     padding:10px;
     
-/*     border-bottom:1px solid #62af56; */
-    border: 1px solid #aaa;
+    border-bottom:1px solid #62af56;
     margin-bottom: 20px;
     
 }
@@ -502,11 +501,6 @@ dl
 }
 
 
-.comments-number
-{
-    text-align: right;
-    color: #f90
-}
 .news-list .news .news-more
 {
     float:right;
@@ -515,4 +509,38 @@ dl
 .news-list .news .news-more a
 {
     text-decoration:none;
+}
+
+.comments
+{
+    clear:both;
+}
+.comment
+{
+    clear:both;
+    margin-bottom: 10px;
+    padding:10px;
+}
+.comment.alt
+{
+    background:#fafafa;
+}
+.comment .comment-author,
+.comment .comment-date
+{
+    float:left;
+    font-size:10px;
+    padding: 5px 15px 5px 0;
+}
+.comment .comment-author
+{
+    color: #62AF56;
+}
+.comment .comment-date
+{
+    color: #f90;
+}
+.comment .comment-text
+{
+    clear:left;
 }
