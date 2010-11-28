@@ -1,6 +1,6 @@
 <?php
 class UserCommentHelper extends Helper {
-	var $helpers = array('Html', 'Form');
+	var $helpers = array('Html', 'Form', 'Paginator');
 
 	/*
 	 * 
@@ -35,11 +35,19 @@ class UserCommentHelper extends Helper {
 	/*
 	 * 
 	 */
-	function view($data, $element = false) {
+	function view($data, $element = false, $paginate = false) {
 		$this->View = ClassRegistry::getObject('view');
 		$return = '';
 
 		if(!empty($data)) {
+
+			if($paginate) {
+				//paginator
+				$return .= $this->Html->tag('p', $this->Paginator->counter(array(
+						'format' => __('Pagina %page% di %pages%, %count% commenti inseriti', true)
+						)));
+			}
+
 			$i=0;
 			foreach ($data as $comment) {
 				$class = null;
@@ -65,6 +73,17 @@ class UserCommentHelper extends Helper {
 					$return .= $this->Html->div('comment'.$class, $author.$date.$text);
 				}
 			}
+
+			if($paginate) {
+				//paginator
+				$pages = $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));
+				$pages .= ' | ';
+				$pages .= $this->Paginator->numbers();
+				$pages .= ' | ';
+				$pages .= $this->Paginator->next(__('next', true).' >>', array(), null, array('class'=>'disabled'));
+				$return .= $this->Html->div('paging', $pages);
+			}
+
 			return $return;
 		} else {
 			return __('Per ora non ci sono commenti', true);

@@ -91,8 +91,7 @@ class NewsController extends AppController
             'conditions'=>$conditions, 
             'contain' => array(
                 'User',
-                'Newscategory',
-				'Comment', 'Comment.User.fullname'
+                'Newscategory'
 			)));
         if($news['News']['active'] != '1')
         {
@@ -100,7 +99,14 @@ class NewsController extends AppController
             $this->redirect(array('action'=>'index'));
         }
 
-        $this->set('news', $news);
+		$this->paginate = array('Comment' => array(
+			'conditions' => array('Comment.model' => 'News', 'Comment.item_id' => $news['News']['id'], 'Comment.active' => 1),
+			'order' => array('Comment.created ASC'),
+			'contain' => array('User.fullname')
+		));
+		$comments = $this->paginate($this->News->Comment);
+
+        $this->set(compact('news', 'comments'));
         $this->set('title_for_layout', $news['News']['title'].' - '.Configure::read('GAS.name'));
     }
 
