@@ -14,7 +14,6 @@
         echo $this->Html->css('jquery.lightbox');
         echo $this->Html->css('digigas/jquery.treeTable');
         echo $this->Html->css('jquery-ui-1.8.6.custom');
-        echo $this->Html->css('jquery.tooltip');
 	?>
 </head>
 <body>
@@ -50,7 +49,7 @@
 
     <?php
 
-        echo $this->Javascript->link('jquery-1.4.3.min');
+        echo $this->Javascript->link('jquery-1.4.4.min');
         echo $this->Javascript->link('jquery.ifixpng');
         echo $this->Javascript->link('jquery-ui-1.8.6.custom.min');
         echo $this->Javascript->link('ckeditor/ckeditor');
@@ -58,7 +57,6 @@
         echo $this->Javascript->link('jquery.lightbox');
         echo $this->Javascript->link('jquery.treeTable.min');
         echo $this->Javascript->link('jquery.asmselect');
-        echo $this->Javascript->link('jquery.tooltip');
 
 		echo $scripts_for_layout;
 

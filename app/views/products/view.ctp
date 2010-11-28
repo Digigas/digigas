@@ -31,6 +31,7 @@
         ?>
     </div>
 
+	<?php if(!empty($product['Product']['weight'])): ?>
     <div class="weight detail">
         <h4 class="title"><?php
         __('Peso');
@@ -38,15 +39,7 @@
         ?></h4>
         <?php echo $product['Product']['weight']; ?>
     </div>
-
-    <div class="number detail">
-        <h4 class="title"><?php
-        __('Capi per collo');
-        echo ': ';
-        ?></h4>
-        <?php echo $product['Product']['number']; ?>
-    </div>
-
+	<?php endif; ?>
     <div class="value detail">
         <h4 class="title"><?php
         __('Prezzo');
