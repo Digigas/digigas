@@ -9,8 +9,7 @@
 			'after' => ' Determina la posizione nella lista dei forum',
 			'options' => array(
 				'1 - poco importante', '2', '3', '4', '5 - normale', '6', '7', '8', '9', '10 - molto importante'
-			),
-			'value' => '4'));
+			)));
 		echo $this->Form->input('name', array('label' => 'Nome del forum'));
 		echo $this->Form->input('text', array('label' => 'Descrizione'));
 		echo $this->Form->input('access_level', array(
