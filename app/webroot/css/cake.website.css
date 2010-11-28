@@ -168,7 +168,7 @@ h1
     padding:10px;
     border:1px solid #ccc;
     width:160px;
-    height:360px;
+    height:300px;
     overflow:hidden;
 }
 .product a
@@ -212,6 +212,22 @@ h1
 .product-detail .name
 {
     width:150px;
+}
+.product .detail a
+{
+    display:block;
+    margin-bottom:5px;
+    padding:3px 6px;
+    color:#fff;
+    background:#62AF56;
+    border-radius: 5px ;
+    -moz-border-radius: 5px ;
+    -webkit-border-radius: 5px ;
+    text-align:center;
+}
+.product .detail a:hover
+{
+    background:#2D6324;
 }
 .product .text,
 .product-detail .text

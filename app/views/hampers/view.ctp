@@ -1,4 +1,8 @@
 <?php
+
+echo $this->Html->css('jquery.tooltip', null, array('inline' => false));
+echo $this->Javascript->link('jquery.tooltip', false);
+
 $this->Layout->blockStart('js_on_load');
 
 echo <<<JS
@@ -8,15 +12,15 @@ $('.product .options h4', '.products').css({cursor: 'pointer'}).click(function()
     $(this).next('form').slideToggle();
 });
 
-/*
+
 $('.product a').tooltip({
     track: true,
     delay: 0,
     showURL: false,
-    showBody: ' - ' ,
+    showBody: ' - ',
     fade: 250
 });
-*/
+
 
 JS;
 
@@ -87,12 +91,15 @@ $this->Layout->blockEnd();
 		?>
 		<?php
 					$title = "";
-					if ($product['text'])
+					if ($product['text']) {
 						$title .= "<strong>Descrizione:</strong>" . $product['text'] . "<br />";
-					if ($product['packing'])
+					}
+					if ($product['packing']) {
 						$title .= "<strong>Imballaggio:</strong>" . $product['packing'];
-					if (!$title)
-						$title = $this->Html->tag('h3', $product['name']);
+					}
+					if (!$title) {
+						$title = $product['name'];
+					}
 		?>
 					<div class="product"  >
 
@@ -104,6 +111,11 @@ $this->Layout->blockEnd();
 
 					<div class="name"><?php echo $product['name']; ?></div>
 				</a>
+
+			<div class="detail">
+				<?php echo $this->Html->link(__('Scheda prodotto', true), array('controller' => 'products', 'action' => 'view', $product['id'])); ?>
+			</div>
+
 			<?php if (!empty($product['weight'])): ?>
 						<div class="weight">
 				<?php
