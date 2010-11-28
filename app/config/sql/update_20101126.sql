@@ -6,17 +6,45 @@ ALTER TABLE `news`
 
 ALTER TABLE  `news` ADD  `user_id` INT NOT NULL AFTER  `newscategory_id`;
 
-CREATE TABLE  `comments` (
-`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`parent_id` INT NOT NULL ,
-`user_id` INT NOT NULL ,
-`model` VARCHAR( 50 ) NOT NULL ,
-`item_id` INT NOT NULL ,
-`text` TEXT NOT NULL ,
-`active` TINYINT( 1 ) NOT NULL ,
-`created` DATETIME NOT NULL ,
-`modified` DATETIME NOT NULL
-) ENGINE = MYISAM ;
 
-ALTER TABLE  `comments` ADD  `url` VARCHAR( 1024 ) NOT NULL AFTER  `item_id`;
+--
+-- Struttura della tabella `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `model` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `pagetitle` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
+  `url` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
+  `text` text COLLATE utf8_unicode_ci NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `commenti` (`model`,`item_id`,`active`),
+  FULLTEXT KEY `ricerca` (`text`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `forums`
+--
+
+CREATE TABLE `forums` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT 'utente proprietario',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `text` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'descrizione',
+  `access_level` int(11) NOT NULL COMMENT 'visibile solo agli utenti di livello pari o inferiore',
+  `active` tinyint(1) NOT NULL,
+  `weight` int(11) NOT NULL COMMENT 'campo peso usato per l''ordinamento',
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY `text` (`text`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
