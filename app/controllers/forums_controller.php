@@ -42,7 +42,7 @@ class ForumsController extends AppController {
 
 		$this->paginate = array('Comment' => array(
 			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $id, 'Comment.active' => 1),
-			'order' => array('Comment.created ASC'),
+			'order' => array('Comment.created DESC'),
 			'contain' => array('User.fullname'),
 			'limit' => 25
 		));
@@ -72,6 +72,7 @@ class ForumsController extends AppController {
 
 			$this->paginate = array('Comment' => array(
 				'conditions' => array('Comment.parent_id' => $id, 'Comment.active' => 1),
+				'order' => array('Comment.created ASC'),
 				'limit' => 25
 			));
 			$comments = $this->paginate($this->Comment);

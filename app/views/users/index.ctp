@@ -141,6 +141,7 @@ $class = ' class="altrow"';?>
     <h3><?php __('Azioni'); ?></h3>
     <ul>
         <li><?php echo $this->Html->link(__('Modifica profilo', true), array('action' => 'edit')); ?> </li>
-        <li><?php echo $this->Html->link(__('Torna a digigas', true), '/digigas'); ?> </li>
+        <li><?php echo $this->Html->link(__('Vai a digigas', true), '/digigas'); ?> </li>
+		<li><?php echo $this->Html->link(__('Vai al forum', true), '/forum'); ?> </li>
     </ul>
 </div>
