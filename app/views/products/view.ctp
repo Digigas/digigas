@@ -58,11 +58,11 @@
 
 								//elenco dei commenti
 								echo $this->Html->tag('h3', __('Commenti', true));
-								echo $this->Comment->view($product['Comment']);
+								echo $this->UserComment->view($product['Comment']);
 
 
 								//form di inserimento commenti
-								echo $this->Comment->add('Product', $product['Product']['id']);
+								echo $this->UserComment->add('Product', $product['Product']['id']);
 							}
 	?>
 	</div>

@@ -45,11 +45,11 @@ if($this->Session->read('Auth.User.id')) {
 
 	//elenco dei commenti
 	echo $this->Html->tag('h3', __('Commenti', true));
-	echo $this->Comment->view($news['Comment']);
+	echo $this->UserComment->view($news['Comment']);
 
 
 	//form di inserimento commenti
-	echo $this->Comment->add('News', $news['News']['id']);
+	echo $this->UserComment->add('News', $news['News']['id']);
 
 }
 ?>

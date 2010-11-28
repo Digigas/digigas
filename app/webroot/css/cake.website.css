@@ -536,6 +536,8 @@ dl
     clear:both;
     margin-bottom: 10px;
     padding:10px;
+    height:auto;
+    overflow:hidden;
 }
 .comment.alt
 {
@@ -559,4 +561,72 @@ dl
 .comment .comment-text
 {
     clear:left;
+}
+
+/* forum */
+.forums .forum
+{
+    margin-bottom:15px;
+    padding:10px;
+}
+.forums .forum.altrow
+{
+    background:#fafafa;
+}
+.forums .forum.hover
+{
+    margin-bottom:13px;
+    border-bottom:2px solid #f90;
+}
+.forums .forum.hover h3 a
+{
+    color:#f90;
+}
+.forums .forum h3
+{
+    padding:0;
+    
+}
+.forums .messages-count
+{
+    float:right;
+}
+.forums .forum p
+{
+    margin:0;
+    padding:0;
+}
+
+.comment.comment-topic
+{
+    position:relative;
+    padding-bottom:15px;
+    border-bottom:1px solid #62AF56;
+}
+.comment.comment-topic a.read
+{
+    position:absolute;
+    bottom:0;
+    right:0;
+    display:block;
+    float:right;
+    padding:5px 8px 10px 8px;
+    color:#fff;
+    background: #62AF56;
+    text-decoration:none;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+.comment.comment-topic a.read:hover
+{
+    background:#2D6324;
+    padding-bottom:15px;
+}
+
+.comment.topic
+{
+    padding:10px;
+    border:1px solid #f90;
+    background:#fafafa;
 }
