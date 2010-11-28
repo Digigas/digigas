@@ -45,7 +45,7 @@ if($this->Session->read('Auth.User.id')) {
 
 	//elenco dei commenti
 	echo $this->Html->tag('h3', __('Commenti', true));
-	echo $this->UserComment->view($news['Comment']);
+	echo $this->UserComment->view($comments, false, true);
 
 
 	//form di inserimento commenti

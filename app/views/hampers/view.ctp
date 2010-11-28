@@ -187,7 +187,7 @@ $this->Layout->blockEnd();
 
 								//elenco dei commenti
 								echo $this->Html->tag('h3', __('Commenti', true));
-								echo $this->UserComment->view($comments);
+								echo $this->UserComment->view($comments, false , true);
 
 
 								//form di inserimento commenti

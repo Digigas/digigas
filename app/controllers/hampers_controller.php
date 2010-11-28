@@ -44,12 +44,12 @@ class HampersController extends AppController {
 				'Product.ProductCategory.name')
 		));
 
-		$comments = $this->Hamper->Comment->find('all', array(
-			'conditions' => array(
-				'Comment.model' => 'Hamper',
-				'Comment.active' => 1),
+		$this->paginate = array('Comment' => array(
+			'conditions' => array('Comment.model' => 'Hamper', 'Comment.item_id' => $id, 'Comment.active' => 1),
+			'order' => array('Comment.created ASC'),
 			'contain' => array('User.fullname')
-			));
+		));
+		$comments = $this->paginate($this->Hamper->Comment);
 		
         $this->set(compact('hamper', 'comments'));
         $this->set('title_for_layout', __('Paniere', true).' '.$hamper['Hamper']['name'].' - '.Configure::read('GAS.name'));

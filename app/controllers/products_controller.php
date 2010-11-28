@@ -29,9 +29,17 @@ class ProductsController extends AppController {
 
         $product = $this->Product->find('first', array(
 			'conditions' => array('Product.id' => $id),
-			'contain' => array('ProductCategory', 'Seller', 'Comment', 'Comment.User.fullname')
+			'contain' => array('ProductCategory', 'Seller')
 		));
-		$this->set('product', $product);
+
+		$this->paginate = array('Comment' => array(
+			'conditions' => array('Comment.model' => 'Product', 'Comment.item_id' => $id, 'Comment.active' => 1),
+			'order' => array('Comment.created ASC'),
+			'contain' => array('User.fullname')
+		));
+		$comments = $this->paginate($this->Product->Comment);
+
+		$this->set(compact('product', 'comments'));
         $this->set('title_for_layout', $product['Seller']['name'].' - '.$product['Product']['name'].' - '.Configure::read('GAS.name'));
 
 	}
