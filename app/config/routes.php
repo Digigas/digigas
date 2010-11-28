@@ -39,6 +39,8 @@ if (file_exists(APP . 'config' . DS . 'installed.txt')) {
 			array('language' => '[a-z]{2}'));
 	Router::connect('/digigas',
 			array('controller' => 'hampers', 'action' => 'index'));
+	Router::connect('/forum',
+			array('controller' => 'forums', 'action' => 'index'));
 
 	Router::connect('/admin', array('controller' => 'ordered_products', 'action' => 'index', 'admin' => true));
 } else {

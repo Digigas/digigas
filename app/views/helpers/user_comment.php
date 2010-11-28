@@ -1,22 +1,32 @@
 <?php
-class CommentHelper extends Helper {
+class UserCommentHelper extends Helper {
 	var $helpers = array('Html', 'Form');
 
 	/*
 	 * 
 	 */
-	function add($model, $item_id) {
+	function add($model, $item_id, $parent_id = null, $title = 'Commenta') {
+		$this->View = ClassRegistry::getObject('view');
+		if(isset($this->View->viewVars['title_for_layout'])) {
+			$pagetitle = $this->View->viewVars['title_for_layout'];
+		} else {
+			$pagetitle = Inflector::humanize($this->View->viewPath);
+		}
 
 		$return = '';
-		$return .= $this->Html->tag('h3', __('Commenta', true), array('class' => 'expander'));
+		$return .= $this->Html->tag('h3', __($title, true), array('class' => 'expander'));
 
 		$return .= '<div class="accordion">';
 		$return .= $this->Form->create('Comment', array('url' => $this->url()));
 		$return .= $this->Form->hidden('Comment.add', array('value' => 1)); //serve nel component
+		$return .= $this->Form->hidden('Comment.pagetitle', array('value' => $pagetitle));
 		$return .= $this->Form->hidden('Comment.model', array('value' => $model));
 		$return .= $this->Form->hidden('Comment.item_id', array('value' => $item_id));
-		$return .= $this->Form->input('Comment.text', array('type' => 'textarea', 'label' => __('Scrivi qui il tuo commento', true)));
-		$return .= $this->Form->end(__('Invia il commento', true));
+		if(!empty($parent_id)) {
+			$return .= $this->Form->hidden('Comment.parent_id', array('value' => $parent_id));
+		}
+		$return .= $this->Form->input('Comment.text', array('type' => 'textarea', 'label' => false));
+		$return .= $this->Form->end(__('Invia', true));
 		$return .= '</div>';
 
 		return $return;

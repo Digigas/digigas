@@ -1,5 +1,5 @@
 <div class="newsletterMessages index">
-	<h2><?php __('Newsletter Messages');?></h2>
+	<h2><?php __('Newsletter');?></h2>
 
     <p>
 	<?php

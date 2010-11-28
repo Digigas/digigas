@@ -3,7 +3,7 @@
     <ul class="tools-list">
         <li><?php
         echo $this->Html->image('oxygen/32x32/filesystems/network.png');
-        echo $this->Html->link(__('Gestisci il sito web', true), array('controller' => 'pages')); ?>
+        echo $this->Html->link(__('Pagine del sito web', true), array('controller' => 'pages')); ?>
 			<ul>
 				<li><?php echo $this->Html->link(__('Nuova pagina', true), array('controller' => 'pages', 'action' => 'add')); ?></li>
 			</ul>
@@ -23,8 +23,11 @@
 			</ul>
 		</li>
         <li><?php
-        echo $this->Html->image('oxygen/32x32/actions/color_line.png');
-        echo $this->Html->link(__('Gestione commenti', true), array('controller' => 'comments')); ?></li>
+        echo $this->Html->image('oxygen/32x32/actions/kontact_notes.png');
+        echo $this->Html->link(__('Commenti', true), array('controller' => 'comments')); ?></li>
+        <li><?php
+        echo $this->Html->image('oxygen/32x32/actions/user_group_new.png');
+        echo $this->Html->link(__('Forum', true), array('controller' => 'forums')); ?></li>
         <li><?php
         echo $this->Html->image('oxygen/32x32/filesystems/folder.png');
         echo $this->Html->link(__('Filemanager', true), array('controller' => 'filemanager')); ?></li>

@@ -1,5 +1,5 @@
 <?php
-class CommentComponent extends Object {
+class UserCommentComponent extends Object {
 
 	//called before Controller::beforeFilter()
 	function initialize(&$controller, $settings = array()) {

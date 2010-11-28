@@ -4,6 +4,12 @@ class CommentsController extends AppController {
 	var $name = 'Comments';
 	var $helpers = array('Html', 'Form', 'Text');
 
+	function beforeFilter()
+    {
+		parent::beforeFilter();
+        $this->set('activemenu_for_layout', 'tools');
+		$this->Auth->deny($this->methods);
+    }
 	
 	function admin_index() {
 		$this->paginate = array('order' => 'Comment.created DESC');

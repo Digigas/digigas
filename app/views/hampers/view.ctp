@@ -187,11 +187,11 @@ $this->Layout->blockEnd();
 
 								//elenco dei commenti
 								echo $this->Html->tag('h3', __('Commenti', true));
-								echo $this->Comment->view($comments);
+								echo $this->UserComment->view($comments);
 
 
 								//form di inserimento commenti
-								echo $this->Comment->add('Hamper', $hamper['Hamper']['id']);
+								echo $this->UserComment->add('Hamper', $hamper['Hamper']['id']);
 							}
 	?>
 

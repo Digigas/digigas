@@ -3,8 +3,8 @@ class NewsController extends AppController
 {
 
     var $name = 'News';
-    var $helpers = array('Html', 'Form', 'Comment');
-	var $components = array('Comment');
+    var $helpers = array('Html', 'Form', 'UserComment');
+	var $components = array('UserComment');
     var $paginate = array('order'=>array('News.date_on desc, News.created desc, News.id desc'));
 
     function beforeFilter()
