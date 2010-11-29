@@ -4,7 +4,7 @@
 		<?php echo $forum['Forum']['text']; ?>
 	</div>
 
-	<?php 
+	<?php
 		if (!empty($comments)) {
 			$i = 0;
 			foreach ($comments as $comment) {
@@ -19,38 +19,62 @@
 					$author = '';
 				}
 				$date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
-				
-				if(isset($commentsChildren[$comment['Comment']['id']])) {
+
+				//quanti commenti ci sono dentro e a quando risalgono
+				if (isset($commentsChildren[$comment['Comment']['id']])) {
 					$children = $this->Html->div('comment-children', $commentsChildren[$comment['Comment']['id']] . ' ' . __('messaggi', true));
+					$lastUpdates = $this->Html->div('comment-lastupdates', __('L\'ultimo è di ', true) . $this->Time->relativeTime($lastUpdates[$comment['Comment']['id']]));
 				} else {
 					$children = $this->Html->div('comment-children', __('Nessun messaggio', true));
+					$lastUpdates = '';
 				}
 
-				$text = $this->Html->div('comment-text', $comment['Comment']['text']);
+				$content = $this->Html->div('comment-text', $comment['Comment']['text']);
 				$readlink = $this->Html->link(__('Partecipa alla conversazione', true), array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read'));
-				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $text . $readlink . $this->Html->div('clear', '&nbsp;'));
+				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $lastUpdates . $content . $readlink . $this->Html->div('clear', '&nbsp;'));
 			}
 		}
 	?>
-	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('precedente', true), array(), null, array('class'=>'disabled'));?>
-	 | 	<?php echo $this->Paginator->numbers();?>
- |
-		<?php echo $this->Paginator->next(__('prossima', true).' >>', array(), null, array('class' => 'disabled'));?>
+		<div class="paging">
+		<?php echo $this->Paginator->prev('<< ' . __('precedente', true), array(), null, array('class' => 'disabled')); ?>
+	 | 	<?php echo $this->Paginator->numbers(); ?>
+		|
+		<?php echo $this->Paginator->next(__('prossima', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
 	</div>
 	<br/>
 
 	<?php
-	if ($this->Session->read('Auth.User.id')) {
-		//form di inserimento commenti
-		echo $this->UserComment->add('Forum', $forum['Forum']['id'], null, 'Inizia una nuova discussione');
-	}
+		if ($this->Session->read('Auth.User.id')) {
+			//form di inserimento commenti
+			echo $this->UserComment->add('Forum', $forum['Forum']['id'], null, 'Inizia una nuova discussione');
+		}
 	?>
 	</div>
 	<div class="actions">
 		<h3><?php __('Actions'); ?></h3>
 		<ul>
-			<li><?php echo $this->Html->link(__('Torna a elenco forum', true), array('action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Torna all\'elenco dei forum', true), array('action' => 'index')); ?> </li>
+		</ul>
 
-	</ul>
+		<br/>
+		<h2>Ultimi aggiornamenti</h2>
+	<?php
+	$i=0;
+	foreach ($lastMessages as $comment) {
+		$class = null;
+		if ($i++ % 2 == 0) {
+			$class = ' alt';
+		}
+
+		if(isset($comment['User'])) {
+			$author = $this->Html->div('comment-author', $comment['User']['fullname']);
+		} else {
+			$author = '';
+		}
+		$date = $this->Html->div('comment-date', $this->Time->relativeTime($comment['Comment']['created']));
+		$content = $this->Html->div('comment-text', $this->Text->truncate(strip_tags($comment['Comment']['text'])));
+		$more = $this->Html->link(__('Leggi', true), '/' . $comment['Comment']['url'], array('class' => 'more'));
+		echo $this->Html->div('comment'.$class, $author.$date.$content.$more);
+	}
+	?>
 </div>

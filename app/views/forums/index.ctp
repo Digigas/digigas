@@ -36,6 +36,9 @@ $this->Layout->blockEnd();
 				<?php echo $messagesCount[$forum['Forum']['id']]; ?> <?php __('messaggi in'); ?>
 				<?php echo $conversationCount[$forum['Forum']['id']]; ?> <?php __('conversazioni'); ?>
 			</div>
+			<div class="forum-lastupdate">
+				<?php __('Aggiornato a'); ?> <?php echo $this->Time->relativeTime($lastUpdates[$forum['Forum']['id']]); ?>
+			</div>
 		<?php endif; ?>
 		
 		<h3 class="forum-title"><?php echo $this->Html->link($forum['Forum']['name'], array('controller' => 'forums', 'action' => 'view', $forum['Forum']['id'])); ?>&nbsp;</h3>
@@ -59,5 +62,24 @@ $this->Layout->blockEnd();
 </div>
 
 <div class="actions">
-	
+	<h2>Ultimi messaggi nel forum</h2>
+	<?php
+	$i=0;
+	foreach ($lastMessages as $comment) {
+		$class = null;
+		if ($i++ % 2 == 0) {
+			$class = ' alt';
+		}
+
+		if(isset($comment['User'])) {
+			$author = $this->Html->div('comment-author', $comment['User']['fullname']);
+		} else {
+			$author = '';
+		}
+		$date = $this->Html->div('comment-date', $this->Time->relativeTime($comment['Comment']['created']));
+		$content = $this->Html->div('comment-text', $this->Text->truncate(strip_tags($comment['Comment']['text'])));
+		$more = $this->Html->link(__('Leggi', true), '/' . $comment['Comment']['url'], array('class' => 'more'));
+		echo $this->Html->div('comment'.$class, $author.$date.$content.$more);
+	}
+	?>
 </div>
