@@ -38,7 +38,6 @@ class ForumsController extends AppController {
 			'recursive' => -1
 		));
 		$messagesCount = Set::combine($messagesCount, '{n}.Comment.item_id', '{n}.0.children');
-		debug($messagesCount);
 
 		$this->set(compact('forums', 'conversationCount', 'messagesCount'));
 	}
