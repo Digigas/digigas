@@ -560,6 +560,13 @@ dl
 }
 .comment .comment-children
 {
+    clear:right;
+    float:right;
+    font-size:10px;
+}
+.comment .comment-lastupdates
+{
+    clear:right;
     float:right;
     font-size:10px;
 }
@@ -567,10 +574,21 @@ dl
 {
     clear:left;
 }
+.comment .more
+{
+    float:right;
+    font-size:12px;
+    font-weight:normal;
+}
+.actions .comment
+{
+    font-size:10px;
+}
 
 /* forum */
 .forums .forum
 {
+    position:relative;
     margin-bottom:15px;
     padding:10px;
 }
@@ -586,6 +604,13 @@ dl
 .forums .forum .forum-messages
 {
     float:right;
+    font-size:10px;
+}
+.forums .forum .forum-lastupdate
+{
+    position:absolute;
+    right:10px;
+    bottom:10px;
     font-size:10px;
 }
 .forums .forum.hover h3 a

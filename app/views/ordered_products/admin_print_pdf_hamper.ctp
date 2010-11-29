@@ -38,7 +38,7 @@ foreach($categories as $category)
     $pdf->h2($category['ProductCategory']['name']);
     $pdf->SetFont('Arial','B',9);
     $pdf->Cell(20,6, __('Codice', true));
-    $pdf->Cell(130,6, __('Prodotto', true));
+    $pdf->Cell(110,6, __('Prodotto', true));
     $pdf->Cell(30,6, __('Quantita', true));
     $pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
     $pdf->SetFont('Arial','',9);
@@ -124,7 +124,7 @@ foreach($orderedProducts as $products) {
 	foreach ($products['Products'] as $orderedProduct) {
         $pdf->Cell(20,6, $orderedProduct['Product']['code']);
         $name = $orderedProduct['Product']['name'];
-        $pdf->Cell(131,6, $name);
+        $pdf->Cell(110,6, $name);
 		$pdf->Cell(30,6, clean_number($orderedProduct['OrderedProduct']['quantity']) . ' ' . $orderedProduct['Product']['units']);
 		$pdf->Cell(28,6, $orderedProduct['OrderedProduct']['value'], '', '',  'R');
 		

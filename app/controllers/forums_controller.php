@@ -4,7 +4,7 @@ class ForumsController extends AppController {
 
 	var $name = 'Forums';
 	var $components = array('UserComment');
-	var $helpers = array('Html', 'Form', 'UserComment');
+	var $helpers = array('Html', 'Form', 'UserComment', 'Text', 'Time');
 	var $uses = array('Forum', 'Comment');
 
 	function beforeFilter() {
@@ -31,6 +31,7 @@ class ForumsController extends AppController {
 			'recursive' => -1
 		));
 		$conversationCount = Set::combine($conversationCount, '{n}.Comment.item_id', '{n}.0.children');
+
 		$messagesCount = $this->Comment->find('all', array(
 			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $forumsId, 'Comment.active' => 1),
 			'fields' => array('item_id', 'count(id) as children'),
@@ -39,7 +40,22 @@ class ForumsController extends AppController {
 		));
 		$messagesCount = Set::combine($messagesCount, '{n}.Comment.item_id', '{n}.0.children');
 
-		$this->set(compact('forums', 'conversationCount', 'messagesCount'));
+		$lastUpdates = $this->Comment->find('all', array(
+			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $forumsId, 'Comment.active' => 1),
+			'fields' => array('item_id', 'MAX(created) as created'),
+			'group' => 'item_id',
+			'recursive' => -1
+		));
+		$lastUpdates = Set::combine($lastUpdates, '{n}.Comment.item_id', '{n}.0.created');
+
+		$lastMessages = $this->Comment->find('all', array(
+			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $forumsId, 'Comment.active' => 1),
+			'order' => array('Comment.created DESC'),
+			'limit' => 10,
+			'contain' => array('User.fullname')
+		));
+
+		$this->set(compact('forums', 'conversationCount', 'messagesCount', 'lastUpdates', 'lastMessages'));
 	}
 
 	function view($id = null) {
@@ -71,14 +87,29 @@ class ForumsController extends AppController {
 
 		$commentIds = Set::extract('/Comment/id', $comments);
 		$commentsChildren = $this->Comment->find('all', array(
-			'conditions' => array('Comment.parent_id' => $commentIds, 'Comment.active' => 1),
+			'conditions' => array('Comment.model' => 'Forum', 'Comment.parent_id' => $commentIds, 'Comment.active' => 1),
 			'fields' => array('parent_id', 'count(id) as children'),
 			'group' => 'parent_id',
 			'recursive' => -1
 		));
 		$commentsChildren = Set::combine($commentsChildren, '{n}.Comment.parent_id', '{n}.0.children');
 
-		$this->set(compact('forum', 'comments', 'commentsChildren'));
+		$lastUpdates = $this->Comment->find('all', array(
+			'conditions' => array('Comment.model' => 'Forum', 'Comment.parent_id' => $commentIds, 'Comment.active' => 1),
+			'fields' => array('parent_id', 'MAX(created) as created'),
+			'group' => 'parent_id',
+			'recursive' => -1
+		));
+		$lastUpdates = Set::combine($lastUpdates, '{n}.Comment.parent_id', '{n}.0.created');
+
+		$lastMessages = $this->Comment->find('all', array(
+			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $id, 'Comment.active' => 1),
+			'order' => array('Comment.created DESC'),
+			'limit' => 10,
+			'contain' => array('User.fullname')
+		));
+
+		$this->set(compact('forum', 'comments', 'commentsChildren', 'lastUpdates', 'lastMessages'));
 		$this->set('title_for_layout', 'Forum - ' . $forum['Forum']['name']);
 	}
 
