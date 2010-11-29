@@ -19,9 +19,16 @@
 					$author = '';
 				}
 				$date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
+				
+				if(isset($commentsChildren[$comment['Comment']['id']])) {
+					$children = $this->Html->div('comment-children', $commentsChildren[$comment['Comment']['id']] . ' ' . __('messaggi', true));
+				} else {
+					$children = $this->Html->div('comment-children', __('Nessun messaggio', true));
+				}
+
 				$text = $this->Html->div('comment-text', $comment['Comment']['text']);
 				$readlink = $this->Html->link(__('Partecipa alla conversazione', true), array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read'));
-				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $text . $readlink . $this->Html->div('clear', '&nbsp;'));
+				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $text . $readlink . $this->Html->div('clear', '&nbsp;'));
 			}
 		}
 	?>

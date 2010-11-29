@@ -558,6 +558,11 @@ dl
 {
     color: #f90;
 }
+.comment .comment-children
+{
+    float:right;
+    font-size:10px;
+}
 .comment .comment-text
 {
     clear:left;
@@ -578,6 +583,11 @@ dl
     margin-bottom:13px;
     border-bottom:2px solid #f90;
 }
+.forums .forum .forum-messages
+{
+    float:right;
+    font-size:10px;
+}
 .forums .forum.hover h3 a
 {
     color:#f90;
@@ -586,10 +596,6 @@ dl
 {
     padding:0;
     
-}
-.forums .messages-count
-{
-    float:right;
 }
 .forums .forum p
 {

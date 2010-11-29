@@ -1,4 +1,5 @@
 <?php
+
 class ForumsController extends AppController {
 
 	var $name = 'Forums';
@@ -6,13 +7,11 @@ class ForumsController extends AppController {
 	var $helpers = array('Html', 'Form', 'UserComment');
 	var $uses = array('Forum', 'Comment');
 
-
-	function beforeFilter()
-    {
+	function beforeFilter() {
 		parent::beforeFilter();
-        $this->set('activemenu_for_layout', 'tools');
+		$this->set('activemenu_for_layout', 'tools');
 		$this->Auth->deny($this->methods);
-    }
+	}
 
 	function index() {
 		$this->Forum->recursive = 0;
@@ -22,7 +21,26 @@ class ForumsController extends AppController {
 				'Forum.access_level >= ' => $this->Auth->user('role')
 			),
 			'order' => array('Forum.weight DESC', 'Forum.created DESC'));
-		$this->set('forums', $this->paginate());
+		$forums = $this->paginate();
+
+		$forumsId = Set::extract('/Forum/id', $forums);
+		$conversationCount = $this->Comment->find('all', array(
+			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $forumsId, 'Comment.parent_id' => 0, 'Comment.active' => 1),
+			'fields' => array('item_id', 'count(id) as children'),
+			'group' => 'item_id',
+			'recursive' => -1
+		));
+		$conversationCount = Set::combine($conversationCount, '{n}.Comment.item_id', '{n}.0.children');
+		$messagesCount = $this->Comment->find('all', array(
+			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $forumsId, 'Comment.active' => 1),
+			'fields' => array('item_id', 'count(id) as children'),
+			'group' => 'item_id',
+			'recursive' => -1
+		));
+		$messagesCount = Set::combine($messagesCount, '{n}.Comment.item_id', '{n}.0.children');
+		debug($messagesCount);
+
+		$this->set(compact('forums', 'conversationCount', 'messagesCount'));
 	}
 
 	function view($id = null) {
@@ -31,50 +49,63 @@ class ForumsController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		$forum = $this->Forum->find('first', array(
-			'conditions' => array('Forum.id' => $id, 'Forum.active' => 1, 'Forum.access_level >= ' => $this->Auth->user('role')),
-			'contain' => array('User.fullname')
-		));
+				'conditions' => array('Forum.id' => $id, 'Forum.active' => 1, 'Forum.access_level >= ' => $this->Auth->user('role')),
+				'contain' => array('User.fullname')
+			));
 
-		if(empty($forum)) {
+		if (empty($forum)) {
 			$this->Session->setFlash(__('Non puoi accedere a questo forum', true));
 			$this->redirect(array('action' => 'index'));
 		}
 
 		$this->paginate = array('Comment' => array(
-			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $id, 'Comment.active' => 1),
-			'order' => array('Comment.created DESC'),
-			'contain' => array('User.fullname'),
-			'limit' => 25
-		));
+				'conditions' => array(
+					'Comment.model' => 'Forum',
+					'Comment.item_id' => $id,
+					'Comment.active' => 1,
+					'Comment.parent_id' => 0),
+				'order' => array('Comment.created DESC'),
+				'contain' => array('User.fullname'),
+				'limit' => 25
+			));
 		$comments = $this->paginate($this->Forum->Comment);
 
-		$this->set(compact('forum', 'comments'));
+		$commentIds = Set::extract('/Comment/id', $comments);
+		$commentsChildren = $this->Comment->find('all', array(
+			'conditions' => array('Comment.parent_id' => $commentIds, 'Comment.active' => 1),
+			'fields' => array('parent_id', 'count(id) as children'),
+			'group' => 'parent_id',
+			'recursive' => -1
+		));
+		$commentsChildren = Set::combine($commentsChildren, '{n}.Comment.parent_id', '{n}.0.children');
+
+		$this->set(compact('forum', 'comments', 'commentsChildren'));
 		$this->set('title_for_layout', 'Forum - ' . $forum['Forum']['name']);
 	}
 
 	function view_topic($id) {
 		$topic = $this->Comment->find('first', array(
-			'conditions' => array('Comment.id' => $id, 'Comment.active' => 1),
-			'contain' => array('User')
-		));
-		if(!empty($topic)) {
-			$forum = $this->Forum->find('first', array(
-				'conditions' => array('Forum.id' => $topic['Comment']['item_id'], 'Forum.active' => 1, 'Forum.access_level >= ' => $this->Auth->user('role')),
-				'fields' => array('Forum.id', 'Forum.name'),
-				'contain' => array()
+				'conditions' => array('Comment.id' => $id, 'Comment.active' => 1),
+				'contain' => array('User')
 			));
+		if (!empty($topic)) {
+			$forum = $this->Forum->find('first', array(
+					'conditions' => array('Forum.id' => $topic['Comment']['item_id'], 'Forum.active' => 1, 'Forum.access_level >= ' => $this->Auth->user('role')),
+					'fields' => array('Forum.id', 'Forum.name'),
+					'contain' => array()
+				));
 
 			//forum non attivo o utente non autenticato
-			if(empty($forum)) {
+			if (empty($forum)) {
 				$this->Session->setFlash(__('Non puoi accedere a questa discussione', true));
 				$this->redirect(array('action' => 'index'));
 			}
 
 			$this->paginate = array('Comment' => array(
-				'conditions' => array('Comment.parent_id' => $id, 'Comment.active' => 1),
-				'order' => array('Comment.created ASC'),
-				'limit' => 25
-			));
+					'conditions' => array('Comment.parent_id' => $id, 'Comment.active' => 1),
+					'order' => array('Comment.created ASC'),
+					'limit' => 25
+				));
 			$comments = $this->paginate($this->Comment);
 
 			$this->set(compact('forum', 'topic', 'comments'));
@@ -136,14 +167,16 @@ class ForumsController extends AppController {
 	function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'forum'));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->Forum->delete($id)) {
 			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Forum'));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Forum'));
 		$this->redirect(array('action' => 'index'));
 	}
+
 }
+
 ?>
