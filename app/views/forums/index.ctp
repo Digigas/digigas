@@ -30,6 +30,14 @@ $this->Layout->blockEnd();
 		}
 	?>
 	<div class="forum <?php echo $class;?>">
+
+		<?php if(isset($messagesCount[$forum['Forum']['id']])): ?>
+			<div class="forum-messages">
+				<?php echo $messagesCount[$forum['Forum']['id']]; ?> <?php __('messaggi in'); ?>
+				<?php echo $conversationCount[$forum['Forum']['id']]; ?> <?php __('conversazioni'); ?>
+			</div>
+		<?php endif; ?>
+		
 		<h3 class="forum-title"><?php echo $this->Html->link($forum['Forum']['name'], array('controller' => 'forums', 'action' => 'view', $forum['Forum']['id'])); ?>&nbsp;</h3>
 		<div class="description"><?php echo $forum['Forum']['text']; ?></div>
 	</div>

@@ -3,6 +3,14 @@ class Comment extends AppModel {
 	var $name = 'Comment';
 
 	var $belongsTo = array('User');
+	var $hasMany = array(
+		'RelatedComment' => array(
+			'className' => 'Comment',
+			'foreignKey' => 'parent_id',
+			'conditions' => array('RelatedComment.active' => 1),
+			'dependent' => true
+		)
+	);
 
 	var $actsAs = array('Containable');
 
