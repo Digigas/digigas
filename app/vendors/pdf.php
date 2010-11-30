@@ -5,6 +5,10 @@ if(!class_exists('FPDF')) {
     $PDF = new FPDF();
 }
 
+if (!defined('EURO')) {
+		define('EURO', chr(128));
+	}
+
 class PDF extends FPDF {
 
     function header() {
