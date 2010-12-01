@@ -4,7 +4,7 @@ class ForumsController extends AppController {
 
 	var $name = 'Forums';
 	var $components = array('UserComment');
-	var $helpers = array('Html', 'Form', 'UserComment', 'Text', 'Time');
+	var $helpers = array('Html', 'Form');
 	var $uses = array('Forum', 'Comment');
 
 	function beforeFilter() {
@@ -80,7 +80,7 @@ class ForumsController extends AppController {
 					'Comment.active' => 1,
 					'Comment.parent_id' => 0),
 				'order' => array('Comment.created DESC'),
-				'contain' => array('User.fullname'),
+				'contain' => array('User.id', 'User.fullname'),
 				'limit' => 25
 			));
 		$comments = $this->paginate($this->Forum->Comment);

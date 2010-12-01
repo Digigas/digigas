@@ -34,5 +34,31 @@ class Forum extends AppModel {
 
 	var $actsAs = array('Containable', 'Commentable');
 
+	function getLastMessages($access_level, $number = false) {
+		if(!$number) {
+			$number = 10;
+		}
+
+		$forums = $this->find('all', array(
+			'conditions' => array(
+				'Forum.active' => 1,
+				'Forum.access_level >= ' => $access_level
+			),
+			'fields' => 'id',
+			'order' => array('Forum.weight DESC', 'Forum.created DESC'),
+			'recursive' => -1
+		));
+		$forumsId = Set::extract('/Forum/id', $forums);
+
+		$lastMessages = $this->Comment->find('all', array(
+			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $forumsId, 'Comment.active' => 1),
+			'order' => array('Comment.created DESC'),
+			'limit' => $number,
+			'contain' => array('User.fullname')
+		));
+
+		return $lastMessages;
+	}
+
 }
 ?>

@@ -2,7 +2,7 @@
 class CommentsController extends AppController {
 
 	var $name = 'Comments';
-	var $helpers = array('Html', 'Form', 'Text');
+	var $helpers = array('Html', 'Form');
 
 	function beforeFilter()
     {
@@ -10,6 +10,45 @@ class CommentsController extends AppController {
         $this->set('activemenu_for_layout', 'tools');
 		$this->Auth->deny($this->methods);
     }
+
+	function edit($id = null) {
+		if(!$id && empty($this->data)) {
+			$this->Session->setFlash(__('Quale commento?', true));
+			$this->redirect('/');
+		}
+
+		if (!empty($this->data) && $this->_verifyIdentity($id)) {
+			if ($this->Comment->save($this->data, array('text'))) {
+
+				$return = $this->Comment->field('url', array('Comment.id' => $this->data['Comment']['id']));
+				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'comment'));
+				$this->redirect('/'.$return);
+			} else {
+				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'comment'));
+			}
+		}
+
+		$this->data = $this->Comment->read(null, $id);
+
+		if(!$this->_verifyIdentity($id)) {
+			$this->Session->setFlash(__('Non è un tuo commento', true));
+			$this->redirect('/');
+		}
+	}
+
+	function _verifyIdentity($comment_id) {
+		//solo amministratori e proprietari possono modificare un commento
+		
+		if($this->Auth->user('role') < 2) {
+			return true;
+		}
+
+		$user_id = $this->Comment->field('user_id',array('id' => $comment_id));
+		if($user_id != $this->Auth->user('id')) {
+			return false;
+		}
+		return true;
+	}
 	
 	function admin_index() {
 		$this->paginate = array('order' => 'Comment.created DESC');

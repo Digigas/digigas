@@ -13,12 +13,22 @@
 					$class = ' alt';
 				}
 
+				$editComment = false;
 				if (isset($comment['User'])) {
 					$author = $this->Html->div('comment-author', $comment['User']['fullname']);
+					if($this->UserComment->user_can_edit($comment['User']['id'])) {
+						$editComment = true;
+					}
 				} else {
 					$author = '';
 				}
 				$date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
+
+				if($editComment) {
+					$editComment = $this->Html->div('edit', $this->Html->link(__('modifica', true), array('controller' => 'comments', 'action' => 'edit', $comment['Comment']['id'])));
+				} else {
+					$editComment = '';
+				}
 
 				//quanti commenti ci sono dentro e a quando risalgono
 				if (isset($commentsChildren[$comment['Comment']['id']])) {
@@ -31,7 +41,7 @@
 
 				$content = $this->Html->div('comment-text', $comment['Comment']['text']);
 				$readlink = $this->Html->link(__('Partecipa alla conversazione', true), array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read'));
-				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $lastUpdates . $content . $readlink . $this->Html->div('clear', '&nbsp;'));
+				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $lastUpdates . $content . $editComment . $readlink . $this->Html->div('clear', '&nbsp;'));
 			}
 		}
 	?>

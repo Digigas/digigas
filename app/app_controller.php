@@ -6,7 +6,8 @@ class AppController extends Controller {
 		'Auth',
 		'Session',
 		'Cookie',
-		'Email'
+		'Email',
+		'Forum'
 	);
 	var $helpers = array(
 		'Session',
@@ -16,33 +17,14 @@ class AppController extends Controller {
 		'Layout',
 		'Image',
 		'Menu',
-		'Number'
+		'Number',
+		'UserComment',
+		'Text',
+		'Time'
 	);
 	var $allowedActions = array();
 
 	function beforeFilter() {
-
-		//Salvo i dati dell'utente corrente nel modello User per accedervi da altri modelli
-		/*
-		 * Static methods that can be used to retrieve the logged in user
-		 * from anywhere
-		 *
-		 * Copyright (c) 2008 Matt Curry
-		 * www.PseudoCoder.com
-		 * http://github.com/mcurry/cakephp/tree/master/snippets/static_user
-		 * http://www.pseudocoder.com/archives/2008/10/06/accessing-user-sessions-from-models-or-anywhere-in-cakephp-revealed/
-		 *
-		 * @author      Matt Curry <matt@pseudocoder.com>
-		 * @license     MIT
-		 *
-		 * Usage
-			User::get('id');
-			User::get('username');
-			User::get('Model.fieldname');
-		 */
-		App::import('Model', 'User');
-		User::store($this->Auth->user());
-		// --- ---
 
 		$this->Auth->authorize = 'controller';
 		$this->Auth->userScope = array('User.active' => 1);

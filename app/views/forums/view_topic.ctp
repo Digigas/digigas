@@ -16,14 +16,26 @@
 					$class = ' alt';
 				}
 
+				$editComment = false;
+
 				if (isset($comment['User'])) {
 					$author = $this->Html->div('comment-author', $comment['User']['fullname']);
+					if($this->UserComment->user_can_edit($comment['User']['id'])) {
+						$editComment = true;
+					}
 				} else {
 					$author = '';
 				}
+
+				if($editComment) {
+					$editComment = $this->Html->div('edit', $this->Html->link(__('modifica', true), array('controller' => 'comments', 'action' => 'edit', $comment['Comment']['id'])));
+				} else {
+					$editComment = '';
+				}
+
 				$date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
 				$text = $this->Html->div('comment-text', $comment['Comment']['text']);
-				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $text . $this->Html->div('clear', '&nbsp;'));
+				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $text . $editComment . $this->Html->div('clear', '&nbsp;'));
 			}
 		}		
 	?>

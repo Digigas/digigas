@@ -10,7 +10,7 @@ class UserCommentComponent extends Object {
 	//called after Controller::beforeFilter()
 	function startup(&$controller) {
 		if(!empty($controller->data)
-			&& $controller->data['Comment']) {
+			&& isset($controller->data['Comment'])) {
 			$url = '/' . $controller->params['url']['url'];
 			$controller->data['Comment']['url'] = $url;
 			$model = $controller->data['Comment']['model'];
