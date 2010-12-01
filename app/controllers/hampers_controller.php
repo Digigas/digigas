@@ -26,7 +26,7 @@ class HampersController extends AppController {
         $this->set('title_for_layout', __('Tutti i panieri aperti in questo momento', true).' - '.Configure::read('GAS.name'));
 
 		//ultimi messaggi nel forum
-		$this->Forum->getLastMessages();
+		$this->ForumMessages->getLastMessages();
 		
         if(empty($hampers)) {
             $this->set('title_for_layout', __('Nessun paniere disponibile in questo momento', true).' - '.Configure::read('GAS.name'));

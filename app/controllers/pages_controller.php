@@ -54,7 +54,7 @@ class PagesController extends AppController {
         $this->set(compact('lastNews'));
 
 		//ultimi messaggi nel forum
-		$this->Forum->getLastMessages();
+		$this->ForumMessages->getLastMessages();
 
         $this->set('title_for_layout', Configure::read('GAS.name').' - '.$page['Page']['title']);
         
