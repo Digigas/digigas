@@ -655,6 +655,23 @@ dl
     padding-bottom:15px;
 }
 
+.comment .edit a {
+    position:absolute;
+    bottom:0;
+    left:0;
+    display:block;
+    float:right;
+    padding:3px 8px;
+    color:#fff;
+    background: #ccc;
+    text-decoration:none;
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    font-size:10px;
+    font-weight:normal;
+}
+
 .comment.topic
 {
     padding:10px;

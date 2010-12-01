@@ -34,3 +34,7 @@ $layout->blockEnd()
 
     </div>
 </div>
+
+<div class="actions">
+	<?php echo $this->element('forum/last_messages'); ?>
+</div>

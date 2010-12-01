@@ -1,6 +1,6 @@
 <?php
 class UserCommentHelper extends Helper {
-	var $helpers = array('Html', 'Form', 'Paginator');
+	var $helpers = array('Html', 'Form', 'Paginator', 'Session');
 
 	/*
 	 * 
@@ -88,5 +88,17 @@ class UserCommentHelper extends Helper {
 		} else {
 			return __('Per ora non ci sono commenti', true);
 		}
+	}
+
+	function user_can_edit($comment_user_id) {
+		$user = $this->Session->read('Auth.User');
+		if(!$user) {
+			return false;
+		}
+
+		if($user['id'] == $comment_user_id || $user['role'] < 2) {
+			return true;
+		}
+		return false;
 	}
 }

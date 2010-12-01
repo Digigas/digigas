@@ -3,7 +3,6 @@ class PagesController extends AppController {
 
     var $name = 'Pages';
     var $helpers = array('Html', 'Form', 'Tree');
-    var $components = array('Email');
     var $paginate = array(
             'limit' => 50,
             'order' => 'Page.lft asc');
@@ -53,6 +52,9 @@ class PagesController extends AppController {
             'limit' => 15
         ));
         $this->set(compact('lastNews'));
+
+		//ultimi messaggi nel forum
+		$this->Forum->getLastMessages();
 
         $this->set('title_for_layout', Configure::read('GAS.name').' - '.$page['Page']['title']);
         

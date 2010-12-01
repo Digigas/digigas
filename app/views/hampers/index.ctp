@@ -36,14 +36,13 @@
 			</div>
 			<div class="delivery">
 				<?php
-
-				if(!empty($hamper['Hamper']['delivery_position'])) {
-				__('In consegna presso ');
-				echo $hamper['Hamper']['delivery_position'];
-				echo ' ';
+				if (!empty($hamper['Hamper']['delivery_position'])) {
+					__('In consegna presso ');
+					echo $hamper['Hamper']['delivery_position'];
+					echo ' ';
 				}
 
-				if(!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
+				if (!date_is_empty($hamper['Hamper']['delivery_date_on'])) {
 					if (date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_on'])) == date("d,m,Y", strtotime($hamper['Hamper']['delivery_date_off']))) {
 						echo date_it("D d M Y", strtotime($hamper['Hamper']['delivery_date_on']));
 						__(' dalle ');
@@ -60,24 +59,27 @@
 				?>
 			</div>
 			<div class="options">
-				<?php echo $this->Html->link(__('Visualizza e ordina', true), array('action' => 'view', $hamper['Hamper']['id'])); ?>
+<?php echo $this->Html->link(__('Visualizza e ordina', true), array('action' => 'view', $hamper['Hamper']['id'])); ?>
 			</div>
 		</div>
-		<?php endforeach; ?>
+<?php endforeach; ?>
+	</div>
+
+	<div class="paging">
+<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class' => 'disabled')); ?>
+						| 	<?php echo $this->Paginator->numbers(); ?>
+						|   <?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
 			</div>
 
-		    <div class="paging">
-		<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class' => 'disabled')); ?>
-				| 	<?php echo $this->Paginator->numbers(); ?>
-				|   <?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled')); ?>
-			</div>
+	<br/><br/>
+<?php echo $this->element('forum/last_messages'); ?>
 
 		</div>
 
 		<div class="actions">
-	<?php echo $this->element('user_order', array('userOrder' => $userOrder)); ?>
-			    <ul>
-			        <li><?php echo $this->Html->link(__('Vai alla tua pagina ordini', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
-			        <li><?php echo $this->Html->link(__('Mandami un promemoria', true), array('controller' => 'ordered_products', 'action' => 'send_me_orders_email')); ?></li>
-    </ul>
+<?php echo $this->element('user_order', array('userOrder' => $userOrder)); ?>
+			<ul>
+				<li><?php echo $this->Html->link(__('Vai alla tua pagina ordini', true), array('controller' => 'ordered_products', 'action' => 'index')); ?></li>
+					<li><?php echo $this->Html->link(__('Mandami un promemoria', true), array('controller' => 'ordered_products', 'action' => 'send_me_orders_email')); ?></li>
+			    </ul>
 </div>
