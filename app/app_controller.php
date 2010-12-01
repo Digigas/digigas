@@ -7,7 +7,7 @@ class AppController extends Controller {
 		'Session',
 		'Cookie',
 		'Email',
-		'Forum'
+		'ForumMessages'
 	);
 	var $helpers = array(
 		'Session',
@@ -25,6 +25,11 @@ class AppController extends Controller {
 	var $allowedActions = array();
 
 	function beforeFilter() {
+
+		//Salvo i dati dell'utente corrente nel modello User per accedervi da altri modelli
+			App::import('Model', 'User');
+			User::store($this->Auth->user());
+		// --- ---
 
 		$this->Auth->authorize = 'controller';
 		$this->Auth->userScope = array('User.active' => 1);

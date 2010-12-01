@@ -1,5 +1,5 @@
 <?php
-class ForumComponent extends Object {
+class ForumMessagesComponent extends Object {
 
 	var $components = array('Auth');
 
