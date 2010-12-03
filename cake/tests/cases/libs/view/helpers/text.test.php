@@ -267,15 +267,19 @@ class TextHelperTest extends CakeTestCase {
 		$this->assertPattern('#^' . $expected . '$#', $result);
 
 		$text = 'Text with a partial WWW.cakephp.org URL';
-		$expected = 'Text with a partial <a href="http://www.cakephp.org"\s*>WWW.cakephp.org</a> URL';
+		$expected = 'Text with a partial <a href="http://WWW.cakephp.org"\s*>WWW.cakephp.org</a> URL';
 		$result = $this->Text->autoLinkUrls($text);
 		$this->assertPattern('#^' . $expected . '$#', $result);
 
 		$text = 'Text with a partial WWW.cakephp.org &copy; URL';
-		$expected = 'Text with a partial <a href="http://www.cakephp.org"\s*>WWW.cakephp.org</a> &copy; URL';
+		$expected = 'Text with a partial <a href="http://WWW.cakephp.org"\s*>WWW.cakephp.org</a> &copy; URL';
 		$result = $this->Text->autoLinkUrls($text, array('escape' => false));
 		$this->assertPattern('#^' . $expected . '$#', $result);
 
+		$text = 'Text with a url www.cot.ag/cuIb2Q and more';
+		$expected = 'Text with a url <a href="http://www.cot.ag/cuIb2Q">www.cot.ag/cuIb2Q</a> and more';
+		$result = $this->Text->autoLinkUrls($text);
+		$this->assertEqual($expected, $result);
 	}
 
 /**
@@ -395,13 +399,16 @@ class TextHelperTest extends CakeTestCase {
 		$result = $this->Text->toList(array('Dusty', 'Lucky', 'Ned'), 'y');
 		$this->assertEqual($result, 'Dusty, Lucky y Ned');
 
-        $result = $this->Text->toList(array( 1 => 'Dusty', 2 => 'Lucky', 3 => 'Ned'), 'y');
-        $this->assertEqual($result, 'Dusty, Lucky y Ned');
+		$result = $this->Text->toList(array( 1 => 'Dusty', 2 => 'Lucky', 3 => 'Ned'), 'y');
+		$this->assertEqual($result, 'Dusty, Lucky y Ned');
 
-        $result = $this->Text->toList(array( 1 => 'Dusty', 2 => 'Lucky', 3 => 'Ned'), 'and', ' + ');
-        $this->assertEqual($result, 'Dusty + Lucky and Ned');
+		$result = $this->Text->toList(array( 1 => 'Dusty', 2 => 'Lucky', 3 => 'Ned'), 'and', ' + ');
+		$this->assertEqual($result, 'Dusty + Lucky and Ned');
 
-        $result = $this->Text->toList(array( 'name1' => 'Dusty', 'name2' => 'Lucky'));
-        $this->assertEqual($result, 'Dusty and Lucky');
+		$result = $this->Text->toList(array( 'name1' => 'Dusty', 'name2' => 'Lucky'));
+		$this->assertEqual($result, 'Dusty and Lucky');
+		
+		$result = $this->Text->toList(array( 'test_0' => 'banana', 'test_1' => 'apple', 'test_2' => 'lemon'));
+		$this->assertEqual($result, 'banana, apple and lemon');
 	}
 }

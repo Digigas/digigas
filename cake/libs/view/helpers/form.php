@@ -172,7 +172,7 @@ class FormHelper extends AppHelper {
  * ### Options:
  *
  * - `type` Form method defaults to POST
- * - `action`  The Action the form submits to. Can be a string or array,
+ * - `action`  The controller action the form submits to, (optional).
  * - `url`  The url the form submits to. Can be a string or a url array,
  * - `default`  Allows for the creation of Ajax forms.
  * - `onsubmit` Used in conjunction with 'default' to create ajax forms.
@@ -221,7 +221,8 @@ class FormHelper extends AppHelper {
 			$data = $this->fieldset[$modelEntity];
 			$recordExists = (
 				isset($this->data[$model]) &&
-				!empty($this->data[$model][$data['key']])
+				!empty($this->data[$model][$data['key']]) &&
+				!is_array($this->data[$model][$data['key']])
 			);
 
 			if ($recordExists) {
@@ -256,13 +257,15 @@ class FormHelper extends AppHelper {
 			$actionDefaults = array(
 				'plugin' => $this->plugin,
 				'controller' => $view->viewPath,
-				'action' => $options['action'],
-				0 => $id
+				'action' => $options['action']
 			);
 			if (!empty($options['action']) && !isset($options['id'])) {
-				$options['id'] = $model . Inflector::camelize($options['action']) . 'Form';
+				$options['id'] = $this->domId($options['action'] . 'Form');
 			}
 			$options['action'] = array_merge($actionDefaults, (array)$options['url']);
+			if (empty($options['action'][0])) {
+				$options['action'][0] = $id;
+			}
 		} elseif (is_string($options['url'])) {
 			$options['action'] = $options['url'];
 		}
@@ -306,6 +309,7 @@ class FormHelper extends AppHelper {
 		unset($options['default']);
 		$htmlAttributes = array_merge($options, $htmlAttributes);
 
+		$this->fields = array();
 		if (isset($this->params['_Token']) && !empty($this->params['_Token'])) {
 			$append .= $this->hidden('_Token.key', array(
 				'value' => $this->params['_Token']['key'], 'id' => 'Token' . mt_rand())
@@ -585,6 +589,13 @@ class FormHelper extends AppHelper {
  *		'name' => array('label' => 'custom label')
  *	));
  * }}}
+ *
+ * In addition to fields control, inputs() allows you to use a few additional options.
+ *
+ * - `fieldset` Set to false to disable the fieldset. If a string is supplied it will be used as
+ *    the classname for the fieldset element.
+ * - `legend` Set to false to disable the legend for the generated input set. Or supply a string
+ *    to customize the legend text.
  *
  * @param mixed $fields An array of fields to generate inputs for, or null.
  * @param array $blacklist a simple array of fields to not create inputs for.
@@ -1082,7 +1093,7 @@ class FormHelper extends AppHelper {
 				array('name', 'type', 'id'), '', ' '
 			);
 			$tagName = Inflector::camelize(
-				$attributes['id'] . '_' . Inflector::underscore($optValue)
+				$attributes['id'] . '_' . Inflector::slug($optValue)
 			);
 
 			if ($label) {
@@ -1371,6 +1382,7 @@ class FormHelper extends AppHelper {
  * - `empty` - If true, the empty select option is shown.  If a string,
  *   that string is displayed as the empty element.
  * - `escape` - If true contents of options will be HTML entity encoded. Defaults to true.
+ * - `class` - When using multiple = checkbox the classname to apply to the divs. Defaults to 'checkbox'.
  *
  * ### Using options
  *
@@ -1408,23 +1420,22 @@ class FormHelper extends AppHelper {
  */
 	function select($fieldName, $options = array(), $selected = null, $attributes = array()) {
 		$select = array();
-		$showParents = false;
-		$escapeOptions = true;
 		$style = null;
 		$tag = null;
-		$showEmpty = '';
+		$attributes += array(
+			'class' => null, 
+			'escape' => true,
+			'secure' => null,
+			'empty' => '',
+			'showParents' => false
+		);
 
-		if (isset($attributes['escape'])) {
-			$escapeOptions = $attributes['escape'];
-			unset($attributes['escape']);
-		}
-		if (isset($attributes['secure'])) {
-			$secure = $attributes['secure'];
-		}
-		if (isset($attributes['empty'])) {
-			$showEmpty = $attributes['empty'];
-			unset($attributes['empty']);
-		}
+		$escapeOptions = $this->_extractOption('escape', $attributes);
+		$secure = $this->_extractOption('secure', $attributes);
+		$showEmpty = $this->_extractOption('empty', $attributes);
+		$showParents = $this->_extractOption('showParents', $attributes);
+		unset($attributes['escape'], $attributes['secure'], $attributes['empty'], $attributes['showParents']);
+
 		$attributes = $this->_initInputField($fieldName, array_merge(
 			(array)$attributes, array('secure' => false)
 		));
@@ -1436,10 +1447,6 @@ class FormHelper extends AppHelper {
 		}
 		if (isset($attributes['type'])) {
 			unset($attributes['type']);
-		}
-		if (in_array('showParents', $attributes)) {
-			$showParents = true;
-			unset($attributes['showParents']);
 		}
 
 		if (!isset($selected)) {
@@ -1453,7 +1460,8 @@ class FormHelper extends AppHelper {
 			$hiddenAttributes = array(
 				'value' => '',
 				'id' => $attributes['id'] . ($style ? '' : '_'),
-				'secure' => false
+				'secure' => false,
+				'name' => $attributes['name']
 			);
 			$select[] = $this->hidden(null, $hiddenAttributes);
 		} else {
@@ -1487,7 +1495,7 @@ class FormHelper extends AppHelper {
 			$selected,
 			array(),
 			$showParents,
-			array('escape' => $escapeOptions, 'style' => $style)
+			array('escape' => $escapeOptions, 'style' => $style, 'name' => $attributes['name'], 'class' => $attributes['class'])
 		));
 
 		$template = ($style == 'checkbox') ? 'checkboxmultipleend' : 'selectend';
@@ -1769,6 +1777,8 @@ class FormHelper extends AppHelper {
  * - `separator` The contents of the string between select elements. Defaults to '-'
  * - `empty` - If true, the empty select option is shown.  If a string,
  *   that string is displayed as the empty element.
+ * - `value` | `default` The default value to be used by the input.  A value in `$this->data`
+ *   matching the field name will override this value.  If no default is provided `time()` will be used.
  *
  * @param string $fieldName Prefix name for the SELECT element
  * @param string $dateFormat DMY, MDY, YMD.
@@ -1784,7 +1794,12 @@ class FormHelper extends AppHelper {
 		$year = $month = $day = $hour = $min = $meridian = null;
 
 		if (empty($selected)) {
-			$selected = $this->value($fieldName);
+			$selected = $this->value($attributes, $fieldName);
+			if (isset($selected['value'])) {
+				$selected = $selected['value'];
+			} else {
+				$selected = null;
+			}
 		}
 
 		if ($selected === null && $attributes['empty'] != true) {
@@ -1964,7 +1979,7 @@ class FormHelper extends AppHelper {
  */
 	function __selectOptions($elements = array(), $selected = null, $parents = array(), $showParents = null, $attributes = array()) {
 		$select = array();
-		$attributes = array_merge(array('escape' => true, 'style' => null), $attributes);
+		$attributes = array_merge(array('escape' => true, 'style' => null, 'class' => null), $attributes);
 		$selectedIsEmpty = ($selected === '' || $selected === null);
 		$selectedIsArray = is_array($selected);
 
@@ -1984,6 +1999,7 @@ class FormHelper extends AppHelper {
 				));
 
 				if (!empty($name)) {
+					$name = $attributes['escape'] ? h($name) : $name;
 					if ($attributes['style'] === 'checkbox') {
 						$select[] = sprintf($this->Html->tags['fieldsetstart'], $name);
 					} else {
@@ -2017,7 +2033,7 @@ class FormHelper extends AppHelper {
 						$htmlOptions['value'] = $name;
 
 						$tagName = Inflector::camelize(
-							$this->model() . '_' . $this->field().'_'.Inflector::underscore($name)
+							$this->model() . '_' . $this->field().'_'.Inflector::slug($name)
 						);
 						$htmlOptions['id'] = $tagName;
 						$label = array('for' => $tagName);
@@ -2026,7 +2042,7 @@ class FormHelper extends AppHelper {
 							$label['class'] = 'selected';
 						}
 
-						list($name) = array_values($this->_name());
+						$name = $attributes['name'];
 
 						if (empty($attributes['class'])) {
 							$attributes['class'] = 'checkbox';
@@ -2157,7 +2173,7 @@ class FormHelper extends AppHelper {
  *
  * Options
  *
- *  - `secure` - boolean whether or not the the field should be added to the security fields.
+ *  - `secure` - boolean whether or not the field should be added to the security fields.
  *
  * @param string $field Name of the field to initialize options for.
  * @param array $options Array of options to append options into.

@@ -111,7 +111,7 @@ class Dispatcher extends Object {
 		$this->here = $this->base . '/' . $url;
 
 		if ($this->asset($url) || $this->cached($url)) {
-			$this->_stop();
+			return;
 		}
 		$controller =& $this->__getController();
 
@@ -162,7 +162,7 @@ class Dispatcher extends Object {
 		} else {
 			$controller->data = null;
 		}
-		if (array_key_exists('return', $this->params) && $this->params['return'] == 1) {
+		if (isset($this->params['return']) && $this->params['return'] == 1) {
 			$controller->autoRender = false;
 		}
 		if (!empty($this->params['bare'])) {
@@ -227,8 +227,11 @@ class Dispatcher extends Object {
  */
 	function __extractParams($url, $additionalParams = array()) {
 		$defaults = array('pass' => array(), 'named' => array(), 'form' => array());
-		$this->params = array_merge($defaults, $url, $additionalParams);
-		return Router::url($url);
+		$params = array_merge($defaults, $url, $additionalParams);
+		$this->params = $params;
+
+		$params += array('base' => false, 'url' => array());
+		return ltrim(Router::reverse($params), '/');
 	}
 
 /**
@@ -583,20 +586,15 @@ class Dispatcher extends Object {
 		if ($parts[0] === 'theme') {
 			$themeName = $parts[1];
 			unset($parts[0], $parts[1]);
-			$fileFragment = implode('/', $parts);
-
-			$viewPaths = App::path('views');
-			foreach ($viewPaths as $viewPath) {
-				$path = $viewPath . 'themed' . DS . $themeName . DS . 'webroot' . DS;
-				if (file_exists($path . $fileFragment)) {
-					$assetFile = $path . $fileFragment;
-					break;
-				}
+			$fileFragment = implode(DS, $parts);
+			$path = App::themePath($themeName) . 'webroot' . DS;
+			if (file_exists($path . $fileFragment)) {
+				$assetFile = $path . $fileFragment;
 			}
 		} else {
 			$plugin = $parts[0];
 			unset($parts[0]);
-			$fileFragment = implode('/', $parts);
+			$fileFragment = implode(DS, $parts);
 			$pluginWebroot = App::pluginPath($plugin) . 'webroot' . DS;
 			if (file_exists($pluginWebroot . $fileFragment)) {
 				$assetFile = $pluginWebroot . $fileFragment;
@@ -620,7 +618,8 @@ class Dispatcher extends Object {
  */
 	function _deliverAsset($assetFile, $ext) {
 		$ob = @ini_get("zlib.output_compression") !== '1' && extension_loaded("zlib") && (strpos(env('HTTP_ACCEPT_ENCODING'), 'gzip') !== false);
-		if ($ob && Configure::read('Asset.compress')) {
+		$compressionEnabled = $ob && Configure::read('Asset.compress');
+		if ($compressionEnabled) {
 			ob_start();
 			ob_start('ob_gzhandler');
 		}
@@ -647,10 +646,13 @@ class Dispatcher extends Object {
 		if ($ext === 'css' || $ext === 'js') {
 			include($assetFile);
 		} else {
+			if ($compressionEnabled) {
+				ob_clean();
+			}
 			readfile($assetFile);
 		}
 
-		if (Configure::read('Asset.compress')) {
+		if ($compressionEnabled) {
 			ob_end_flush();
 		}
 	}
