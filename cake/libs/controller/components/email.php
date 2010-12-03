@@ -356,7 +356,11 @@ class EmailComponent extends Object{
 			}
 		}
 
-		$message = $this->_wrap($content);
+		if ($this->sendAs === 'text') {
+			$message = $this->_wrap($content);
+		} else {
+			$message = $this->_wrap($content, 998);
+		}
 
 		if ($this->template === null) {
 			$message = $this->_formatMessage($message);
@@ -676,10 +680,11 @@ class EmailComponent extends Object{
  * Wrap the message using EmailComponent::$lineLength
  *
  * @param string $message Message to wrap
+ * @param integer $lineLength Max length of line
  * @return array Wrapped message
- * @access private
+ * @access protected
  */
-	function _wrap($message) {
+	function _wrap($message, $lineLength = null) {
 		$message = $this->_strip($message, true);
 		$message = str_replace(array("\r\n","\r"), "\n", $message);
 		$lines = explode("\n", $message);
@@ -690,11 +695,15 @@ class EmailComponent extends Object{
 			$this->lineLength = $this->_lineLength;
 		}
 
+		if (!$lineLength) {
+			$lineLength = $this->lineLength;
+		}
+
 		foreach ($lines as $line) {
 			if (substr($line, 0, 1) == '.') {
 				$line = '.' . $line;
 			}
-			$formatted = array_merge($formatted, explode("\n", wordwrap($line, $this->lineLength, "\n", true)));
+			$formatted = array_merge($formatted, explode("\n", wordwrap($line, $lineLength, "\n", true)));
 		}
 		$formatted[] = '';
 		return $formatted;
@@ -714,7 +723,16 @@ class EmailComponent extends Object{
 		if ($this->delivery == 'mail') {
 			$nl = '';
 		}
-		return mb_encode_mimeheader($subject, $this->charset, 'B', $nl);
+		$internalEncoding = function_exists('mb_internal_encoding');
+		if ($internalEncoding) {
+			$restore = mb_internal_encoding();
+			mb_internal_encoding($this->charset);
+		}
+		$return = mb_encode_mimeheader($subject, $this->charset, 'B', $nl);
+		if ($internalEncoding) {
+			mb_internal_encoding($restore);
+		}
+		return $return;
 	}
 
 /**
@@ -725,19 +743,21 @@ class EmailComponent extends Object{
  * @access private
  */
 	function _formatAddress($string, $smtp = false) {
-		if (strpos($string, '<') !== false) {
-			$value = explode('<', $string);
-			if ($smtp) {
-				$string = '<' . $value[1];
-			} else {
-				$string = $this->_encode($value[0]) . ' <' . $value[1];
-			}
+		$hasAlias = preg_match('/((.*)\s)?<(.+)>/', $string, $matches);
+		if ($smtp && $hasAlias) {
+			return $this->_strip('<' .  $matches[3] . '>');
+		} elseif ($smtp) {
+			return $this->_strip('<' . $string . '>');
+		}
+		if ($hasAlias && !empty($matches[2])) {
+			return $this->_strip($matches[2] . ' <' . $matches[3] . '>');
 		}
 		return $this->_strip($string);
 	}
 
 /**
- * Remove certain elements (such as bcc:, to:, %0a) from given value
+ * Remove certain elements (such as bcc:, to:, %0a) from given value.
+ * Helps prevent header injection / mainipulation on user content.
  *
  * @param string $value Value to strip
  * @param boolean $message Set to true to indicate main message content
@@ -765,8 +785,8 @@ class EmailComponent extends Object{
  * @access private
  */
 	function _mail() {
-		$header = implode("\n", $this->__header);
-		$message = implode("\n", $this->__message);
+		$header = implode("\r\n", $this->__header);
+		$message = implode("\r\n", $this->__message);
 		if (is_array($this->to)) {
 			$to = implode(', ', array_map(array($this, '_formatAddress'), $this->to));
 		} else {
@@ -813,7 +833,7 @@ class EmailComponent extends Object{
 			$host = 'localhost';
 		}
 
-		if (!$this->_smtpSend("EHLO {$host}", '250') || !$this->_smtpSend("HELO {$host}", '250')) {
+		if (!$this->_smtpSend("EHLO {$host}", '250') && !$this->_smtpSend("HELO {$host}", '250')) {
 			return false;
 		}
 
@@ -924,11 +944,6 @@ class EmailComponent extends Object{
 			$to = implode(', ', array_map(array($this, '_formatAddress'), $this->to));
 		} else {
 			$to = $this->to;
-		}
-		if ($this->delivery == 'smtp') {
-			$fm .= sprintf('%s %s%s', 'Host:', $this->smtpOptions['host'], $nl);
-			$fm .= sprintf('%s %s%s', 'Port:', $this->smtpOptions['port'], $nl);
-			$fm .= sprintf('%s %s%s', 'Timeout:', $this->smtpOptions['timeout'], $nl);
 		}
 		$fm .= sprintf('%s %s%s', 'To:', $to, $nl);
 		$fm .= sprintf('%s %s%s', 'From:', $this->from, $nl);

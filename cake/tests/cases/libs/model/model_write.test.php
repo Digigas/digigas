@@ -1645,7 +1645,7 @@ class ModelWriteTest extends BaseModelTest {
 	}
 
 /**
- * test that saving habtm records respects conditions set in the the 'conditions' key
+ * test that saving habtm records respects conditions set in the 'conditions' key
  * for the association.
  *
  * @return void
@@ -2243,6 +2243,27 @@ class ModelWriteTest extends BaseModelTest {
 
 		$result = $Comment->save($data);
 		$this->assertTrue($result);
+	}
+
+/**
+ * test updating records and saving blank values.
+ *
+ * @return void
+ */
+	function testUpdateSavingBlankValues() {
+		$this->loadFixtures('Article');
+		$Article =& new Article();
+		$Article->validate = array();
+		$Article->create();
+		$result = $Article->save(array(
+			'id' => 1,
+			'title' => '',
+			'body' => ''
+		));
+		$this->assertTrue($result);
+		$result = $Article->find('first', array('conditions' => array('Article.id' => 1)));
+		$this->assertEqual('', $result['Article']['title'], 'Title is not blank');
+		$this->assertEqual('', $result['Article']['body'], 'Body is not blank');
 	}
 
 /**
@@ -3035,6 +3056,88 @@ class ModelWriteTest extends BaseModelTest {
 	}
 
 /**
+ * test saveAll with transactions and ensure there is no missing rollback.
+ *
+ * @return void
+ */
+	function testSaveAllManyRowsTransactionNoRollback() {
+		$this->loadFixtures('Post');
+
+		Mock::generate('DboSource', 'MockTransactionDboSource');
+		$db = ConnectionManager::create('mock_transaction', array(
+			'datasource' => 'MockTransactionDbo',
+		));
+		$db->expectOnce('rollback');
+
+		$Post =& new Post();
+		$Post->useDbConfig = 'mock_transaction';
+
+		$Post->validate = array(
+			'title' => array('rule' => array('notEmpty'))
+		);
+
+		$data = array(
+			array('author_id' => 1, 'title' => 'New Fourth Post'),
+			array('author_id' => 1, 'title' => '')
+		);
+		$Post->saveAll($data, array('atomic' => true));
+	}
+
+/**
+ * test saveAll with transactions and ensure there is no missing rollback.
+ *
+ * @return void
+ */
+	function testSaveAllAssociatedTransactionNoRollback() {
+		$testDb = ConnectionManager::getDataSource('test_suite');
+
+		Mock::generate('DboSource', 'MockTransactionAssociatedDboSource');
+		$db = ConnectionManager::create('mock_transaction_assoc', array(
+			'datasource' => 'MockTransactionAssociatedDbo',
+		));
+		$db->columns = $testDb->columns;
+
+		$db->expectOnce('rollback');
+
+		$Post =& new Post();
+		$Post->useDbConfig = 'mock_transaction_assoc';
+		$Post->Author->useDbConfig = 'mock_transaction_assoc';
+
+		$Post->Author->validate = array(
+			'user' => array('rule' => array('notEmpty'))
+		);
+
+		$data = array(
+			'Post' => array(
+				'title' => 'New post',
+				'body' => 'Content',
+				'published' => 'Y'
+			),
+			'Author' => array(
+				'user' => '',
+				'password' => "sekret"
+			)
+		);
+		$Post->saveAll($data);
+	}
+
+/**
+ * test saveAll with nested saveAll call.
+ *
+ * @return void
+ */
+	function testSaveAllNestedSaveAll() {
+		$this->loadFixtures('Sample');
+		$TransactionTestModel =& new TransactionTestModel();
+
+		$data = array(
+			array('apple_id' => 1, 'name' => 'sample5'),
+		);
+
+		$this->assertTrue($TransactionTestModel->saveAll($data, array('atomic' => true)));
+	}
+
+/**
  * testSaveAllTransaction method
  *
  * @access public
@@ -3557,6 +3660,65 @@ class ModelWriteTest extends BaseModelTest {
 	}
 
 /**
+ * test saveAll()'s return is correct when using atomic = false and validate = first.
+ *
+ * @return void
+ */
+	function testSaveAllValidateFirstAtomicFalse() {
+		$Something =& new Something();
+		$invalidData = array(
+			array(
+				'title' => 'foo',
+				'body' => 'bar',
+				'published' => 'baz',
+			),
+			array(
+				'body' => 3,
+				'published' =>'sd',
+			),
+		);
+		$Something->create();
+		$Something->validate = array(
+			'title' => array(
+				'rule' => 'alphaNumeric',
+				'required' => true,
+			),
+			'body' => array(
+				'rule' => 'alphaNumeric',
+				'required' => true,
+				'allowEmpty' => true,
+			),
+		);
+		$result = $Something->saveAll($invalidData, array(
+			'atomic' => false,
+			'validate' => 'first',
+		));
+		$expected = array(true, false);
+		$this->assertEqual($result, $expected);
+
+		$Something =& new Something();
+		$validData = array(
+			array(
+				'title' => 'title value',
+				'body' => 'body value',
+				'published' => 'baz',
+			),
+			array(
+				'title' => 'valid',
+				'body' => 'this body',
+				'published' =>'sd',
+			),
+		);
+		$Something->create();
+		$result = $Something->saveAll($validData, array(
+			'atomic' => false,
+			'validate' => 'first',
+		));
+		$expected = array(true, true);
+		$this->assertEqual($result, $expected);
+	}
+
+/**
  * testUpdateWithCalculation method
  *
  * @access public
@@ -3565,6 +3727,7 @@ class ModelWriteTest extends BaseModelTest {
 	function testUpdateWithCalculation() {
 		$this->loadFixtures('DataTest');
 		$model =& new DataTest();
+		$model->deleteAll(true);
 		$result = $model->saveAll(array(
 			array('count' => 5, 'float' => 1.1),
 			array('count' => 3, 'float' => 1.2),
@@ -3661,6 +3824,7 @@ class ModelWriteTest extends BaseModelTest {
 		);
 		$this->assertEqual($TestModel->Comment->validationErrors, $expected);
 	}
+
 /**
  * TestFindAllWithoutForeignKey
  *
@@ -3674,57 +3838,58 @@ class ModelWriteTest extends BaseModelTest {
 
 		$conditions = array('Group.name' => 'group one');
 
-        $ProductUpdateAll->bindModel(array(
+		$ProductUpdateAll->bindModel(array(
 			'belongsTo' => array(
 				'Group' => array('className' => 'GroupUpdateAll')
 			)
 		));
 
-        $ProductUpdateAll->belongsTo = array(
+		$ProductUpdateAll->belongsTo = array(
 			'Group' => array('className' => 'GroupUpdateAll', 'foreignKey' => 'group_id')
 		);
 
-        $results = $ProductUpdateAll->find('all', compact('conditions'));
+		$results = $ProductUpdateAll->find('all', compact('conditions'));
 		$this->assertTrue(!empty($results));
 
-        $ProductUpdateAll->bindModel(array('belongsTo'=>array('Group')));
-        $ProductUpdateAll->belongsTo = array(
-            'Group' => array(
+		$ProductUpdateAll->bindModel(array('belongsTo'=>array('Group')));
+		$ProductUpdateAll->belongsTo = array(
+			'Group' => array(
 				'className' => 'GroupUpdateAll',
 				'foreignKey' => false,
 				'conditions' => 'ProductUpdateAll.groupcode = Group.code'
 			));
 
-        $resultsFkFalse = $ProductUpdateAll->find('all', compact('conditions'));
-        $this->assertTrue(!empty($resultsFkFalse));
-        $expected = array(
-            '0' => array(
-                'ProductUpdateAll' => array(
-                    'id'  => 1,
-                    'name'  => 'product one',
-                    'groupcode'  => 120,
-                    'group_id'  => 1),
-                'Group' => array(
-                    'id' => 1,
-                    'name' => 'group one',
-                    'code' => 120)
-                ),
-            '1' => array(
-                'ProductUpdateAll' => array(
-                    'id'  => 2,
-                    'name'  => 'product two',
-                    'groupcode'  => 120,
-                    'group_id'  => 1),
-                'Group' => array(
-                    'id' => 1,
-                    'name' => 'group one',
-                    'code' => 120)
-                )
+		$resultsFkFalse = $ProductUpdateAll->find('all', compact('conditions'));
+		$this->assertTrue(!empty($resultsFkFalse));
+		$expected = array(
+			'0' => array(
+				'ProductUpdateAll' => array(
+					'id'  => 1,
+					'name'	=> 'product one',
+					'groupcode'	 => 120,
+					'group_id'	=> 1),
+				'Group' => array(
+					'id' => 1,
+					'name' => 'group one',
+					'code' => 120)
+				),
+			'1' => array(
+				'ProductUpdateAll' => array(
+					'id'  => 2,
+					'name'	=> 'product two',
+					'groupcode'	 => 120,
+					'group_id'	=> 1),
+				'Group' => array(
+					'id' => 1,
+					'name' => 'group one',
+					'code' => 120)
+				)
 
-            );
-        $this->assertEqual($results, $expected);
-        $this->assertEqual($resultsFkFalse, $expected);
-    }
+			);
+		$this->assertEqual($results, $expected);
+		$this->assertEqual($resultsFkFalse, $expected);
+	}
+
 /**
  * testProductUpdateAllWithForeignKey
  *
@@ -3732,7 +3897,7 @@ class ModelWriteTest extends BaseModelTest {
  * @access public
  * @return void
  */
-    function testProductUpdateAll() {
+	function testProductUpdateAll() {
 		$this->skipIf(
 			$this->db->config['driver'] == 'postgres',
 			'%s Currently, there is no way of doing joins in an update statement in postgresql'
@@ -3742,39 +3907,39 @@ class ModelWriteTest extends BaseModelTest {
 
 		$conditions = array('Group.name' => 'group one');
 
-        $ProductUpdateAll->bindModel(array('belongsTo' => array(
+		$ProductUpdateAll->bindModel(array('belongsTo' => array(
 			'Group' => array('className' => 'GroupUpdateAll')))
 		);
 
-        $ProductUpdateAll->updateAll(array('name' => "'new product'"), $conditions);
-        $results = $ProductUpdateAll->find('all', array(
+		$ProductUpdateAll->updateAll(array('name' => "'new product'"), $conditions);
+		$results = $ProductUpdateAll->find('all', array(
 			'conditions' => array('ProductUpdateAll.name' => 'new product')
 		));
-        $expected = array(
-            '0' => array(
-                'ProductUpdateAll' => array(
-                    'id'  => 1,
-                    'name'  => 'new product',
-                    'groupcode'  => 120,
-                    'group_id'  => 1),
-                'Group' => array(
-                    'id' => 1,
-                    'name' => 'group one',
-                    'code' => 120)
-                ),
-            '1' => array(
-                'ProductUpdateAll' => array(
-                    'id'  => 2,
-                    'name'  => 'new product',
-                    'groupcode'  => 120,
-                    'group_id'  => 1),
-                'Group' => array(
-                    'id' => 1,
-                    'name' => 'group one',
-                    'code' => 120)));
+		$expected = array(
+			'0' => array(
+				'ProductUpdateAll' => array(
+					'id'  => 1,
+					'name'	=> 'new product',
+					'groupcode'	 => 120,
+					'group_id'	=> 1),
+				'Group' => array(
+					'id' => 1,
+					'name' => 'group one',
+					'code' => 120)
+				),
+			'1' => array(
+				'ProductUpdateAll' => array(
+					'id'  => 2,
+					'name'	=> 'new product',
+					'groupcode'	 => 120,
+					'group_id'	=> 1),
+				'Group' => array(
+					'id' => 1,
+					'name' => 'group one',
+					'code' => 120)));
 
-        $this->assertEqual($results, $expected);
-    }
+		$this->assertEqual($results, $expected);
+	}
 
 /**
  * testProductUpdateAllWithoutForeignKey
@@ -3805,32 +3970,32 @@ class ModelWriteTest extends BaseModelTest {
 			)
 		);
 
-        $ProductUpdateAll->updateAll(array('name' => "'new product'"), $conditions);
-        $resultsFkFalse = $ProductUpdateAll->find('all', array('conditions' => array('ProductUpdateAll.name'=>'new product')));
-        $expected = array(
-            '0' => array(
-                'ProductUpdateAll' => array(
-                    'id'  => 1,
-                    'name'  => 'new product',
-                    'groupcode'  => 120,
-                    'group_id'  => 1),
-                'Group' => array(
-                    'id' => 1,
-                    'name' => 'group one',
-                    'code' => 120)
-                ),
-            '1' => array(
-                'ProductUpdateAll' => array(
-                    'id'  => 2,
-                    'name'  => 'new product',
-                    'groupcode'  => 120,
-                    'group_id'  => 1),
-                'Group' => array(
-                    'id' => 1,
-                    'name' => 'group one',
-                    'code' => 120)));
-        $this->assertEqual($resultsFkFalse, $expected);
-    }
+		$ProductUpdateAll->updateAll(array('name' => "'new product'"), $conditions);
+		$resultsFkFalse = $ProductUpdateAll->find('all', array('conditions' => array('ProductUpdateAll.name'=>'new product')));
+		$expected = array(
+			'0' => array(
+				'ProductUpdateAll' => array(
+					'id'  => 1,
+					'name'	=> 'new product',
+					'groupcode'	 => 120,
+					'group_id'	=> 1),
+				'Group' => array(
+					'id' => 1,
+					'name' => 'group one',
+					'code' => 120)
+				),
+			'1' => array(
+				'ProductUpdateAll' => array(
+					'id'  => 2,
+					'name'	=> 'new product',
+					'groupcode'	 => 120,
+					'group_id'	=> 1),
+				'Group' => array(
+					'id' => 1,
+					'name' => 'group one',
+					'code' => 120)));
+		$this->assertEqual($resultsFkFalse, $expected);
+	}
 
 /**
  * test that saveAll behaves like plain save() when suplied empty data
@@ -3848,6 +4013,24 @@ class ModelWriteTest extends BaseModelTest {
 		$model =& new ProductUpdateAll();
 		$result = $model->saveAll(array());
 		$this->assertFalse($result);
+	}
+
+/**
+ * test writing floats in german locale.
+ *
+ * @return void
+ */
+	function testWriteFloatAsGerman() {
+		$restore = setlocale(LC_ALL, null);
+		setlocale(LC_ALL, 'de_DE');
+
+		$model = new DataTest();
+		$result = $model->save(array(
+			'count' => 1,
+			'float' => 3.14593
+		));
+		$this->assertTrue($result);
+		setlocale(LC_ALL, $restore);
 	}
 
 }

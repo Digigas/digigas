@@ -96,6 +96,7 @@ class Configure extends Object {
 					break;
 					case 3:
 						$_this->{$names[0]}[$names[1]][$names[2]] = $value;
+						break;
 					case 4:
 						$names = explode('.', $name, 2);
 						if (!isset($_this->{$names[0]})) {
@@ -702,7 +703,7 @@ class App extends Object {
 /**
  * Get the path that a plugin is on.  Searches through the defined plugin paths.
  *
- * @param string $plugin CamelCased plugin name to find the path of.
+ * @param string $plugin CamelCased/lower_cased plugin name to find the path of.
  * @return string full path to the plugin.
  */
 	function pluginPath($plugin) {
@@ -714,6 +715,23 @@ class App extends Object {
 			}
 		}
 		return $_this->plugins[0] . $pluginDir . DS;
+	}
+
+/**
+ * Find the path that a theme is on.  Search through the defined theme paths.
+ *
+ * @param string $theme lower_cased theme name to find the path of.
+ * @return string full path to the theme.
+ */
+	function themePath($theme) {
+		$_this =& App::getInstance();
+		$themeDir = 'themed' . DS . Inflector::underscore($theme);
+		for ($i = 0, $length = count($_this->views); $i < $length; $i++) {
+			if (is_dir($_this->views[$i] . $themeDir)) {
+				return $_this->views[$i] . $themeDir . DS ;
+			}
+		}
+		return $_this->views[0] . $themeDir . DS;
 	}
 
 /**
@@ -758,7 +776,11 @@ class App extends Object {
 	}
 
 /**
- * Returns an index of objects of the given type, with the physical path to each object.
+ * Returns an array of objects of the given type.
+ *
+ * Example usage:
+ *
+ * `App::objects('plugin');` returns `array('DebugKit', 'Blog', 'User');`
  *
  * @param string $type Type of object, i.e. 'model', 'controller', 'helper', or 'plugin'
  * @param mixed $path Optional Scan only the path given. If null, paths for the chosen
@@ -823,7 +845,8 @@ class App extends Object {
 	}
 
 /**
- * Finds classes based on $name or specific file(s) to search.
+ * Finds classes based on $name or specific file(s) to search.  Calling App::import() will
+ * not construct any classes contained in the files. It will only find and require() the file.
  *
  * @link          http://book.cakephp.org/view/934/Using-App-import
  * @param mixed $type The type of Class if passed as a string, or all params can be passed as

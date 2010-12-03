@@ -387,7 +387,7 @@ class Model extends Overloadable {
  *
  * ### Dynamically creating models
  *
- * You can dynamically create model instances using the the $id array syntax.
+ * You can dynamically create model instances using the $id array syntax.
  *
  * {{{
  * $Post = new Model(array('table' => 'posts', 'name' => 'Post', 'ds' => 'connection2'));
@@ -529,10 +529,9 @@ class Model extends Overloadable {
  */
 	function bindModel($params, $reset = true) {
 		foreach ($params as $assoc => $model) {
-			if ($reset === true) {
+			if ($reset === true && !isset($this->__backAssociation[$assoc])) {
 				$this->__backAssociation[$assoc] = $this->{$assoc};
 			}
-
 			foreach ($model as $key => $value) {
 				$assocName = $key;
 
@@ -542,6 +541,10 @@ class Model extends Overloadable {
 				}
 				$modelName = $assocName;
 				$this->{$assoc}[$assocName] = $value;
+
+				if ($reset === false && isset($this->__backAssociation[$assoc])) {
+					$this->__backAssociation[$assoc][$assocName] = $value;
+				}
 			}
 		}
 		$this->__createLinks();
@@ -556,9 +559,9 @@ class Model extends Overloadable {
  *
  * Example: Turn off the associated Model Support request,
  * to temporarily lighten the User model:
- * 
+ *
  * `$this->User->unbindModel( array('hasMany' => array('Supportrequest')) );`
- * 
+ *
  * unbound models that are not made permanent will reset with the next call to Model::find()
  *
  * @param array $params Set of bindings to unbind (indexed by binding type)
@@ -569,14 +572,14 @@ class Model extends Overloadable {
  */
 	function unbindModel($params, $reset = true) {
 		foreach ($params as $assoc => $models) {
-			if ($reset === true) {
+			if ($reset === true && !isset($this->__backAssociation[$assoc])) {
 				$this->__backAssociation[$assoc] = $this->{$assoc};
 			}
-
 			foreach ($models as $model) {
-				$this->__backAssociation = array_merge($this->__backAssociation, $this->{$assoc});
-				unset ($this->__backAssociation[$model]);
-				unset ($this->{$assoc}[$model]);
+				if ($reset === false && isset($this->__backAssociation[$assoc][$model])) {
+					unset($this->__backAssociation[$assoc][$model]);
+				}
+				unset($this->{$assoc}[$model]);
 			}
 		}
 		return true;
@@ -766,7 +769,8 @@ class Model extends Overloadable {
 			if (is_array($sources) && !in_array(strtolower($this->tablePrefix . $tableName), array_map('strtolower', $sources))) {
 				return $this->cakeError('missingTable', array(array(
 					'className' => $this->alias,
-					'table' => $this->tablePrefix . $tableName
+					'table' => $this->tablePrefix . $tableName,
+					'code' => 500
 				)));
 			}
 			$this->_schema = null;
@@ -1585,11 +1589,12 @@ class Model extends Overloadable {
 		}
 
 		if ($options['atomic'] && $options['validate'] !== 'only') {
-			$db->begin($this);
+			$transactionBegun = $db->begin($this);
 		}
 
 		if (Set::numeric(array_keys($data))) {
 			while ($validates) {
+				$return = array();
 				foreach ($data as $key => $record) {
 					if (!$currentValidates = $this->__save($record, $options)) {
 						$validationErrors[$key] = $this->validationErrors;
@@ -1621,13 +1626,15 @@ class Model extends Overloadable {
 					break;
 					case ($options['validate'] === 'first'):
 						$options['validate'] = true;
-						$return = array();
-						continue;
 					break;
 					default:
 						if ($options['atomic']) {
-							if ($validates && ($db->commit($this) !== false)) {
-								return true;
+							if ($validates) {
+								if ($transactionBegun) {
+									return $db->commit($this) !== false;
+								} else {
+									return true;
+								}
 							}
 							$db->rollback($this);
 							return false;
@@ -1635,6 +1642,10 @@ class Model extends Overloadable {
 						return $return;
 					break;
 				}
+			}
+			if ($options['atomic'] && !$validates) {
+				$db->rollback($this);
+				return false;
 			}
 			return $return;
 		}
@@ -1658,6 +1669,7 @@ class Model extends Overloadable {
 					}
 				}
 			}
+
 			if (!$this->__save($data, $options)) {
 				$validationErrors[$this->alias] = $this->validationErrors;
 				$validates = false;
@@ -1728,18 +1740,25 @@ class Model extends Overloadable {
 				case ($options['validate'] === 'first'):
 					$options['validate'] = true;
 					$return = array();
-					continue;
 				break;
 				default:
 					if ($options['atomic']) {
 						if ($validates) {
-							return ($db->commit($this) !== false);
+							if ($transactionBegun) {
+								return $db->commit($this) !== false;
+							} else {
+								return true;
+							}
 						} else {
 							$db->rollback($this);
 						}
 					}
 					return $return;
 				break;
+			}
+			if ($options['atomic'] && !$validates) {
+				$db->rollback($this);
+				return false;
 			}
 		}
 	}
@@ -1792,14 +1811,15 @@ class Model extends Overloadable {
 		}
 		$id = $this->id;
 
-		if ($this->exists() && $this->beforeDelete($cascade)) {
-			$db =& ConnectionManager::getDataSource($this->useDbConfig);
+		if ($this->beforeDelete($cascade)) {
 			$filters = $this->Behaviors->trigger($this, 'beforeDelete', array($cascade), array(
 				'break' => true, 'breakOn' => false
 			));
-			if (!$filters) {
+			if (!$filters || !$this->exists()) {
 				return false;
 			}
+			$db =& ConnectionManager::getDataSource($this->useDbConfig);
+
 			$this->_deleteDependent($id, $cascade);
 			$this->_deleteLinks($id);
 			$this->id = $id;
@@ -1811,7 +1831,7 @@ class Model extends Overloadable {
 				));
 			}
 
-			if ($db->delete($this)) {
+			if ($db->delete($this, array($this->alias . '.' . $this->primaryKey => $id))) {
 				if (!empty($this->belongsTo)) {
 					$this->updateCounterCache($keys[$this->alias]);
 				}
@@ -1991,7 +2011,7 @@ class Model extends Overloadable {
 	}
 
 /**
- * Returns a result set array.
+ * Queries the datasource and returns a result set array.
  *
  * Also used to perform new-notation finds, where the first argument is type of find operation to perform
  * (all / first / count / neighbors / list / threaded ),
@@ -2000,14 +2020,34 @@ class Model extends Overloadable {
  *
  * Eg:
  * {{{
- *	find('all', array(
- *		'conditions' => array('name' => 'Thomas Anderson'),
+ * 	find('all', array(
+ * 		'conditions' => array('name' => 'Thomas Anderson'),
  * 		'fields' => array('name', 'email'),
  * 		'order' => 'field3 DESC',
  * 		'recursive' => 2,
  * 		'group' => 'type'
  * ));
  * }}}
+ *
+ * In addition to the standard query keys above, you can provide Datasource, and behavior specific
+ * keys.  For example, when using a SQL based datasource you can use the joins key to specify additional
+ * joins that should be part of the query.
+ *
+ * {{{
+ * find('all', array(
+ * 		'conditions' => array('name' => 'Thomas Anderson'),
+ * 		'joins' => array(
+ *			array(
+ * 				'alias' => 'Thought',
+ * 				'table' => 'thoughts',
+ * 				'type' => 'LEFT',
+ * 				'conditions' => '`Thought`.`person_id` = `Person`.`id`'
+ *			)
+ * 		)
+ * ));
+ * }}}
+ *
+ * Behaviors and find types can also define custom finder keys which are passed into find().
  *
  * Specifying 'fields' for new-notation 'list':
  *
@@ -2017,9 +2057,9 @@ class Model extends Overloadable {
  *  - Otherwise, first and second fields are used for key and value.
  *
  * @param array $conditions SQL conditions array, or type of find operation (all / first / count /
- *              neighbors / list / threaded)
+ *    neighbors / list / threaded)
  * @param mixed $fields Either a single string of a field name, or an array of field names, or
- *               options for matching
+ *    options for matching
  * @param string $order SQL ORDER BY conditions (e.g. "price DESC" or "name ASC")
  * @param integer $recursive The number of levels deep to fetch associated records
  * @return array Array of records
@@ -2338,9 +2378,9 @@ class Model extends Overloadable {
 	}
 
 /**
- * Called only when bindTo<ModelName>() is used.
  * This resets the association arrays for the model back
- * to those originally defined in the model.
+ * to those originally defined in the model. Normally called at the end
+ * of each call to Model::find()
  *
  * @return boolean Success
  * @access public
@@ -2487,7 +2527,7 @@ class Model extends Overloadable {
 		$_validate = $this->validate;
 		$whitelist = $this->whitelist;
 
-		if (array_key_exists('fieldList', $options)) {
+		if (!empty($options['fieldList'])) {
 			$whitelist = $options['fieldList'];
 		}
 
@@ -2802,7 +2842,7 @@ class Model extends Overloadable {
 		}
 
 		if (empty($db) || !is_object($db)) {
-			return $this->cakeError('missingConnection', array(array('className' => $this->alias)));
+			return $this->cakeError('missingConnection', array(array('code' => 500, 'className' => $this->alias)));
 		}
 	}
 

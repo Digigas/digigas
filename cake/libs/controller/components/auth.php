@@ -164,7 +164,7 @@ class AuthComponent extends Object {
 	var $loginRedirect = null;
 
 /**
- * The the default action to redirect to after the user is logged out.  While AuthComponent does
+ * The default action to redirect to after the user is logged out.  While AuthComponent does
  * not handle post-logout redirection, a redirect URL will be returned from AuthComponent::logout().
  * Defaults to AuthComponent::$loginAction.
  *
@@ -469,7 +469,7 @@ class AuthComponent extends Object {
 			'loginAction' => array(
 				'controller' => Inflector::underscore(Inflector::pluralize($model)),
 				'action' => 'login',
-				'plugin' => $plugin,
+				'plugin' => Inflector::underscore($plugin),
 			),
 			'sessionKey' => 'Auth.' . $model,
 			'logoutRedirect' => $this->loginAction,
@@ -527,7 +527,6 @@ class AuthComponent extends Object {
 				$valid = $this->Acl->check($user, $this->action());
 			break;
 			case 'crud':
-				$this->mapActions();
 				if (!isset($this->actionMap[$this->params['action']])) {
 					trigger_error(
 						sprintf(__('Auth::startup() - Attempted access of un-mapped action "%1$s" in controller "%2$s"', true), $this->params['action'], $this->params['controller']),
@@ -542,7 +541,6 @@ class AuthComponent extends Object {
 				}
 			break;
 			case 'model':
-				$this->mapActions();
 				$action = $this->params['action'];
 				if (isset($this->actionMap[$action])) {
 					$action = $this->actionMap[$action];
