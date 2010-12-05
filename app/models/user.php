@@ -88,7 +88,7 @@ class User extends AppModel {
 					'User.active' => 1,
 					'User.role < ' => 2),
 				'fields' => array('email'),
-				'contain' => array()
+				'recursive' => -1
 			));
 		$emails = Set::extract('/User/email', $users);
 		return $emails;

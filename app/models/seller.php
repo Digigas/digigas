@@ -1,9 +1,10 @@
 <?php
+
 class Seller extends AppModel {
+
 	var $name = 'Seller';
 	var $displayField = 'name';
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
 	var $hasMany = array(
 		'Hamper' => array(
 			'className' => 'Hamper',
@@ -45,10 +46,9 @@ class Seller extends AppModel {
 			'counterQuery' => ''
 		)
 	);
-
 	var $hasAndBelongsToMany = array('User');
+	var $actsAs = array('Containable');
 
-    var $actsAs = array('Containable');
 //
 //    function afterSave($created) {
 //        if(isset($this->data['Seller']['User'])) {
@@ -59,40 +59,39 @@ class Seller extends AppModel {
 //    }
 
 	function beforeFind($queryData) {
-		if(Configure::read('ReferentUser.allowed_sellers')) {
+		if (Configure::read('ReferentUser.allowed_sellers')) {
 			$queryData = array_merge_recursive(
-				array(
-					'conditions' => array('Seller.id' => Configure::read('ReferentUser.allowed_sellers'))
-				),
-				$queryData);
+					array(
+						'conditions' => array('Seller.id' => Configure::read('ReferentUser.allowed_sellers'))
+					),
+					$queryData);
 		}
 		return $queryData;
 	}
 
-    function getSellers($options = null) {
+	function getSellers($options = null) {
 
-        $_options = array(
-            'conditions' => array('active' => 1),
-            'fields' => array('id', 'name'),
-            'contain' => array());
+		$_options = array(
+			'conditions' => array('active' => 1),
+			'fields' => array('id', 'name'),
+			'contain' => array());
 
-        $options = am($_options, $options);
+		$options = am($_options, $options);
 
-        $sellers = $this->find('all', $options);
+		$sellers = $this->find('all', $options);
 
-        return $sellers;
-    }
+		return $sellers;
+	}
 
-    function getUserEmails($id) {
-        $users = $this->User->find('all', array(
-			'contain' => array(
-				'User' => array(
-					'conditions' => array(
-						'User.active' => 1),
-					'fields' => array('email')))));
-        $emails = Set::extract('/User/email', $users);
-        return $emails;
-    }
+	function getUserEmails($id) {
+		$users = $this->User->find('all', array(
+				'conditions' => array('User.active' => 1),
+				'fields' => array('email'),
+				'recursive' => -1));
+		$emails = Set::extract('/User/email', $users);
+		return $emails;
+	}
 
 }
+
 ?>

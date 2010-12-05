@@ -129,7 +129,7 @@ class HampersController extends AppController {
             }
         }
 
-        $seller = $this->Hamper->Seller->field('name', $seller_id);
+        $seller = $this->Hamper->Seller->field('name', array('Seller.id' => $seller_id));
         $sellers = $this->Hamper->Seller->find('list', array('conditions' => array('active' => 1)));
 
         //seleziono i prodotti di questo produttore
