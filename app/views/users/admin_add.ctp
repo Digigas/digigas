@@ -3,6 +3,12 @@
     <fieldset>
         <h2><?php __('Nuovo utente'); ?></h2>
 
+		<div class="info">
+			Per creare un nuovo utente devi compilare il form qui sotto. I campi fondamentali sono: nome, cognome, username e email.
+			Ti consiglio di impostare una password temporanea (digita solo qualche lettera a caso, non è necessario che te la ricordi).
+			L'utente riceve automaticamente una email con le istruzioni per accedere e impostare la propria password.
+		</div>
+
         <h3 class="expander">Profilo utente</h3>
         <div class="accordion">
             <?php

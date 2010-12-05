@@ -199,6 +199,13 @@ class UsersController extends AppController {
         if (!empty($this->data)) {
             $this->User->create();
             if ($this->User->save($this->data)) {
+
+				//mando una mail di notifica all'utente
+				$this->User->recursive = -1;
+				$user = $this->User->read(null, $this->User->id);
+				$users = array($user);
+				$this->_send_users_notification($users);
+				
                 $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
                 $this->redirect(array('action' => 'index'));
             } else {
