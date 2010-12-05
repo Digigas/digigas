@@ -27,7 +27,25 @@
     <tr class="total">
         <td class="name" style="border-bottom:1px solid #ccc;
                 padding:3px;
-                text-align:left;"><?php echo $product; ?></td>
+                text-align:left;">
+		<?php
+		echo $product;
+		
+		$details = '';
+		if (!empty($product['OrderedProduct']['option_1'])) {
+			$details .= $product['Product']['option_1'] . ': ' . $product['OrderedProduct']['option_1'];
+		}
+		if (!empty($product['OrderedProduct']['option_2'])) {
+			$details .= ' | ' . $product['Product']['option_2'] . ': ' . $product['OrderedProduct']['option_2'];
+		}
+		if (!empty($product['OrderedProduct']['note'])) {
+			$details .= '<br/>' . $product['OrderedProduct']['option_2'];
+		}
+		if (!empty($details)) {
+			echo $html->div('product_details', $details, array('style' => 'color: #ccc; font-size:10px;'));
+		}
+		?>
+		</td>
         <td class="date" style="border-bottom:1px solid #ccc;
                 padding:3px;
                 text-align:left;"><?php echo digi_date($values['Hamper']['delivery_date_on']); ?></td>

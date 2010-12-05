@@ -20,6 +20,13 @@
             ?>
         </div>
 
+        <h3 class="expander"><?php __('Dati privati'); ?></h3>
+        <div class="accordion">
+            <?php
+            echo $this->Form->input('private_notes', array('label' => 'Note private', 'between' => __('Il contenuto di questo campo non verrà pubblicato sul sito', true)));
+			?>
+        </div>
+
         <h3 class="expander"><?php __('Referenti per questa azienda'); ?></h3>
         <div class="accordion">
             <?php

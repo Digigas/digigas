@@ -409,7 +409,7 @@ class OrderedProductsController extends AppController {
         //dati dell'utente
         $seller = $this->OrderedProduct->Seller->find('first', array(
             'conditions' => array('Seller.id' => $seller_id, 'Seller.active' => 1),
-            'fields' => array('business_name', 'email'),
+            'fields' => array('name', 'business_name', 'email'),
             'recursive' => -1));
 
         if(empty($seller)) {
@@ -485,11 +485,11 @@ class OrderedProductsController extends AppController {
         //trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.seller_id' => $seller_id, 'or' => array('paid' => 0, 'retired' => 0)),
-            'fields' => array('product_id', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
-            'group' => 'product_id',
-            'contain' => array('Product.name', 'Hamper.delivery_date_on')
+            'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
+            'contain' => array('Product.id', 'Product.name', 'Hamper.delivery_date_on')
         ));
-        $totals = Set::combine($totals, '{n}.Product.name', '{n}');
+        $totals = Set::combine($totals, '{n}.Product.id', '{n}');
         $this->set(compact('seller', 'totals'));
 
         $relatedUsers = $this->OrderedProduct->Seller->getUserEmails($seller_id);

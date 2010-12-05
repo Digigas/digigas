@@ -132,7 +132,8 @@ class Hamper extends AppModel {
             'fields' => array(
                 'name',
                 'seller_id',
-                'delivery_position'),
+                'delivery_position',
+				'notes'),
             'contain' => array(
                 'Product.id'
             )
