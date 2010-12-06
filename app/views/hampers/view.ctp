@@ -92,10 +92,10 @@ $this->Layout->blockEnd();
 		<?php
 					$title = "";
 					if ($product['text']) {
-						$title .= "<strong>Descrizione:</strong>" . $product['text'] . "<br />";
+						$title .= "<strong>Descrizione: </strong>" . $this->Text->truncate(strip_tags($product['text'])) . "<br />";
 					}
 					if ($product['packing']) {
-						$title .= "<strong>Imballaggio:</strong>" . $product['packing'];
+						$title .= "<strong>Imballaggio: </strong>" . $this->Text->truncate(strip_tags($product['packing']));
 					}
 					if (!$title) {
 						$title = $product['name'];
