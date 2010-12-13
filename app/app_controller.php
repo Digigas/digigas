@@ -20,7 +20,8 @@ class AppController extends Controller {
 		'Number',
 		'UserComment',
 		'Text',
-		'Time'
+		'Time',
+		'DynamicCss'
 	);
 	var $allowedActions = array();
 
@@ -43,6 +44,8 @@ class AppController extends Controller {
 		//$this->Auth->allow('*'); //temporaneo, da disabilitare
 
 		$this->_emailSetUp();
+
+		$this->_loadConfig();
 	}
 
 	function beforeRender() {
@@ -57,7 +60,7 @@ class AppController extends Controller {
 
 		//restringo i permessi di accesso per i referenti (role == 2)
 		if (isset($this->params['admin']) && $this->Auth->user('role') == 2) {
-			if (!in_array($this->name, Configure::read('ReferentUser.alloewd_controllers'))) {
+			if (!in_array($this->name, Configure::read('ReferentUser.allowed_controllers'))) {
 				$this->Session->setFlash(__('Non puoi accedere a questa funzione', true));
 				return false;
 			}
@@ -97,6 +100,15 @@ class AppController extends Controller {
 		}
 
 		return parent::afterFilter();
+	}
+
+	function _loadConfig() {
+		$config = Cache::read('Config');
+		if(empty($config)) {
+			$this->Configurator = ClassRegistry::init('Configurator');
+			$config = $this->Configurator->config();
+		}
+		Configure::write($config);
 	}
 
 }

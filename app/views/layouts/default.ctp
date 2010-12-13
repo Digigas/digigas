@@ -4,6 +4,8 @@
 	<?php echo $this->Html->charset(); ?>
 	<title>
 		<?php echo $title_for_layout; ?>
+		-
+		<?php echo Configure::read('GAS.name'); ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
@@ -15,12 +17,16 @@
         echo $this->Html->css('jquery.lightbox');
         echo $this->Html->css('digigas/jquery.treeTable');
         echo $this->Html->css('jquery-ui-1.8.6.custom');
+
+		//echo $this->Html->css('digigas.mobile');
+		
+		echo $this->DynamicCss->render();
 	?>
 </head>
 <body>
 	<div id="container">
 		<div id="header">
-			<h1><?php echo $this->Html->image('digigas.png', array('url' => '/')); ?></h1>
+			<h1><?php echo $this->element('logo'); ?></h1>
 		</div>
         <div id="tools">
             <?php echo $this->element('login_link'); ?>

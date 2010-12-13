@@ -31,5 +31,8 @@
         <li><?php
         echo $this->Html->image('oxygen/32x32/filesystems/folder.png');
         echo $this->Html->link(__('Filemanager', true), array('controller' => 'filemanager')); ?></li>
+		<li><?php
+        echo $this->Html->image('oxygen/32x32/actions/configure.png');
+        echo $this->Html->link(__('Configurazione generale', true), array('controller' => 'configurator')); ?></li>
     </ul>
 </div>

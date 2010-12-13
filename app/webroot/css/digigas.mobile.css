@@ -1,0 +1,54 @@
+/* mobile styles */
+@media handheld {
+
+}
+
+/* iPhone-specific styles */
+@media only screen and (max-device-width: 480px) {
+
+    body
+    {
+	width:100%;
+	padding:0;
+    }
+
+    #footer
+    {
+	display:none;
+    }
+
+    body * {
+	position:static !important;
+	float:none !important;
+	font-size: 20px !important;
+	line-height: 26px !important;
+    }
+
+    img {
+	width:100%;
+    }
+
+    div.index,
+    div.view,
+    div.actions,
+    div.navigation
+    {
+	position:static;
+	float:none;
+	width:100%;
+	padding:0 20px;
+	float:none;
+	border:none;
+    }
+
+    #navigation
+    {
+	margin:0;
+	font-size:25px;
+    }
+    #navigation a
+    {
+	margin:0;
+	padding:10px;
+    }
+}
