@@ -80,7 +80,7 @@ if(isset($role)) {
                 } else if(empty($user['User']['parent_id'])) {
                     echo $this->Html->image('oxygen/single.png', array('title' => __('Partecipante single', true)));
                 } else {
-                    echo $this->Html->image('oxygen/child.png', array('title' => __('Appartiene a una famiglia', true)));
+                    echo $this->Html->image('oxygen/child.png', array('title' => __('Appartiene a una famiglia', true), 'url' => array('action' => 'index', 'family' => $user['User']['parent_id'])));
                 }
                 ?>
             </td>
