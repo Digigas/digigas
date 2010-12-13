@@ -14,7 +14,7 @@ $config = array(
          *
          * - puoi modificare i nomi qui sotto come preferisci, ma mantieni lo stesso ordine
          */
-        'root', 'admin', 'referente', 'utente'
+        'super-amministratore', 'amministratore', 'referente prodotti', 'utente'
     ),
     'email.from' => 'alessandro.falezza@gmail.com',
     'email.SMTPoptions' => array(
@@ -44,6 +44,6 @@ $config = array(
 
 	//controller alla cui gestione possono accedere i referenti - non modificare
 	'ReferentUser' => array(
-		'alloewd_controllers' => array('OrderedProducts', 'Hampers', 'Products', 'Sellers'),
+		'allowed_controllers' => array('OrderedProducts', 'Hampers', 'Products', 'Sellers'),
 		'allowed_sellers' => false)
 );

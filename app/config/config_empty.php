@@ -44,6 +44,6 @@ $config = array(
 
 	//controller alla cui gestione possono accedere i referenti - non modificare
 	'ReferentUser' => array(
-		'alloewd_controllers' => array('OrderedProducts', 'Hampers', 'Products', 'Sellers'),
+		'allowed_controllers' => array('OrderedProducts', 'Hampers', 'Products', 'Sellers'),
 		'allowed_sellers' => false)
 );
