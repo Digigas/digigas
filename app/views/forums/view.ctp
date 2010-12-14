@@ -33,15 +33,15 @@
 				//quanti commenti ci sono dentro e a quando risalgono
 				if (isset($commentsChildren[$comment['Comment']['id']])) {
 					$children = $this->Html->div('comment-children', $commentsChildren[$comment['Comment']['id']] . ' ' . __('messaggi', true));
-					$lastUpdates = $this->Html->div('comment-lastupdates', __('L\'ultimo è di ', true) . $this->Time->relativeTime($lastUpdates[$comment['Comment']['id']]));
+					$lastUpdatesView = $this->Html->div('comment-lastupdates', __('L\'ultimo è di ', true) . $this->Time->relativeTime($lastUpdates[$comment['Comment']['id']]));
 				} else {
 					$children = $this->Html->div('comment-children', __('Nessun messaggio', true));
-					$lastUpdates = '';
+					$lastUpdatesView = '';
 				}
 
 				$content = $this->Html->div('comment-text', $comment['Comment']['text']);
 				$readlink = $this->Html->link(__('Partecipa alla conversazione', true), array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read'));
-				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $lastUpdates . $content . $editComment . $readlink . $this->Html->div('clear', '&nbsp;'));
+				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $lastUpdatesView . $content . $editComment . $readlink . $this->Html->div('clear', '&nbsp;'));
 			}
 		}
 	?>

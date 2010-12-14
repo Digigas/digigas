@@ -88,7 +88,7 @@ class ForumsController extends AppController {
 		$commentIds = Set::extract('/Comment/id', $comments);
 		$commentsChildren = $this->Comment->find('all', array(
 			'conditions' => array('Comment.model' => 'Forum', 'Comment.parent_id' => $commentIds, 'Comment.active' => 1),
-			'fields' => array('parent_id', 'count(id) as children'),
+			'fields' => array('Comment.parent_id', 'count(id) as children'),
 			'group' => 'parent_id',
 			'recursive' => -1
 		));
@@ -96,7 +96,7 @@ class ForumsController extends AppController {
 
 		$lastUpdates = $this->Comment->find('all', array(
 			'conditions' => array('Comment.model' => 'Forum', 'Comment.parent_id' => $commentIds, 'Comment.active' => 1),
-			'fields' => array('parent_id', 'MAX(created) as created'),
+			'fields' => array('Comment.parent_id', 'MAX(created) as created'),
 			'group' => 'parent_id',
 			'recursive' => -1
 		));
