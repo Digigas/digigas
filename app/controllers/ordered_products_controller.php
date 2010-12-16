@@ -727,14 +727,14 @@ class OrderedProductsController extends AppController {
 			)
 		));
 
-		//dettagli prodotti ordinati
+		//dettagli prodotti ordinati per stampa pdf
 		$_orderedProducts = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
 			'order' => array('Product.product_category_id asc', 'User.last_name asc', 'User.first_name asc', 'Product.name'),
 			'contain' => array(
                 'User' => array('fields' => array('id', 'fullname', 'phone', 'mobile')),
                 'Product' => array('fields' => array('id', 'name', 'code', 'units',   'option_1', 'option_2', 'product_category_id')),
-				'Product.ProductCategory.name')
+				'Product.ProductCategory' => array('fields' => array('id', 'name')))
         ));
 
 		$orderedProducts = array();
@@ -762,10 +762,10 @@ class OrderedProductsController extends AppController {
 				'Product.id', 'Product.name', 'Product.units', 'Product.option_1', 'Product.option_2' ,
 				'Hamper.delivery_date_on',
 				'Product.ProductCategory.id', 'Product.ProductCategory.name', 'Product.code')
-        )); 
+        ));
 
 		$categories = array();
-		foreach($categoriesProducts as $categoryProduct) {
+		foreach($categoriesProducts as $i => $categoryProduct) {
 			$categoryId = $categoryProduct['Product']['product_category_id'];
 			$categoryData = $categoryProduct['Product']['ProductCategory'];
 
@@ -773,10 +773,10 @@ class OrderedProductsController extends AppController {
 			$productData = $categoryProduct['Product'];
 			
 			$categories[$categoryId]['ProductCategory'] = $categoryData;
-			$categories[$categoryId]['Product'][$productId]['Product'] = $productData;
-			$categories[$categoryId]['Product'][$productId]['OrderedProduct'] = $categoryProduct['OrderedProduct'];
-			$categories[$categoryId]['Product'][$productId]['OrderedProduct']['total'] = $categoryProduct['0']['total'];
-			$categories[$categoryId]['Product'][$productId]['OrderedProduct']['quantity'] = $categoryProduct['0']['quantity'];
+			$categories[$categoryId]['Product'][$i]['Product'] = $productData;
+			$categories[$categoryId]['Product'][$i]['OrderedProduct'] = $categoryProduct['OrderedProduct'];
+			$categories[$categoryId]['Product'][$i]['OrderedProduct']['total'] = $categoryProduct['0']['total'];
+			$categories[$categoryId]['Product'][$i]['OrderedProduct']['quantity'] = $categoryProduct['0']['quantity'];
 		}
 		
 		// totale
