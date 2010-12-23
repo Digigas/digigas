@@ -5,7 +5,7 @@ class UserCommentHelper extends Helper {
 	/*
 	 * 
 	 */
-	function add($model, $item_id, $parent_id = null, $title = 'Commenta') {
+	function add($model, $item_id, $parent_id = null, $title = 'Commenta', $show_title = false) {
 		$this->View = ClassRegistry::getObject('view');
 		if(isset($this->View->viewVars['title_for_layout'])) {
 			$pagetitle = $this->View->viewVars['title_for_layout'];
@@ -25,7 +25,10 @@ class UserCommentHelper extends Helper {
 		if(!empty($parent_id)) {
 			$return .= $this->Form->hidden('Comment.parent_id', array('value' => $parent_id));
 		}
-		$return .= $this->Form->input('Comment.text', array('type' => 'textarea', 'label' => false));
+		if($show_title) {
+			$return .= $this->Form->input('Comment.title', array('type' => 'text', 'label' => 'Titolo'));
+		}
+		$return .= $this->Form->input('Comment.text', array('type' => 'textarea', 'label' => 'Testo'));
 		$return .= $this->Form->end(__('Invia', true));
 		$return .= '</div>';
 

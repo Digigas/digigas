@@ -39,7 +39,11 @@
 					$lastUpdatesView = '';
 				}
 
-				$content = $this->Html->div('comment-text', $comment['Comment']['text']);
+				if(!empty($comment['Comment']['title'])) {
+					$content = $this->Html->div('comment-title', $this->Html->link($comment['Comment']['title'], array('action' => 'view_topic', $comment['Comment']['id'])));
+				} else {
+					$content = $this->Html->div('comment-title', $this->Html->link($this->Text->truncate(strip_tags($comment['Comment']['text']), 200), array('action' => 'view_topic', $comment['Comment']['id']), array('escape' => false)));
+				}
 				$readlink = $this->Html->link(__('Partecipa alla conversazione', true), array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read'));
 				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $lastUpdatesView . $content . $editComment . $readlink . $this->Html->div('clear', '&nbsp;'));
 			}
@@ -56,7 +60,7 @@
 	<?php
 		if ($this->Session->read('Auth.User.id')) {
 			//form di inserimento commenti
-			echo $this->UserComment->add('Forum', $forum['Forum']['id'], null, 'Inizia una nuova discussione');
+			echo $this->UserComment->add('Forum', $forum['Forum']['id'], null, 'Inizia una nuova discussione', true);
 		}
 	?>
 	</div>
