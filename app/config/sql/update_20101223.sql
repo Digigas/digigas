@@ -1,0 +1,1 @@
+ALTER TABLE  `comments` ADD  `title` VARCHAR( 500 ) NULL AFTER  `url`;
