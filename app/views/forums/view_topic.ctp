@@ -1,5 +1,13 @@
 <div class="forums view">
-	<h2><?php echo $forum['Forum']['name']; ?> - <?php __('conversazione') ?></h2>
+	<h2>
+	<?php
+	if(!empty($topic['Comment']['title'])) {
+		echo $topic['Comment']['title'];
+		echo ' - ';
+	}
+	?>
+	<?php echo $forum['Forum']['name']; ?>
+	</h2>
 	
 	<div class="comment topic">
 		<div class="comment-author"><?php echo $topic['User']['fullname']; ?></div>

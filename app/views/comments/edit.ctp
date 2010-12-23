@@ -4,6 +4,9 @@
  		<h2><?php __('Modifica commento') ?></h2>
 	<?php
 		echo $this->Form->input('id');
+		if(!empty($this->data['Comment']['title'])) {
+			echo $this->Form->input('title', array('label' => 'Titolo'));
+		}
 		echo $this->Form->input('text', array('label' => 'Testo'));
 	?>
 	</fieldset>
