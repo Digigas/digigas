@@ -50,7 +50,7 @@
 	<div class="item">
 		<h4><?php echo $user['name']; ?></h4>
 		<div class="item-name">
-			Acquisti totali
+			Numero di ordini
 		</div>
 		<div class="item-value">
 			<?php echo $user['orders']; ?>

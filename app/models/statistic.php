@@ -117,7 +117,7 @@ class Statistic extends AppModel {
 				'OrderedProduct.user_id',
 				'MONTH(OrderedProduct.created)'),
 			'recursive' => -1
-		)); debug($monthlyValue);
+		));
 		
 		$orders = array();
 		foreach($monthlyValue as $order) {
