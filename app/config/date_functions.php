@@ -230,3 +230,7 @@ function date_is_empty($date) {
 	}
 	return false;
 }
+
+function monthToString($monthNumber) {
+	return date_translate('F', strtotime('1970-' . str_pad($monthNumber, 2, '0', STR_PAD_LEFT) . '-01'));
+}

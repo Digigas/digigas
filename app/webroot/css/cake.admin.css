@@ -605,3 +605,58 @@ div.note
     color:#999;
     font-size:10px;
 }
+
+/* statistiche */
+.statistics ul.submenu
+{
+	width:auto;
+	overflow:hidden;
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	margin-bottom:15px;
+}
+.statistics ul.submenu li
+{
+	display:inline;
+}
+.statistics ul.submenu a
+{
+	display:block;
+	float:left;
+	padding:3px 6px;
+	background:#333;
+	color:#fff;
+	text-decoration:none;
+	margin-right:3px;
+}
+.statistics h4
+{
+	clear:both;
+	font-size:14px;
+}
+.statistics .item
+{
+	clear:both;
+	width:auto;
+	overflow:hidden;
+	margin-bottom:10px;
+	padding-bottom:10px;
+	border-bottom:1px solid #999;
+}
+.statistics .item-name
+{
+	width:50%;
+	padding:5px 0;
+	float:left;
+	overflow:hidden;
+	border-bottom:1px solid #eee;
+}
+.statistics .item-value
+{
+	width:50%;
+	padding:5px 0;
+	float:left;
+	overflow:hidden;
+	border-bottom:1px solid #eee;
+}
