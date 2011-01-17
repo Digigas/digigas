@@ -29,13 +29,15 @@ $rownum = 2;
 foreach($totals as $product)
 {
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue("A$rownum", $product['Product']['name']);
-    if(!empty($product['Product']['option_1']))
+    if(!empty($product['Product']['option_1'])) {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue("B$rownum", $product['Product']['option_1'].': '.$product['OrderedProduct']['option_1']);
-    if(!empty($product['Product']['option_2']))
+	}
+    if(!empty($product['Product']['option_2'])) {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue("C$rownum", $product['Product']['option_2'].': '.$product['OrderedProduct']['option_2']);
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("C$rownum", $product['Product']['units']);
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("D$rownum", $product['Product']['value']);
-    $objPHPExcel->setActiveSheetIndex(0)->getStyle("E$rownum")->getNumberFormat()->setFormatCode( '[$€ ]#,##0.00_-');
+	}
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("D$rownum", $product['Product']['units']);
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("E$rownum", $product['Product']['value']);
+    $objPHPExcel->setActiveSheetIndex(0)->getStyle("F$rownum")->getNumberFormat()->setFormatCode( '[$€ ]#,##0.00_-');
 
     $colnum = 5;
     foreach($product['Users'] as $user)

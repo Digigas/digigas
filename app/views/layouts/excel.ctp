@@ -1,6 +1,7 @@
 <?php
-if(!isset($filename))
-    $filename = 'excel.xls';
+if(!isset($filename)) {
+    $filename = $title_for_layout . '.xls';
+}
 header("Content-type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=$filename" );
 header("Expires: 0");

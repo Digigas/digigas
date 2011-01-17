@@ -1,5 +1,4 @@
 <?php
-
 class InstallerController extends Controller {
 
 	var $name = 'Installer';
