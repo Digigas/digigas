@@ -21,6 +21,7 @@ class FilemanagerController extends AppController
         }
 
         $this->set('activemenu_for_layout', 'tools');
+		$this->set('title_for_layout', __('Filemanager', true));
 
         parent::beforeFilter();
 

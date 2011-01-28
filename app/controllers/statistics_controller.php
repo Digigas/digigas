@@ -5,6 +5,7 @@ class StatisticsController extends AppController {
 	function beforeFilter()
     {
         $this->set('activemenu_for_layout', 'tools');
+		$this->set('title_for_layout', __('Statistiche', true));
 
 		$years = $this->Statistic->getYears();
 		$this->set('years', $years);

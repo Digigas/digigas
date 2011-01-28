@@ -8,6 +8,7 @@ class SellersController extends AppController {
         parent::beforeFilter();
 
         $this->set('activemenu_for_layout', 'products');
+		$this->set('title_for_layout', __('Produttori', true));
 
         $this->Auth->deny($this->methods);
     }

@@ -7,6 +7,8 @@ class NewsletterMessagesController extends AppController {
 
     function beforeFilter() {
         $this->set('activemenu_for_layout', 'tools');
+		$this->set('title_for_layout', __('Newsletter', true));
+
         parent::beforeFilter();
     }
 

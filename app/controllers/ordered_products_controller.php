@@ -7,6 +7,7 @@ class OrderedProductsController extends AppController {
         parent::beforeFilter();
 
         $this->set('activemenu_for_layout', 'orders');
+		$this->set('title_for_layout', __('Ordini', true));
 
         $this->Auth->deny($this->methods);
     }

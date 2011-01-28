@@ -7,6 +7,9 @@ class ConfiguratorController extends AppController {
 	function beforeFilter() {
 		$this->logo_dir_path = WWW_ROOT . 'img'.DS.'logo'.DS;
 		$this->logo_dir = '/img'.DS.'logo'.DS;
+
+		$this->set('title_for_layout', __('Configurazione', true));
+
 		return parent::beforeFilter();
 	}
 
