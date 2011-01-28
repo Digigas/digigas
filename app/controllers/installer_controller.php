@@ -19,7 +19,8 @@ class InstallerController extends Controller {
 
 	function beforeFilter() {
 		if ($this->_digigas_is_installed()) {
-			exit;
+			$this->Session->setFlash('Sono già installato…');
+			$this->redirect('/');
 		}
 	}
 
