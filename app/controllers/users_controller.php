@@ -9,6 +9,7 @@ class UsersController extends AppController {
         parent::beforeFilter();
 
         $this->set('activemenu_for_layout', 'users');
+		$this->set('title_for_layout', __('Utenti', true));
 
         $this->Auth->deny('index', 'edit');
     }
@@ -103,7 +104,7 @@ class UsersController extends AppController {
         }
 
         $this->set('user', $user);
-        $this->set('title_for_layout', __('Imposta password', true) . ' - ' . Configure::read('GAS.name'));
+        $this->set('title_for_layout', __('Imposta la tua password', true) . ' - ' . Configure::read('GAS.name'));
     }
 
     function admin_index($role = null) {
