@@ -36,6 +36,23 @@
 	echo $this->Form->input('admin_first_name', array('type' => 'text', 'label' => 'Nome'));
 	echo $this->Form->input('admin_last_name', array('type' => 'text', 'label' => 'Cognome'));
 
+	//stampo i messaggi di errore non associati a campi del form
+	$expected_validation_fields = array('dir', 'file', 'script_db'); //tipi di errore da stampare (impostati nel modello)
+
+	if(isset($this->validationErrors['Installer'])) {
+		foreach($expected_validation_fields as $field) {
+			if(isset($this->validationErrors['Installer'][$field])) {
+				if(is_array($this->validationErrors['Installer'][$field])) {
+					foreach($this->validationErrors['Installer'][$field] as $message) {
+						echo $this->Html->div('error-message', $message);
+					}
+				} else {
+					echo $this->Html->div('error-message', $this->validationErrors['Installer'][$field]);
+				}
+			}
+		}
+	}
+
 	echo $this->Form->end('Avanti >');
 	?>
 </div>
