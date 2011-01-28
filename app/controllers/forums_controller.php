@@ -10,6 +10,9 @@ class ForumsController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->set('activemenu_for_layout', 'tools');
+
+		$this->set('title_for_layout', __('Forum', true));
+		
 		$this->Auth->deny($this->methods);
 	}
 

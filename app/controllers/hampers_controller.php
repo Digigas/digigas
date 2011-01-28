@@ -82,6 +82,7 @@ class HampersController extends AppController {
 
         $this->set('hampers', $this->paginate());
         $this->set(compact('sellers'));
+		$this->set('title_for_layout', __('Panieri', true));
     }
 
     function admin_index_templates() {
@@ -97,6 +98,7 @@ class HampersController extends AppController {
 
         $this->set('hampers', $this->paginate());
         $this->set(compact('sellers'));
+		$this->set('title_for_layout', __('Panieri - modelli', true));
     }
 
     function admin_copy($id) {
@@ -136,6 +138,7 @@ class HampersController extends AppController {
         $productCategories = $this->Hamper->Product->getAllFromSellerByCategory($seller_id);
 
         $this->set(compact('seller', 'seller_id', 'sellers', 'productCategories'));
+		$this->set('title_for_layout', __('Nuovo paniere', true));
     }
 
     function admin_edit($id = null) {
@@ -174,6 +177,7 @@ class HampersController extends AppController {
         }
         $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Hamper'));
         $this->redirect(array('action' => 'index'));
+		$this->set('title_for_layout', __('Modifica paniere', true));
     }
 }
 ?>
