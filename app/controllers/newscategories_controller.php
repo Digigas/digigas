@@ -7,6 +7,8 @@ class NewscategoriesController extends AppController {
     function beforeFilter()
     {
         $this->set('activemenu_for_layout', 'website');
+		$this->set('title_for_layout', __('Categorie per le news', true));
+
         return parent::beforeFilter();
     }
     

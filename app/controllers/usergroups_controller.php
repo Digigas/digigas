@@ -8,6 +8,7 @@ class UsergroupsController extends AppController {
         parent::beforeFilter();
 
         $this->set('activemenu_for_layout', 'users');
+		$this->set('title_for_layout', __('Gruppi di utenti', true));
 
         $this->Auth->deny($this->methods);
     }

@@ -10,6 +10,7 @@ class ProductsController extends AppController {
         parent::beforeFilter();
 
         $this->set('activemenu_for_layout', 'products');
+		$this->set('title_for_layout', __('Prodotti', true));
     }
 
     //rimando a un'altra pagina, bah…

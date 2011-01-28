@@ -14,6 +14,7 @@ class PagesController extends AppController {
 
         if(isset($this->params['admin']) && $this->params['admin']) {
             $this->set('activemenu_for_layout', 'tools');
+			$this->set('title_for_layout', __('Pagine del sito', true));
         }
 
     }

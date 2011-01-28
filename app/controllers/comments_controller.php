@@ -8,6 +8,8 @@ class CommentsController extends AppController {
     {
 		parent::beforeFilter();
         $this->set('activemenu_for_layout', 'tools');
+		$this->set('title_for_layout', __('Commenti', true));
+
 		$this->Auth->deny($this->methods);
     }
 

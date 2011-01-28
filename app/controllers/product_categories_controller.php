@@ -9,6 +9,7 @@ class ProductCategoriesController extends AppController {
         parent::beforeFilter();
 
         $this->set('activemenu_for_layout', 'products');
+		$this->set('title_for_layout', __('Categorie di prodotti', true));
     }
 
 	function index() {
