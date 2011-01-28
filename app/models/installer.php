@@ -32,6 +32,7 @@ class Installer extends AppModel {
 
 		//eseguo lo script MySQL
 		if(!$this->mySqlInstall()) {
+			$this->validationErrors['script_db'] = 'Errore nella compilazione del database';
 			return false;
 		}
 		
@@ -82,6 +83,7 @@ class Installer extends AppModel {
 			//$dir = new Folder($dir, $permission);
 			$Folder = new Folder($dir);
 			if (!$Folder->chmod($dir, $permission)) {
+				$this->validationErrors['dir'][] = 'Attenzione: la directory ' . $dir . ' deve avere i permessi di scrittura';
 				$return = false;
 			}
 		}
@@ -90,6 +92,23 @@ class Installer extends AppModel {
 
 	function configDatabase($config) {
 		App::import('core', 'File');
+
+		$connection = mysql_connect($config['db_host'], $config['db_user'], $config['db_pwd']) or false;
+		if($connection) {
+			$db_resource = mysql_select_db($config['db_name'], $connection);
+			if(!$db_resource) {
+				$this->validationErrors['db_name'] = 'errore';
+				mysql_close($connection);
+				return false;
+			}
+			mysql_close($connection);
+		} else {
+			$this->validationErrors['db_host'] = 'Errore di connessione al database, controlla questo campo';
+			$this->validationErrors['db_user'] = 'Errore di connessione al database, controlla questo campo';
+			$this->validationErrors['db_pwd'] = 'Errore di connessione al database, controlla questo campo';
+			return false;
+		}
+		
 
 		$file = new File(APP . 'config' . DS . 'database.php');
 
@@ -105,6 +124,8 @@ class Installer extends AppModel {
 		if($file->write($string_to_write)) {
 			return true;
 		}
+
+		$this->validationErrors['file'][] = 'Errore durante la scrittura in ' . APP . 'config' . DS . 'database.php';
 		return false;
 	}
 
@@ -125,6 +146,8 @@ class Installer extends AppModel {
 		if($file->write($string_to_write)) {
 			return true;
 		}
+
+		$this->validationErrors['file'][] = 'Errore durante la scrittura in ' . APP . 'config' . DS . 'config.php';
 		return false;
 	}
 
@@ -142,13 +165,15 @@ class Installer extends AppModel {
 
         if(!$db->isConnected()) {
             echo 'Could not connect to database. Please check the settings in app/config/database.php and try again';
-            exit();
+            $this->validationErrors['script_db'][] = 'Connessione al database fallita';
+			return false;
         }
 
 		//eseguo lo script principale
 		if(is_file($sqlPath.$this->sqlFilename)) {
 			$this->__executeSQLScript($db, $sqlPath.$this->sqlFilename);
 		} else {
+			$this->validationErrors['script_db'][] = 'Non riesco trovare lo script ' . $sqlPath.$this->sqlFilename . '. Provaci a mano';
 			return false;
 		}
 
@@ -167,7 +192,9 @@ class Installer extends AppModel {
 
         foreach ($statements as $statement) {
             if (trim($statement) != '') {
-                $db->query($statement);
+                if(!$db->query($statement)) {
+					$this->validationErrors['script_db'][] = 'Errore nell\'esecuzione dello script ' . $fileName;
+				}
             }
         }
     }
