@@ -48,7 +48,7 @@ class Hamper extends AppModel {
 		if(Configure::read('ReferentUser.allowed_sellers')) {
 			$queryData = array_merge_recursive(
 				array(
-					'conditions' => array('Hamper.id' => Configure::read('ReferentUser.allowed_sellers'))
+					'conditions' => array('Hamper.seller_id' => Configure::read('ReferentUser.allowed_sellers'))
 				),
 				$queryData);
 		}
