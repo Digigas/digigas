@@ -6,7 +6,7 @@ $layout->blockEnd()
 
 <!-- contenuto -->
 <div id="cont">
-    <div class="view">
+    <div class="view homepage">
 
         <h1><?php echo $page['Page']['title']; ?></h1>
         <div class="content">
@@ -31,6 +31,10 @@ $layout->blockEnd()
             </div>
             <?php endforeach; ?>
         </div>
+
+		<?php
+		echo $this->element('rss', array('data' => $connectedRss));
+		?>
 
     </div>
 </div>

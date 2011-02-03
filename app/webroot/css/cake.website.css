@@ -460,6 +460,7 @@ dl
 {
     margin-top:20px;
 }
+
 .news-list h1
 {
     color:#f90;
@@ -483,14 +484,14 @@ dl
 {
     background: #f3f3f3;
 }
-.news-list .news h2,
-.news-list .news h2 a
+.news h2,
+.news h2 a
 {
     border:none;
     font-weight:normal;
     text-decoration:none;
 }
-.news-list .news .news-date
+.news .news-date
 {
     background:#62af56;
     color:#fff;
@@ -498,7 +499,7 @@ dl
     float:right;
     font-size:10px;
 }
-.news-list .news .news-category
+.news .news-category
 {
     background:#f90;
     color:#fff;
@@ -506,23 +507,21 @@ dl
     float:right;
     font-size:10px;
 }
-.news-list .news .news-category a
+.news .news-category a
 {
     text-decoration:none;
     color:#fff;
 }
-.news-list .news .news-content
+.news .news-content
 {
     
 }
-
-
-.news-list .news .news-more
+.news .news-more
 {
     float:right;
 }
 
-.news-list .news .news-more a
+.news .news-more a
 {
     text-decoration:none;
 }
@@ -688,4 +687,59 @@ dl
     padding:10px;
     border-left:5px solid #f90;
     background:#fafafa;
+}
+
+.rss-list {
+	width:100%;
+}
+.rss-channel
+{
+	clear:left;
+}
+.rss-list h1
+{
+	margin-bottom:15px;
+}
+.rss-list h1 a
+{
+	color:#fff;
+	text-decoration:none;
+}
+.rss-list .news
+{
+	float:left;
+	width:23%;
+	margin-left: 2%;
+	height: 150px;
+    overflow:hidden;
+    margin-bottom:10px;
+	padding-bottom:15px;
+    border-bottom:1px solid #62af56;
+    margin-bottom: 20px;
+
+}
+.rss-list .news h2,
+.rss-list .news h2 a
+{
+	font-size:18px;
+	color:#f90;
+}
+.rss-list .news .news-date
+{
+	font-size:9px;
+	background:transparent;
+	color:#999;
+	padding:0 0 0 10px;
+}
+.rss-list .rss-website
+{
+	background: #f90;
+	color:#fff;
+	padding:3px 7px;
+}
+.rss-list .news-content a
+{
+	color: #333;
+	font-weight:normal;
+	text-decoration:none;
 }

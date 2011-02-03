@@ -1,6 +1,6 @@
 <?php
 $config = array(
-    'GAS.name' => 'test',
+    'GAS.name' => '',
     'language' => array('it'),
     'default_language' => 'it',
     'date.format' => 'D j M Y, H:i',
@@ -14,9 +14,9 @@ $config = array(
          *
          * - puoi modificare i nomi qui sotto come preferisci, ma mantieni lo stesso ordine
          */
-        'super-amministratore', 'amministratore', 'referente prodotti', 'utente'
+        'root', 'admin', 'fornitore', 'utente'
     ),
-    'email.from' => 'alessandro.falezza@gmail.com',
+    'email.from' => '',
     'email.SMTPoptions' => array(
         /* 
          * 'port' => '',
@@ -33,7 +33,7 @@ $config = array(
 		'pezzi' => 'pezzi',
 		'kg' => 'kg',
 		'etti' => 'etti',
-		'litri' => 'litri',		
+		'litri' => 'litri',
 		'cassette' => 'cassette',
 		'scatole' => 'scatole',
 		'bottiglie' => 'bottiglie',
