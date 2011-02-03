@@ -9,6 +9,9 @@
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
+		echo $this->Html->meta('rss',
+			array('controller' => 'news', 'action' => 'rss'),
+			array('title' => Configure::read('GAS.name')));
 
 		echo $this->Html->css('cake.generic');
         echo $this->Html->css('cake.admin');

@@ -32,6 +32,9 @@
         echo $this->Html->image('oxygen/32x32/filesystems/folder.png');
         echo $this->Html->link(__('Filemanager', true), array('controller' => 'filemanager')); ?></li>
 		<li><?php
+        echo $this->Html->image('oxygen/32x32/actions/rss_tag.png');
+        echo $this->Html->link(__('Rss dei siti amici', true), array('controller' => 'rss_sources')); ?></li>
+		<li><?php
         echo $this->Html->image('oxygen/32x32/actions/datashowchart.png');
         echo $this->Html->link(__('Statistiche', true), array('controller' => 'statistics')); ?></li>
 		<li><?php

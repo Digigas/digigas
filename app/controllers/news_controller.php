@@ -3,7 +3,7 @@ class NewsController extends AppController
 {
 
     var $name = 'News';
-    var $helpers = array('Html', 'Form', 'UserComment');
+    var $helpers = array('Html', 'Form', 'UserComment', 'Rss');
 	var $components = array('UserComment');
     var $paginate = array('order'=>array('News.date_on desc, News.created desc, News.id desc'));
 
@@ -109,6 +109,45 @@ class NewsController extends AppController
         $this->set(compact('news', 'comments'));
         $this->set('title_for_layout', $news['News']['title'].' - '.Configure::read('GAS.name'));
     }
+
+	function rss($categoria = false) {
+		$conditions =  array();
+        if(!$categoria)
+        {
+            $conditions[] = $this->News->findActive(true);
+        }
+        else
+        {
+            $this->News->recursive = 1;
+            if(is_numeric($categoria))
+            {
+                $conditions[] = array('newscategory_id'=>$categoria);
+            }
+            else
+            {
+                $newscategory_id = $this->News->Newscategory->find('first',
+                array(
+                    'fields' => array('id'),
+                    'conditions' => array('Newscategory.slug' => $categoria),
+                    'contain' => array()
+                ));
+                $conditions[] = array('newscategory_id'=>$newscategory_id['Newscategory']['id']);
+            }
+            $conditions[] = $this->News->findActive(true);
+        }
+
+        $news = $this->News->find('all', array(
+			'conditions'=>$conditions,
+            'limit'=>50,
+            'order'=>array('News.date_on desc , News.created desc, News.id desc'),
+            'contain' => array('User.fullname')
+		));
+
+        $this->set('news', $news);
+
+		Configure::write('debug', 0);
+		$this->render('rss', 'rss/default');
+	}
 
     function admin_index()
     {

@@ -50,9 +50,14 @@ class PagesController extends AppController {
         $lastNews = $this->News->find('all', array(
             'conditions' => $this->News->findActive(true),
             'order' => array('News.date_on desc'),
-            'limit' => 15
+            'limit' => 3
         ));
         $this->set(compact('lastNews'));
+
+		//pubblico gli rss dei siti collegati
+		$this->RssSource = ClassRegistry::init('RssSource');
+		$connectedRss = $this->RssSource->getConnectedRss();
+		$this->set(compact('connectedRss'));
 
 		//ultimi messaggi nel forum
 		$this->ForumMessages->getLastMessages();
