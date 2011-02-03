@@ -40,9 +40,3 @@
     <?php endforeach; ?>
     
 </div>
-<div class="actions">
-    
-        <ul>
-            <li><?php echo $this->Html->link(__('Inserisci una news', true), array('controller' => 'news', 'action' => 'add')); ?></li>
-        </ul>
-    </div>

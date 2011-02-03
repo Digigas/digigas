@@ -29,8 +29,10 @@ class RssSource extends AppModel {
 		foreach($activeSources as $n => $source) {
 			$results[$n] = $this->readRss($source['RssSource']['url']);
 			$results[$n]['digigas_title'] = $source['RssSource']['title'];
-		}
 
+			//seleziono solo le ultime 4 news
+			$results[$n]['Rss']['Channel']['Item'] = array_slice($results[$n]['Rss']['Channel']['Item'], 0, 4);
+		}
 		return $results;
 	}
 
