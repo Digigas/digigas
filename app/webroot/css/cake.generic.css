@@ -107,6 +107,9 @@ p
 	padding: 6px 10px;
 	text-align: right;
 }
+#footer .links {
+	float:left;
+}
 
 /** containers **/
 div.form,
