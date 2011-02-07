@@ -5,7 +5,13 @@
     <?php foreach($userOrder as $order): ?>
     <div class="orderedproduct">
         <div class="number">
-            <?php echo rtrim($order['OrderedProduct']['quantity'], '.0'); ?>
+            <?php 
+			if(substr($order['OrderedProduct']['quantity'], -3) == '.00') {
+				echo intval($order['OrderedProduct']['quantity']);
+			} else {
+				echo rtrim($order['OrderedProduct']['quantity'], '.0');
+			}
+			?>
         </div>
         <div class="name">
             <?php
