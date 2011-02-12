@@ -20,7 +20,7 @@ class NewscategoriesController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid Newscategory.', true));
+			$this->Session->setFlash(__('Categoria News non valida.', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('newscategory', $this->Newscategory->read(null, $id));
@@ -34,7 +34,7 @@ class NewscategoriesController extends AppController {
 
 	function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid Newscategory.', true));
+			$this->Session->setFlash(__('Categoria news non valida.', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('newscategory', $this->Newscategory->read(null, $id));
@@ -44,10 +44,10 @@ class NewscategoriesController extends AppController {
 		if (!empty($this->data)) {
 			$this->Newscategory->create();
 			if ($this->Newscategory->save($this->data)) {
-				$this->Session->setFlash(__('The Newscategory has been saved', true));
+				$this->Session->setFlash(__('La categoria di news è stata salvata', true));
 				$this->redirect(array('action'=>'index'));
 			} else {
-				$this->Session->setFlash(__('The Newscategory could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('Non è stato possibile salvare la categoria news. Prova di nuovo.', true));
 			}
 		}
         $categories = $this->Newscategory->generatetreelist(array(), '{n}.Newscategory.id', '{n}.Newscategory.name', ' - ');
@@ -56,15 +56,15 @@ class NewscategoriesController extends AppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid Newscategory', true));
+			$this->Session->setFlash(__('Categoria news non valida', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Newscategory->save($this->data)) {
-				$this->Session->setFlash(__('The Newscategory has been saved', true));
+				$this->Session->setFlash(__('La categoria di news è stata salvata', true));
 				$this->redirect(array('action'=>'index'));
 			} else {
-				$this->Session->setFlash(__('The Newscategory could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('Non è stato possibile salvare la categoria news. Prova di nuovo.', true));
 			}
 		}
 		if (empty($this->data)) {
@@ -81,11 +81,11 @@ class NewscategoriesController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for Newscategory', true));
+			$this->Session->setFlash(__('Id non valido per la categoria news', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Newscategory->delete($id)) {
-			$this->Session->setFlash(__('Newscategory deleted', true));
+			$this->Session->setFlash(__('Categoria news eliminata', true));
 			$this->redirect(array('action'=>'index'));
 		}
 	}

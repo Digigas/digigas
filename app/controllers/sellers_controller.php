@@ -21,7 +21,7 @@ class SellersController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'seller'));
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Fornitore'));
 			$this->redirect(array('action' => 'index'));
 		}
 
@@ -40,7 +40,7 @@ class SellersController extends AppController {
 
 	function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'seller'));
+			$this->Session->setFlash(sprintf(__('$s non valido', true), 'fornitore'));
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('seller', $this->Seller->read(null, $id));
@@ -57,10 +57,10 @@ class SellersController extends AppController {
 		if (!empty($this->data)) {
 			$this->Seller->create();
 			if ($this->Seller->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'seller'));
+				$this->Session->setFlash(sprintf(__('Il %s è stata salvato', true), 'venditore'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'seller'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'venditore'));
 			}
 		}
 
@@ -70,16 +70,16 @@ class SellersController extends AppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'seller'));
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'fornitore'));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 
             if ($this->Seller->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'seller'));
+				$this->Session->setFlash(sprintf(__('Il %s è stata salvato', true), 'fornitore'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'seller'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'fornitore'));
 			}
 		}
 		if (empty($this->data)) {
@@ -94,14 +94,14 @@ class SellersController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'seller'));
+			$this->Session->setFlash(sprintf(__('Id non valido per il %s', true), 'fornitore'));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Seller->delete($id)) {
-			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Seller'));
+			$this->Session->setFlash(sprintf(__('%s eliminato', true), 'Fornitore'));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Seller'));
+		$this->Session->setFlash(sprintf(__('Il %s  non è stato eliminato', true), 'Fornitore'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

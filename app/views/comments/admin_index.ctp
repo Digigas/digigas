@@ -3,7 +3,7 @@
 
 	<?php
 	echo $this->Paginator->counter(array(
-	'format' => __('Pagina %page% di %pages%, ci sono %count% commenti nel database, ora li vedi dal %start% al %end%', true)
+	'format' => __('Pagina %page% di %pages%, commenti da %start% a %end% di %count%', true)
 	));
 	?>	</p>
 
@@ -42,10 +42,10 @@
 	<p>
 	
 	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
+		<?php echo $this->Paginator->prev('<< '.__('preecedente', true), array(), null, array('class'=>'disabled'));?>
 	 | 	<?php echo $this->Paginator->numbers();?>
  |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
+		<?php echo $this->Paginator->next(__('successiva', true).' >>', array(), null, array('class' => 'disabled'));?>
 	</div>
 </div>
 <div class="actions">

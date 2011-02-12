@@ -74,7 +74,7 @@ class PagesController extends AppController {
     {
         if (is_null($pageRef))
         {
-            $this->Session->setFlash(__('Invalid Page.', true));
+            $this->Session->setFlash(__('Pagina non valida.', true));
             $this->redirect(array('action'=>'index'));
         }
         
@@ -173,7 +173,7 @@ class PagesController extends AppController {
     {
         if (!$id)
         {
-            $this->Session->setFlash(__('Invalid Page.', true));
+            $this->Session->setFlash(__('Pagina non valida.', true));
             $this->redirect(array('action'=>'index'));
         }
         $this->Page->toggle_active($id);
@@ -184,7 +184,7 @@ class PagesController extends AppController {
     {
         if (!$id)
         {
-            $this->Session->setFlash(__('Invalid Page.', true));
+            $this->Session->setFlash(__('Pagina non valida.', true));
             $this->redirect(array('action'=>'index'));
         }
         $this->Page->set_firstpage($id);
@@ -199,7 +199,7 @@ class PagesController extends AppController {
 
     function admin_view($id = null) {
         if (!$id) {
-                $this->Session->setFlash(__('Invalid Page.', true));
+                $this->Session->setFlash(__('Pagina non valida.', true));
                 $this->redirect(array('action'=>'index'));
         }
         $this->setAction('view', $id);
@@ -210,7 +210,7 @@ class PagesController extends AppController {
             $this->Page->create();
             if ($this->Page->save($this->data))
             {
-                $this->Session->setFlash(__('The Page has been saved', true));
+                $this->Session->setFlash(__('la pagina è stata salvata', true));
                 if(!isset($this->params['form']['action_edit']))
                 {
                     $this->redirect(array('action'=>'index'));
@@ -222,7 +222,7 @@ class PagesController extends AppController {
                 }
             } else
             {
-                $this->Session->setFlash(__('The Page could not be saved. Please, try again.', true));
+                $this->Session->setFlash(__('Non è stato possibile salvare la pagina. Prova di nuovo.', true));
             }
         }
         $pages = $this->Page->generatetreelist(array(), '{n}.Page.id', '{n}.Page.title', ' - ');
@@ -234,21 +234,21 @@ class PagesController extends AppController {
     function admin_edit($id = null) {
         if (!$id && empty($this->data))
         {
-            $this->Session->setFlash(__('Invalid Page', true));
+            $this->Session->setFlash(__('Pagina non valida.', true));
             $this->redirect($this->referer());
         }
         if (!empty($this->data))
         {
             if ($this->Page->save($this->data))
             {
-                $this->Session->setFlash(__('The Page has been saved', true));
+                $this->Session->setFlash(__('La pagina è stata salvata', true));
                 if(!isset($this->params['form']['action_edit']))
                 {
                     $this->redirect(array('action'=>'index'));
                 }
             } else
             {
-                $this->Session->setFlash(__('The Page could not be saved. Please, try again.', true));
+                $this->Session->setFlash(__('Non è stato possibile salvare la pagina. Prova di nuovo.', true));
             }
         }
         
@@ -270,12 +270,12 @@ class PagesController extends AppController {
     function admin_delete($id = null) {
         if (!$id)
         {
-            $this->Session->setFlash(__('Invalid id for Page', true));
+            $this->Session->setFlash(__('Id non valido per la pagina', true));
             $this->redirect(array('action'=>'index'));
         }
         if ($this->Page->delete($id))
         {
-            $this->Session->setFlash(__('Page deleted', true));
+            $this->Session->setFlash(__('Pagina eliminata', true));
             $this->redirect(array('action'=>'index'));
         }
     }
@@ -284,7 +284,7 @@ class PagesController extends AppController {
     {
         if (!$id)
         {
-            $this->Session->setFlash(__('Invalid id for Page', true));
+            $this->Session->setFlash(__('Id non valido per la pagina', true));
         }
         $this->Page->moveup($id);
         $this->redirect(array('action'=>'index'));
@@ -293,7 +293,7 @@ class PagesController extends AppController {
     {
         if (!$id)
         {
-            $this->Session->setFlash(__('Invalid id for Page', true));
+            $this->Session->setFlash(__('Id non valido per la pagina', true));
         }
         $this->Page->movedown($id);
         $this->redirect(array('action'=>'index'));

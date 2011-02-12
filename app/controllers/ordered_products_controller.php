@@ -564,19 +564,19 @@ class OrderedProductsController extends AppController {
 
     function admin_edit($id = null) {
         if (!$id && empty($this->data)) {
-            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'ordered product'));
+            $this->Session->setFlash(sprintf(__('%s invalid', true), 'Prodotto ordinato'));
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->data)) {
             if ($this->OrderedProduct->save($this->data)) {
-                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'ordered product'));
+                $this->Session->setFlash(sprintf(__('Il %s è stata salvato', true), 'Il prodotto ordinato'));
                 if(isset($this->data['Referer'])) {
 					$this->redirect($this->data['Referer']);
 				} else {
 					$this->redirect(array('action' => 'index'));
 				}
             } else {
-                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'ordered product'));
+                $this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'prodotto ordinato'));
             }
         }
         if (empty($this->data)) {
@@ -591,14 +591,14 @@ class OrderedProductsController extends AppController {
 
     function admin_delete($id = null) {
         if (!$id) {
-            $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'ordered product'));
+            $this->Session->setFlash(sprintf(__('Id  non valido per il %s', true), 'prodotto ordinato'));
             $this->redirect(array('action'=>'index'));
         }
         if ($this->OrderedProduct->delete($id)) {
-            $this->Session->setFlash(sprintf(__('%s deleted', true), 'Ordered product'));
+            $this->Session->setFlash(sprintf(__('%s eliminato', true), 'Prodotto ordinato'));
             $this->redirect(array('action'=>'index'));
         }
-        $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Ordered product'));
+        $this->Session->setFlash(sprintf(__('Il %s  non è stato eliminato', true), 'prodotto ordinato'));
         $this->redirect(array('action' => 'index'));
     }
 

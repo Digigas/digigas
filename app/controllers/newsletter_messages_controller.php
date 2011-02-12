@@ -20,7 +20,7 @@ class NewsletterMessagesController extends AppController {
 
     function admin_view($id = null) {
         if (!$id) {
-            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'newsletter message'));
+            $this->Session->setFlash(sprintf(__('%s non valida', true), 'Newsletter'));
             $this->redirect(array('action' => 'index'));
         }
         $this->set('newsletterMessage', $this->NewsletterMessage->read(null, $id));
@@ -53,14 +53,14 @@ class NewsletterMessagesController extends AppController {
 
     function admin_delete($id = null) {
         if (!$id) {
-            $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'newsletter message'));
+            $this->Session->setFlash(sprintf(__('Id non valido per la %s', true), 'newsletter'));
             $this->redirect(array('action'=>'index'));
         }
         if ($this->NewsletterMessage->delete($id)) {
-            $this->Session->setFlash(sprintf(__('%s deleted', true), 'Newsletter message'));
+            $this->Session->setFlash(sprintf(__('%s eliminata', true), 'Newsletter'));
             $this->redirect(array('action'=>'index'));
         }
-        $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Newsletter message'));
+        $this->Session->setFlash(sprintf(__('La %s non è stata eliminata', true), 'Newsletter'));
         $this->redirect(array('action' => 'index'));
     }
 

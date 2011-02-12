@@ -180,10 +180,10 @@ class UsersController extends AppController {
 				$users = array($user);
 				$this->_send_users_notification($users);
 
-                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
+                $this->Session->setFlash(sprintf(__("L'%s è stata salvato", true), 'utente'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
+                $this->Session->setFlash(sprintf(__("Non è stato possibile salvare l'%s. Prova di nuovo.", true), 'utente'));
             }
         }
 
@@ -207,10 +207,10 @@ class UsersController extends AppController {
 				$users = array($user);
 				$this->_send_users_notification($users);
 				
-                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
+                $this->Session->setFlash(sprintf(__("L'%s è stata salvato", true), 'utente'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
+                $this->Session->setFlash(sprintf(__("Non è stato possibile salvare l'%s. Prova di nuovo.", true), 'utente'));
             }
         }
 
@@ -225,15 +225,15 @@ class UsersController extends AppController {
 
     function admin_edit($id = null) {
         if (!$id && empty($this->data)) {
-            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'user'));
+            $this->Session->setFlash(sprintf(__('%s non valido', true), 'Utente'));
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->data)) {
             if ($this->User->save($this->data)) {
-                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'user'));
+                $this->Session->setFlash(sprintf(__("L'%s è stata salvato", true), 'utente'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'user'));
+                $this->Session->setFlash(sprintf(__("Non è stato possibile salvare l'%s. Prova di nuovo.", true), 'utente'));
             }
         } else {
             $this->data = $this->User->read(null, $id);
@@ -264,14 +264,14 @@ class UsersController extends AppController {
 
     function admin_delete($id = null) {
         if (!$id) {
-            $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'user'));
+            $this->Session->setFlash(sprintf(__("Id  non valido per l'%s", true), 'utente'));
             $this->redirect(array('action' => 'index'));
         }
         if ($this->User->delete($id)) {
-            $this->Session->setFlash(sprintf(__('%s deleted', true), 'User'));
+            $this->Session->setFlash(sprintf(__('%s eliminato', true), 'Utente'));
             $this->redirect(array('action' => 'index'));
         }
-        $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'User'));
+        $this->Session->setFlash(sprintf(__("L'%s non è stato eliminato", true), 'utente'));
         $this->redirect(array('action' => 'index'));
     }
 
