@@ -3,14 +3,14 @@
     <p>
         <?php
         echo $paginator->counter(array(
-        'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+        'format' => __('Pagina %page% di %pages%, riga da %start% a %end% di %count%', true)
         ));
         $paginator->options(array('url' => $this->passedArgs));
         ?></p>
     <div class="paging">
-        <?php echo $paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
+        <?php echo $paginator->prev('<< '.__('precedente', true), array(), null, array('class'=>'disabled'));?>
         | 	<?php echo $paginator->numbers();?>
-        <?php echo $paginator->next(__('next', true).' >>', array(), null, array('class'=>'disabled'));?>
+        <?php echo $paginator->next(__('successiva', true).' >>', array(), null, array('class'=>'disabled'));?>
     </div>
     <?php
     foreach ($news as $one_news):

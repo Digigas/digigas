@@ -34,15 +34,15 @@ if(isset($role)) {
     <p>
         <?php
         echo $this->Paginator->counter(array(
-'format' => __('Pagina %page% di %pages%, %count% utenti totali', true)
+'format' => __('Pagina %page% di %pages%, utenti da %start% a %end% di %count%', true)
 ));
         ?>	</p>
 
     <div class="paging">
-        <?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
+        <?php echo $this->Paginator->prev('<< '.__('precedente', true), array(), null, array('class'=>'disabled'));?>
 	 | 	<?php echo $this->Paginator->numbers();?>
         |
-<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
+<?php echo $this->Paginator->next(__('successiva', true).' >>', array(), null, array('class' => 'disabled'));?>
     </div>
 
     <table cellpadding="0" cellspacing="0">
@@ -93,10 +93,10 @@ if(isset($role)) {
     </table>
 
     <div class="paging">
-        <?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
+        <?php echo $this->Paginator->prev('<< '.__('precedente', true), array(), null, array('class'=>'disabled'));?>
 	 | 	<?php echo $this->Paginator->numbers();?>
         |
-<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
+<?php echo $this->Paginator->next(__('successiva', true).' >>', array(), null, array('class' => 'disabled'));?>
     </div>
 </div>
 <div class="actions">

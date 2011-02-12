@@ -36,7 +36,7 @@ class HampersController extends AppController {
 
     function view($id = null) {
         if (!$id || !$this->Hamper->isActive($id)) {
-            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
+            $this->Session->setFlash(sprintf(__('%s non valido', true), 'Paniere'));
             $this->redirect(array('action' => 'index'));
         }
         $hamper = $this->Hamper->find('first', array(
@@ -103,7 +103,7 @@ class HampersController extends AppController {
 
     function admin_copy($id) {
         if (!$id) {
-            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
+            $this->Session->setFlash(sprintf(__('%s non valido', true), 'paniere'));
             $this->redirect(array('action' => 'index'));
         }
 
@@ -124,10 +124,10 @@ class HampersController extends AppController {
             $this->data = $this->Hamper->formatDates($this->data);
             $this->Hamper->create();
             if ($this->Hamper->save($this->data)) {
-                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'hamper'));
+                $this->Session->setFlash(sprintf(__('Il %s è stato salvato', true), 'Paniere'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'hamper'));
+                $this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'Paniere'));
             }
         }
 
@@ -143,16 +143,16 @@ class HampersController extends AppController {
 
     function admin_edit($id = null) {
         if (!$id && empty($this->data)) {
-            $this->Session->setFlash(sprintf(__('Invalid %s', true), 'hamper'));
+            $this->Session->setFlash(sprintf(__('%s non valido', true), 'Paniere'));
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->data)) {
             $this->data = $this->Hamper->formatDates($this->data);
             if ($this->Hamper->save($this->data)) {
-                $this->Session->setFlash(sprintf(__('The %s has been saved', true), 'hamper'));
+                $this->Session->setFlash(sprintf(__('Il %s è stato salvato', true), 'Paniere'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'hamper'));
+                $this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'hamper'));
             }
         }
         if (empty($this->data)) {
@@ -168,14 +168,14 @@ class HampersController extends AppController {
 
     function admin_delete($id = null) {
         if (!$id) {
-            $this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'hamper'));
+            $this->Session->setFlash(sprintf(__('Id non valido per il %s', true), 'Paniere'));
             $this->redirect(array('action'=>'index'));
         }
         if ($this->Hamper->delete($id)) {
-            $this->Session->setFlash(sprintf(__('%s deleted', true), 'Hamper'));
+            $this->Session->setFlash(sprintf(__('%s eliminato', true), 'Eliminato'));
             $this->redirect(array('action'=>'index'));
         }
-        $this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Hamper'));
+        $this->Session->setFlash(sprintf(__('Il %s non è stato eliminato', true), 'paniere'));
         $this->redirect(array('action' => 'index'));
 		$this->set('title_for_layout', __('Modifica paniere', true));
     }

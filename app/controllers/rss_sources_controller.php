@@ -13,25 +13,25 @@ class RssSourcesController extends AppController {
 		if (!empty($this->data)) {
 			$this->RssSource->create();
 			if ($this->RssSource->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'rss source'));
+				$this->Session->setFlash(sprintf(__('La %s è stata salvata', true), 'fonte rss'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'rss source'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare la %s. Prova di nuovo.', true), 'fonte rss'));
 			}
 		}
 	}
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'rss source'));
+			$this->Session->setFlash(sprintf(__('%s non valida', true), 'Fonte rss'));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->RssSource->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'rss source'));
+				$this->Session->setFlash(sprintf(__('La %s è stata salvata', true), 'fonte rss'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'rss source'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare la %s. Prova di nuovo.', true), 'fonte rss'));
 			}
 		}
 		if (empty($this->data)) {
@@ -41,14 +41,14 @@ class RssSourcesController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'rss source'));
+			$this->Session->setFlash(sprintf(__('Id non valido per la %s', true), 'fonte rss'));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->RssSource->delete($id)) {
-			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Rss source'));
+			$this->Session->setFlash(sprintf(__('%s eliminata', true), 'Fonte rss'));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Rss source'));
+		$this->Session->setFlash(sprintf(__('La %s non è stata eliminata', true), 'Fonte rss'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

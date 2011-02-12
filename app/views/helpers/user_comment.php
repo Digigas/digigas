@@ -79,11 +79,11 @@ class UserCommentHelper extends Helper {
 
 			if($paginate) {
 				//paginator
-				$pages = $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));
+				$pages = $this->Paginator->prev('<< '.__('precedente', true), array(), null, array('class'=>'disabled'));
 				$pages .= ' | ';
 				$pages .= $this->Paginator->numbers();
 				$pages .= ' | ';
-				$pages .= $this->Paginator->next(__('next', true).' >>', array(), null, array('class'=>'disabled'));
+				$pages .= $this->Paginator->next(__('successiva', true).' >>', array(), null, array('class'=>'disabled'));
 				$return .= $this->Html->div('paging', $pages);
 			}
 

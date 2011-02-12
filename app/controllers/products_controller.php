@@ -24,7 +24,7 @@ class ProductsController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Prodotto'));
 			$this->redirect(array('action' => 'index'));
 		}
 
@@ -78,10 +78,10 @@ class ProductsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Product->create();
 			if ($this->Product->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
+				$this->Session->setFlash(sprintf(__('Il %s è stato salvato', true), 'prodotto'));
 				$this->redirect(array('action' => 'index', 'seller' => $this->data['Product']['seller_id']));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'prodotto'));
 			}
 		}
 
@@ -95,15 +95,15 @@ class ProductsController extends AppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product'));
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Prodotto'));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Product->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product'));
+				$this->Session->setFlash(sprintf(__('Il %s è stata salvato', true), 'prodotto'));
 				$this->redirect(array('action' => 'index', 'seller' => $this->data['Product']['seller_id']));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'prodotto'));
 			}
 		}
 		if (empty($this->data)) {
@@ -116,16 +116,16 @@ class ProductsController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'product'));
+			$this->Session->setFlash(sprintf(__('Id  non valido per il %s', true), 'prodotto'));
 			$this->redirect(array('action'=>'index'));
 		}
 
 		$seller_id = $this->Product->field('seller_id', $id);
 		if ($this->Product->delete($id)) {
-			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Product'));
+			$this->Session->setFlash(sprintf(__('%s eliminato', true), 'Prodotto'));
 			$this->redirect(array('action'=>'index', 'seller' => $seller_id));
 		}
-		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Product'));
+		$this->Session->setFlash(sprintf(__('Il %s non è stato eliminato', true), 'prodotto'));
 		$this->redirect(array('action' => 'index', 'seller' => $seller_id));
 	}
 }

@@ -74,7 +74,7 @@ class NewsController extends AppController
     {
         if (!$ref)
         {
-            $this->Session->setFlash(__('Invalid News.', true));
+            $this->Session->setFlash(__('News on valida.', true));
             $this->redirect(array('action'=>'index'));
         }
 
@@ -167,7 +167,7 @@ class NewsController extends AppController
             $this->News->create();
             if ($this->News->save($this->data))
             {
-                $this->Session->setFlash(__('The News has been saved', true));
+                $this->Session->setFlash(__('La news è stata salvata', true));
                 if(!isset($this->params['form']['action_edit']))
                 {
                     $this->redirect(array('action'=>'index'));
@@ -180,7 +180,7 @@ class NewsController extends AppController
             }
             else
             {
-                $this->Session->setFlash(__('The News could not be saved. Please, try again.', true));
+                $this->Session->setFlash(__('Non è stato possibile salvare la news. Prova ancora.', true));
             }
         }
         //$newscategories = $this->News->Newscategory->find('list');
@@ -201,14 +201,14 @@ class NewsController extends AppController
     {
         if (!$id && empty($this->data))
         {
-            $this->Session->setFlash(__('Invalid News', true));
+            $this->Session->setFlash(__('News non valida', true));
             $this->redirect(array('action'=>'index'));
         }
         if (!empty($this->data))
         {
             if ($this->News->save($this->data))
             {
-                $this->Session->setFlash(__('The News has been saved', true));
+                $this->Session->setFlash(__('La News è stata salvata', true));
                 if(!isset($this->params['form']['action_edit']))
                 {
                     $this->redirect(array('action'=>'index'));
@@ -216,7 +216,7 @@ class NewsController extends AppController
             }
             else
             {
-                $this->Session->setFlash(__('The News could not be saved. Please, try again.', true));
+                $this->Session->setFlash(__('Non è stato possibile salvare la News. Prova di nuovo.', true));
             }
         }
 
@@ -231,12 +231,12 @@ class NewsController extends AppController
     {
         if (!$id)
         {
-            $this->Session->setFlash(__('Invalid id for News', true));
+            $this->Session->setFlash(__('News id non valido', true));
             $this->redirect(array('action'=>'index'));
         }
         if ($this->News->delete($id))
         {
-            $this->Session->setFlash(__('News deleted', true));
+            $this->Session->setFlash(__('News eliminata', true));
             $this->redirect(array('action'=>'index'));
         }
     }
@@ -244,7 +244,7 @@ class NewsController extends AppController
     {
         if (!$id)
         {
-            $this->Session->setFlash(__('Invalid News.', true));
+            $this->Session->setFlash(__('News non valida.', true));
             $this->redirect(array('action'=>'index'));
         }
         $this->News->toggle_active($id);

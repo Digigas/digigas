@@ -4,7 +4,7 @@
 	<p>
 	<?php
 	echo $this->Paginator->counter(array(
-	'format' => __('Pagina %page% di %pages%, %count% forum totali, dal %start% al %end%', true)
+	'format' => __('Pagina %page% di %pages%, forum da %start% a %end% di %count%', true)
 	));
 	?>	</p>
 
@@ -37,10 +37,10 @@
 	</table>
 
 	<div class="paging">
-		<?php echo $this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
+		<?php echo $this->Paginator->prev('<< '.__('precedente', true), array(), null, array('class'=>'disabled'));?>
 	 | 	<?php echo $this->Paginator->numbers();?>
  |
-		<?php echo $this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>
+		<?php echo $this->Paginator->next(__('successiva', true).' >>', array(), null, array('class' => 'disabled'));?>
 	</div>
 </div>
 <div class="actions">

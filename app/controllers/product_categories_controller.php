@@ -19,7 +19,7 @@ class ProductCategoriesController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product category'));
+			$this->Session->setFlash(sprintf(__('%s non valida', true), 'Categoria prodotto'));
 			$this->redirect(array('action' => 'index'));
 		}
         $this->redirect(array('controller' => 'products', 'action' => 'index', $id));
@@ -35,10 +35,10 @@ class ProductCategoriesController extends AppController {
 		if (!empty($this->data)) {
 			$this->ProductCategory->create();
 			if ($this->ProductCategory->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product category'));
+				$this->Session->setFlash(sprintf(__('La %s è stata salvata', true), 'Categoria prodotto'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product category'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare la %s. Prova di nuovo.', true), 'categoria prodotto'));
 			}
 		}
 
@@ -49,15 +49,15 @@ class ProductCategoriesController extends AppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'product category'));
+			$this->Session->setFlash(sprintf(__('%s non valida', true), 'Categoria prodotto'));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->ProductCategory->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'product category'));
+				$this->Session->setFlash(sprintf(__('La %s è stata salvata', true), 'categoria prodotto'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'product category'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare la %s. Prova di nuovo.', true), 'categoria prodotto'));
 			}
 		}
 		if (empty($this->data)) {
@@ -71,14 +71,14 @@ class ProductCategoriesController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'product category'));
+			$this->Session->setFlash(sprintf(__('Id non valido per la %s', true), 'categoria prodotto'));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->ProductCategory->delete($id)) {
-			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Product category'));
+			$this->Session->setFlash(sprintf(__('%s eliminata', true), 'Categoria prodotto'));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Product category'));
+		$this->Session->setFlash(sprintf(__('La %s non è stata eliminata', true), 'categoria prodotto'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

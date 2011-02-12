@@ -62,7 +62,7 @@ class ForumsController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'forum'));
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Forum'));
 			$this->redirect(array('action' => 'index'));
 		}
 		$forum = $this->Forum->find('first', array(
@@ -156,7 +156,7 @@ class ForumsController extends AppController {
 
 	function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'forum'));
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Forum'));
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('forum', $this->Forum->read(null, $id));
@@ -166,10 +166,10 @@ class ForumsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Forum->create();
 			if ($this->Forum->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'forum'));
+				$this->Session->setFlash(sprintf(__('Il %s è stato salvato', true), 'forum'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'forum'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'forum'));
 			}
 		}
 		$users = $this->Forum->User->find('list');
@@ -183,10 +183,10 @@ class ForumsController extends AppController {
 		}
 		if (!empty($this->data)) {
 			if ($this->Forum->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'forum'));
+				$this->Session->setFlash(sprintf(__('Il %s è stato salvato', true), 'forum'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'forum'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'forum'));
 			}
 		}
 		if (empty($this->data)) {
@@ -198,14 +198,14 @@ class ForumsController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'forum'));
+			$this->Session->setFlash(sprintf(__('Id non valido per il %s', true), 'forum'));
 			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->Forum->delete($id)) {
-			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Forum'));
+			$this->Session->setFlash(sprintf(__('%s eliminato', true), 'Forum'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Forum'));
+		$this->Session->setFlash(sprintf(__('Il %s non è stato eliminato', true), 'forum'));
 		$this->redirect(array('action' => 'index'));
 	}
 

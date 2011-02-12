@@ -23,10 +23,10 @@ class CommentsController extends AppController {
 			if ($this->Comment->save($this->data, array('text'))) {
 
 				$return = $this->Comment->field('url', array('Comment.id' => $this->data['Comment']['id']));
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'comment'));
+				$this->Session->setFlash(sprintf(__('Il %s è stato salvato', true), 'commento'));
 				$this->redirect('/'.$return);
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'comment'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'commento'));
 			}
 		}
 
@@ -67,7 +67,7 @@ class CommentsController extends AppController {
 
 	function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'comment'));
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Commento'));
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('comment', $this->Comment->read(null, $id));
@@ -77,10 +77,10 @@ class CommentsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Comment->create();
 			if ($this->Comment->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'comment'));
+				$this->Session->setFlash(sprintf(__('Il %s è stato salvato', true), 'commento'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'comment'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'commento'));
 			}
 		}
 		$users = $this->Comment->User->find('list');
@@ -89,15 +89,15 @@ class CommentsController extends AppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(sprintf(__('Invalid %s', true), 'comment'));
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Comment'));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->Comment->save($this->data)) {
-				$this->Session->setFlash(sprintf(__('The %s has been saved', true), 'comment'));
+				$this->Session->setFlash(sprintf(__('Il %s è stato salvato', true), 'commento'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(sprintf(__('The %s could not be saved. Please, try again.', true), 'comment'));
+				$this->Session->setFlash(sprintf(__('Non è stato possibile salvare il %s. Prova di nuovo.', true), 'commento'));
 			}
 		}
 		if (empty($this->data)) {
@@ -109,14 +109,14 @@ class CommentsController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(sprintf(__('Invalid id for %s', true), 'comment'));
+			$this->Session->setFlash(sprintf(__('Id non valido per il %s', true), 'comment'));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Comment->delete($id)) {
-			$this->Session->setFlash(sprintf(__('%s deleted', true), 'Comment'));
+			$this->Session->setFlash(sprintf(__('%s eliminato', true), 'Commento'));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(sprintf(__('%s was not deleted', true), 'Comment'));
+		$this->Session->setFlash(sprintf(__('Il %s non è stato eliminato', true), 'Comment'));
 		$this->redirect(array('action' => 'index'));
 	}
 
@@ -124,7 +124,7 @@ class CommentsController extends AppController {
     {
         if (!$id)
         {
-            $this->Session->setFlash(__('Invalid Comment.', true));
+            $this->Session->setFlash(__('Commento non valido.', true));
             $this->redirect(array('action'=>'index'));
         }
         $this->Comment->toggle_active($id);
