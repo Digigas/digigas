@@ -71,14 +71,9 @@ class UserCommentHelper extends Helper {
 					} else {
 						$author = '';
 					}
-					
-					$poster = $this->Html->div('poster', $author);
-                    
-					$date = $this->Html->div('comment-date', "Inserito ".digi_date($comment['Comment']['created']));
-                    $text = $this->Html->div('comment-text', $comment['Comment']['text']);
-					$body = $this->Html->div('comment-body', $date.$text);
-					
-					$return .= $this->Html->div('comment'.$class, $poster.$body);
+					$date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
+					$text = $this->Html->div('comment-text', $comment['Comment']['text']);
+					$return .= $this->Html->div('comment'.$class, $author.$date.$text);
 				}
 			}
 

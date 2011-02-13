@@ -533,8 +533,8 @@ dl
 .comment
 {
     clear:both;
-    margin-bottom: 10px;
-    padding:10px;
+	margin:0;
+    padding: 0 10px 5px 10px;
     height:auto;
     overflow:hidden;
 }
@@ -542,27 +542,20 @@ dl
 {
     background:#f0f0f0;
 }
-
-
 .comment .comment-author,
 .comment .comment-date
 {
     float:left;
     font-size:10px;
-    padding: 5px 15px 5px 0px;
-    margin-bottom: 10px;
+    padding: 5px 15px 5px 0;
 }
 .comment .comment-author
 {
     color: #62AF56;
-    font-weight: bold;
-    font-size:12px;
 }
 .comment .comment-date
 {
     color: #f90;
-    border-bottom: 1px solid #d0d0d0;
-    width: 98%;
 }
 .comment .comment-children
 {
@@ -576,31 +569,8 @@ dl
     float:right;
     font-size:10px;
 }
-
-.comment .poster, .comment.topic.poster
-{
-    width: 15%;
-    clear: left;
-
-}
-
-div.comment .comment-body, .comment.topic.comment-body
-{
-clear: right;
-margin-left: 16%;
-}
-
-
-.comment .comment-text
-{
-    width: 98%;
-    border-bottom: 1px solid #d0d0d0;
-    float: left;
-    padding: 5px 15px 5px 0px;
-/*     margin-top: 10px; */
-}
+.comment .comment-text,
 .comment .comment-title
-
 {
     clear:left;
 }
@@ -617,8 +587,9 @@ margin-left: 16%;
 .comment .more
 {
     float:right;
-    font-size:12px;
+    font-size:10px;
     font-weight:normal;
+	text-decoration:none;
 }
 .actions .comment
 {
@@ -668,20 +639,10 @@ margin-left: 16%;
     padding:0;
 }
 
-td.discussion_title
-{
-    vertical-align: middle;
-}
-
-td.discussion_author, td.discussion_answers
-{
-    vertical-align: middle;
-    text-align: center;
-}
-
 .comment.comment-topic
 {
     position:relative;
+	padding-top:5px;
     padding-bottom:25px;
     border-bottom:1px solid #62AF56;
 }
@@ -692,18 +653,19 @@ td.discussion_author, td.discussion_answers
     right:0;
     display:block;
     float:right;
-    padding:5px 8px 10px 8px;
-    color:#fff;
-    background: #62AF56;
+    padding:5px 8px 5px 8px;
+    color:#2D6324;
+    background: transparent;
     text-decoration:none;
-    border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    -webkit-border-radius: 5px 5px 0 0;
+	font-weight: normal;
+    border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
 }
 .comment.comment-topic a.read:hover
 {
-    background:#2D6324;
-    padding-bottom:15px;
+    background:#62AF56;
+	color:#fff;
 }
 
 .comment .edit a {
@@ -716,19 +678,18 @@ td.discussion_author, td.discussion_answers
     color:#fff;
     background: #ccc;
     text-decoration:none;
-    border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    -webkit-border-radius: 5px 5px 0 0;
+    border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
     font-size:10px;
     font-weight:normal;
 }
 
 .comment.topic
 {
-    position:relative;
     padding:10px;
     border-left:5px solid #f90;
-    background:#fafafa;
+    background:#F0F0F0;
 }
 
 .rss-list {

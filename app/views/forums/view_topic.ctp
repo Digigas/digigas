@@ -10,24 +10,9 @@
 	</h2>
 	
 	<div class="comment topic">
-		<div class="poster">
-            <div class="comment-author"><?php echo $topic['User']['fullname']; ?></div>
-        </div>
-        <div class="comment-body">
-            <div class="comment-date"><?php echo digi_date($topic['Comment']['created']); ?></div>
-            <div class="comment-text"><?php echo $topic['Comment']['text']; ?></div>
-            <?php
-                $editComment = false;
-                if($this->UserComment->user_can_edit($topic['User']['id'])) 
-                {
-                    $editComment = $this->Html->div('edit', $this->Html->link(__('modifica', true), array('controller' => 'comments', 'action' => 'edit', $topic['Comment']['id'])));
-                } else 
-                {
-                    $editComment = '';
-                }
-                echo $editComment. $this->Html->div('clear', '&nbsp;');
-            ?>
-        </div>
+		<div class="comment-author"><?php echo $topic['User']['fullname']; ?></div>
+		<div class="comment-date"><?php echo digi_date($topic['Comment']['created']); ?></div>
+		<div class="comment-text"><?php echo $topic['Comment']['text']; ?></div>
 	</div>
 
 	<?php
@@ -49,26 +34,16 @@
 				} else {
 					$author = '';
 				}
-            
+
 				if($editComment) {
-				
 					$editComment = $this->Html->div('edit', $this->Html->link(__('modifica', true), array('controller' => 'comments', 'action' => 'edit', $comment['Comment']['id'])));
 				} else {
 					$editComment = '';
 				}
-                
-// 				$date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
-// 				$text = $this->Html->div('comment-text', $comment['Comment']['text']);
-// 				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $text . $editComment . $this->Html->div('clear', '&nbsp;'));
 
-                $poster = $this->Html->div('poster', $author);
-                    
-                    $date = $this->Html->div('comment-date', "Inserito ".digi_date($comment['Comment']['created']));
-                    $text = $this->Html->div('comment-text', $comment['Comment']['text']);
-                    $body = $this->Html->div('comment-body', $date.$text);
-                    
-                    echo  $this->Html->div('comment'.$class, $poster.$body);
-
+				$date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
+				$text = $this->Html->div('comment-text', $comment['Comment']['text']);
+				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $text . $editComment . $this->Html->div('clear', '&nbsp;'));
 			}
 		}		
 	?>
