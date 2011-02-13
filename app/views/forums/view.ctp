@@ -4,51 +4,51 @@
 		<?php echo $forum['Forum']['text']; ?>
 	</div>
 
-	<?php
-		if (!empty($comments)) {
-			$i = 0;
-			foreach ($comments as $comment) {
-				$class = null;
-				if ($i++ % 2 == 0) {
-					$class = ' alt';
-				}
-
-				$editComment = false;
-				if (isset($comment['User'])) {
-					$author = $this->Html->div('comment-author', $comment['User']['fullname']);
-					if($this->UserComment->user_can_edit($comment['User']['id'])) {
-						$editComment = true;
-					}
-				} else {
-					$author = '';
-				}
-				$date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
-
-				if($editComment) {
-					$editComment = $this->Html->div('edit', $this->Html->link(__('modifica', true), array('controller' => 'comments', 'action' => 'edit', $comment['Comment']['id'])));
-				} else {
-					$editComment = '';
-				}
-
-				//quanti commenti ci sono dentro e a quando risalgono
-				if (isset($commentsChildren[$comment['Comment']['id']])) {
-					$children = $this->Html->div('comment-children', $commentsChildren[$comment['Comment']['id']] . ' ' . __('messaggi', true));
-					$lastUpdatesView = $this->Html->div('comment-lastupdates', __('L\'ultimo è di ', true) . $this->Time->relativeTime($lastUpdates[$comment['Comment']['id']]));
-				} else {
-					$children = $this->Html->div('comment-children', __('Nessun messaggio', true));
-					$lastUpdatesView = '';
-				}
-
-				if(!empty($comment['Comment']['title'])) {
-					$content = $this->Html->div('comment-title', $this->Html->link($comment['Comment']['title'], array('action' => 'view_topic', $comment['Comment']['id'])));
-				} else {
-					$content = $this->Html->div('comment-title', $this->Html->link($this->Text->truncate(strip_tags($comment['Comment']['text']), 200), array('action' => 'view_topic', $comment['Comment']['id']), array('escape' => false)));
-				}
-				$readlink = $this->Html->link(__('Partecipa alla conversazione', true), array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read'));
-				echo $this->Html->div('comment comment-topic' . $class, $author . $date . $children . $lastUpdatesView . $content . $editComment . $readlink . $this->Html->div('clear', '&nbsp;'));
-			}
-		}
-	?>
+	<?php if (!empty($comments)): ?>
+	
+	<table cellpadding="0" cellspacing="0">
+        <tr>
+            <th></th>
+            <th><?php echo $this->Paginator->sort(__('Oggetto', true), 'username');?></th>
+            <th><?php echo $this->Paginator->sort(__('Aperta da', true), 'email');?></th>
+            <th><?php echo $this->Paginator->sort(__('Risposte', true), 'role');?></th>
+            <th><?php echo $this->Paginator->sort(__('Ultimo commento', true), 'active');?></th>
+        </tr>
+        <?php
+        $i = 0;
+        
+        foreach ($comments as $comment):
+            $class = null;
+            if ($i++ % 2 == 0) {
+                $class = ' class="altrow"';
+            }
+            $children = 0;
+            $lastUpdatesView = '';
+            if (isset($commentsChildren[$comment['Comment']['id']])) 
+            {
+                $children =  $commentsChildren[$comment['Comment']['id']] ;
+                $lastUpdatesView =  $this->Time->relativeTime($lastUpdates[$comment['Comment']['id']]);
+            } 
+            
+    
+    ?>
+        <tr<?php echo $class;?>>
+            <td>
+            </td>
+            <td class='discussion_title'><?php echo $this->Html->link($comment['Comment']['title'], array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read')); ?></td>
+            <td class='discussion_author'><?php echo $this->Html->div('comment-author', $comment['User']['fullname']);?> </td>
+            <td class='discussion_answers'><?php echo $children;?> </td>
+            <td><?php if(isset($lastAuthor[$comment['Comment']['id']] )) 
+                echo $lastUpdatesView."<br>da<strong> ".$lastAuthor[$comment['Comment']['id']]."</strong>";
+            else
+                echo $this->Time->relativeTime($comment['Comment']['created'])."<br>da<strong> ".$comment['User']['fullname']."</strong>";
+                ?> </td>
+            
+        </tr>
+<?php endforeach; 
+endif;
+?>
+    </table>
 		<div class="paging">
 		<?php echo $this->Paginator->prev('<< ' . __('precedente', true), array(), null, array('class' => 'disabled')); ?>
 	 | 	<?php echo $this->Paginator->numbers(); ?>

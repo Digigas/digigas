@@ -67,7 +67,7 @@ class ForumsController extends AppController {
 		}
 		$forum = $this->Forum->find('first', array(
 				'conditions' => array('Forum.id' => $id, 'Forum.active' => 1, 'Forum.access_level >= ' => $this->Auth->user('role')),
-				'contain' => array('User.fullname')
+				'contain' => array('User.fullname', )
 			));
 
 		if (empty($forum)) {
@@ -82,7 +82,7 @@ class ForumsController extends AppController {
 					'Comment.active' => 1,
 					'Comment.parent_id' => 0),
 				'order' => array('Comment.created DESC'),
-				'contain' => array('User.id', 'User.fullname'),
+				'contain' => array('User.id', 'User.fullname', 'User.username'),
 				'limit' => 25
 			));
 		$comments = $this->paginate($this->Forum->Comment);
@@ -104,6 +104,17 @@ class ForumsController extends AppController {
 		));
 		$lastUpdates = Set::combine($lastUpdates, '{n}.Comment.parent_id', '{n}.0.created');
 
+
+        $lastAuthor = $this->Comment->find('all', array(
+            'conditions' => array('Comment.model' => 'Forum',  'Comment.parent_id' => $commentIds , 'Comment.active' => 1),
+            
+            'fields' => array('Comment.parent_id', 'MAX(Comment.created) as created', 'User.username'),
+            'group' => 'parent_id',
+            'contain' => array('User'),
+            'recursive' => 1
+        ));
+        $lastAuthor = Set::combine($lastAuthor, '{n}.Comment.parent_id', '{n}.User.username');
+
 		$lastMessages = $this->Comment->find('all', array(
 			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $id, 'Comment.active' => 1),
 			'order' => array('Comment.created DESC'),
@@ -111,7 +122,7 @@ class ForumsController extends AppController {
 			'contain' => array('User.fullname')
 		));
 
-		$this->set(compact('forum', 'comments', 'commentsChildren', 'lastUpdates', 'lastMessages'));
+		$this->set(compact('forum', 'comments', 'commentsChildren', 'lastUpdates', 'lastMessages', 'lastAuthor'));
 		$this->set('title_for_layout', 'Forum - ' . $forum['Forum']['name']);
 	}
 
