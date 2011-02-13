@@ -108,12 +108,12 @@ class ForumsController extends AppController {
         $lastAuthor = $this->Comment->find('all', array(
             'conditions' => array('Comment.model' => 'Forum',  'Comment.parent_id' => $commentIds , 'Comment.active' => 1),
             
-            'fields' => array('Comment.parent_id', 'MAX(Comment.created) as created', 'User.username'),
-            'group' => 'parent_id',
+            'fields' => array('Comment.parent_id', 'MAX(Comment.created) as created', 'User.*'),
+            'group' => 'Comment.parent_id',
             'contain' => array('User'),
-            'recursive' => 1
+            'recursive' => 3
         ));
-        $lastAuthor = Set::combine($lastAuthor, '{n}.Comment.parent_id', '{n}.User.username');
+        $lastAuthor = Set::combine($lastAuthor, '{n}.Comment.parent_id', '{n}.User.fullname');
 
 		$lastMessages = $this->Comment->find('all', array(
 			'conditions' => array('Comment.model' => 'Forum', 'Comment.item_id' => $id, 'Comment.active' => 1),
