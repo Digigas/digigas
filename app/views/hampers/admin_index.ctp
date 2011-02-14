@@ -51,7 +51,15 @@
             </td>
             <td><?php echo $hamper['Hamper']['name']; ?>&nbsp;</td>
             <td><?php echo digi_date($hamper['Hamper']['start_date']); ?>&nbsp;</td>
-            <td><?php echo digi_date($hamper['Hamper']['end_date']); ?>&nbsp;</td>
+            <td>
+				<?php
+				if (!date_is_empty($orderedProduct['Hamper']['end_date'])) {
+					echo digi_date($hamper['Hamper']['end_date']);
+				} else {
+					__('Data non assegnata');
+				}
+				?>
+				&nbsp;</td>
             <td class="actions">
                     <?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $hamper['Hamper']['id'])); ?>
                     <?php echo $this->Html->link(__('Dettaglio ordini', true), array('controller' => 'ordered_products', 'action' => 'index_hamper', $hamper['Hamper']['id'])); ?>
