@@ -47,7 +47,7 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(sprintf(__('Edit %s', true), __('Product Category', true)), array('action' => 'edit', $productCategory['ProductCategory']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('Delete %s', true), __('Product Category', true)), array('action' => 'delete', $productCategory['ProductCategory']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $productCategory['ProductCategory']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(sprintf(__('Delete %s', true), __('Product Category', true)), array('action' => 'delete', $productCategory['ProductCategory']['id']), null, sprintf(__('Sei sicuro di voler eliminare la Categoria # %s?', true), $productCategory['ProductCategory']['id'])); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Product Categories', true)), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Product Category', true)), array('action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Products', true)), array('controller' => 'products', 'action' => 'index')); ?> </li>
@@ -97,7 +97,7 @@
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'products', 'action' => 'view', $product['id'])); ?>
 				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'products', 'action' => 'edit', $product['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'products', 'action' => 'delete', $product['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $product['id'])); ?>
+				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'products', 'action' => 'delete', $product['id']), null, sprintf(__('Sei sicuro di voler eliminare il Prodotto # %s?', true), $product['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>

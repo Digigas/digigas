@@ -51,7 +51,7 @@
 <div class="actions">
 	<ul>
 		<li><?php echo $html->link(__('Edit Newscategory', true), array('action'=>'edit', $newscategory['Newscategory']['id'])); ?> </li>
-		<li><?php echo $html->link(__('Delete Newscategory', true), array('action'=>'delete', $newscategory['Newscategory']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $newscategory['Newscategory']['id'])); ?> </li>
+		<li><?php echo $html->link(__('Delete Newscategory', true), array('action'=>'delete', $newscategory['Newscategory']['id']), null, sprintf(__('Sei sicuro di voler eliminare la Categoria # %s?', true), $newscategory['Newscategory']['id'])); ?> </li>
 		<li><?php echo $html->link(__('List Newscategories', true), array('action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New Newscategory', true), array('action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List News', true), array('controller'=> 'news', 'action'=>'index')); ?> </li>
@@ -99,7 +99,7 @@
 			<td class="actions">
 				<?php echo $html->link(__('View', true), array('controller'=> 'news', 'action'=>'view', $news['id'])); ?>
 				<?php echo $html->link(__('Edit', true), array('controller'=> 'news', 'action'=>'edit', $news['id'])); ?>
-				<?php echo $html->link(__('Delete', true), array('controller'=> 'news', 'action'=>'delete', $news['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $news['id'])); ?>
+				<?php echo $html->link(__('Delete', true), array('controller'=> 'news', 'action'=>'delete', $news['id']), null, sprintf(__('Sei sicuro di voler eliminare la News # %s?', true), $news['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>

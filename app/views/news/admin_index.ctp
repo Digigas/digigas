@@ -48,7 +48,7 @@ foreach ($news as $news):
 			<?php echo $this->Html->link(__('Modifica', true), array('action'=>'edit', $news['News']['id'])); ?>
 		</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('Elimina', true), array('action'=>'delete', $news['News']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $news['News']['id'])); ?>
+			<?php echo $this->Html->link(__('Elimina', true), array('action'=>'delete', $news['News']['id']), null, sprintf(__('Sei sicuro di voler eliminare la News # %s?', true), $news['News']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

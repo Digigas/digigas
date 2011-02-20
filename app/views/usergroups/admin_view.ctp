@@ -27,7 +27,7 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(sprintf(__('Edit %s', true), __('Usergroup', true)), array('action' => 'edit', $usergroup['Usergroup']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('Delete %s', true), __('Usergroup', true)), array('action' => 'delete', $usergroup['Usergroup']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $usergroup['Usergroup']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(sprintf(__('Delete %s', true), __('Usergroup', true)), array('action' => 'delete', $usergroup['Usergroup']['id']), null, sprintf(__('Sei sicuro di voler eliminare il Gruppo # %s?', true), $usergroup['Usergroup']['id'])); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Usergroups', true)), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Usergroup', true)), array('action' => 'add')); ?> </li>
 	</ul>

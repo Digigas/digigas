@@ -67,7 +67,7 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(sprintf(__('Edit %s', true), __('Seller', true)), array('action' => 'edit', $seller['Seller']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(sprintf(__('Delete %s', true), __('Seller', true)), array('action' => 'delete', $seller['Seller']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $seller['Seller']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(sprintf(__('Delete %s', true), __('Seller', true)), array('action' => 'delete', $seller['Seller']['id']), null, sprintf(__('Sei sicuro di voler eliminare il Fornitore # %s?', true), $seller['Seller']['id'])); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Sellers', true)), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('New %s', true), __('Seller', true)), array('action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(sprintf(__('List %s', true), __('Hampers', true)), array('controller' => 'hampers', 'action' => 'index')); ?> </li>
@@ -121,7 +121,7 @@
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'hampers', 'action' => 'view', $hamper['id'])); ?>
 				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'hampers', 'action' => 'edit', $hamper['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'hampers', 'action' => 'delete', $hamper['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $hamper['id'])); ?>
+				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'hampers', 'action' => 'delete', $hamper['id']), null, sprintf(__('Sei sicuro di voler eliminare il Paniere # %s?', true), $hamper['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -175,7 +175,7 @@
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'ordered_products', 'action' => 'view', $orderedProduct['id'])); ?>
 				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'ordered_products', 'action' => 'edit', $orderedProduct['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'ordered_products', 'action' => 'delete', $orderedProduct['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $orderedProduct['id'])); ?>
+				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'ordered_products', 'action' => 'delete', $orderedProduct['id']), null, sprintf(__('Sei sicuro di voler eliminare il Prodotto Ordinato # %s?', true), $orderedProduct['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -231,7 +231,7 @@
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'products', 'action' => 'view', $product['id'])); ?>
 				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'products', 'action' => 'edit', $product['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'products', 'action' => 'delete', $product['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $product['id'])); ?>
+				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'products', 'action' => 'delete', $product['id']), null, sprintf(__('Sei sicuro di voler eliminare il Prodotto # %s?', true), $product['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -287,7 +287,7 @@
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'users', 'action' => 'view', $user['id'])); ?>
 				<?php echo $this->Html->link(__('Edit', true), array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>
-				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'users', 'action' => 'delete', $user['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['id'])); ?>
+				<?php echo $this->Html->link(__('Delete', true), array('controller' => 'users', 'action' => 'delete', $user['id']), null, sprintf(__('Sei sicuro di voler eliminare l\'utente # %s?', true), $user['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
