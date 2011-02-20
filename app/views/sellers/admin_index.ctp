@@ -44,5 +44,6 @@
         <li><?php echo $this->Html->link(__('Gestisci i prodotti', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
         <li><?php echo $this->Html->link(__('Nuovo prodotto', true), array('controller' => 'products', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('Gestisci le categorie', true), array('controller' => 'product_categories', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Importa prodotti', true), array('controller' => 'products', 'action' => 'admin_upload')); ?> </li>
     </ul>
 </div>
