@@ -25,7 +25,7 @@
 		<td><?php echo $usergroup['Usergroup']['active']?'si':'no'; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $usergroup['Usergroup']['id'])); ?>
-			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $usergroup['Usergroup']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $usergroup['Usergroup']['id'])); ?>
+			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $usergroup['Usergroup']['id']), null, sprintf(__('Sei sicuro di voler eliminare il Gruppo # %s?', true), $usergroup['Usergroup']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

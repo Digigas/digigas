@@ -34,7 +34,7 @@
 		<td><?php echo $this->Html->link($comment['Comment']['active'] ? 'si' : 'no', array('action' => 'toggle_active', $comment['Comment']['id'])); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Modera', true), array('action' => 'edit', $comment['Comment']['id'])); ?>
-			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $comment['Comment']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $comment['Comment']['id'])); ?>
+			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $comment['Comment']['id']), null, sprintf(__('Sei sicuro di voler eliminare il Commento # %s?', true), $comment['Comment']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

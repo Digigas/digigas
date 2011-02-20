@@ -56,7 +56,7 @@
 <div class="actions">
 	<ul>
 		<li><?php echo $html->link(__('Edit News', true), array('action'=>'edit', $news['News']['id'])); ?> </li>
-		<li><?php echo $html->link(__('Delete News', true), array('action'=>'delete', $news['News']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $news['News']['id'])); ?> </li>
+		<li><?php echo $html->link(__('Delete News', true), array('action'=>'delete', $news['News']['id']), null, sprintf(__('Sei sicuro di voler eliminare la News # %s?', true), $news['News']['id'])); ?> </li>
 		<li><?php echo $html->link(__('List News', true), array('action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New News', true), array('action'=>'add')); ?> </li>
 	</ul>

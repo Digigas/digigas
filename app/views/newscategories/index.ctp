@@ -58,7 +58,7 @@ foreach ($newscategories as $newscategory):
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $newscategory['Newscategory']['id'])); ?>
 			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $newscategory['Newscategory']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $newscategory['Newscategory']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $newscategory['Newscategory']['id'])); ?>
+			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $newscategory['Newscategory']['id']), null, sprintf(__('Sei sicuro di voler eliminare la Categoria # %s?', true), $newscategory['Newscategory']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

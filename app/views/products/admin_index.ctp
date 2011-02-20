@@ -38,7 +38,7 @@
 		</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $product['Product']['id'])); ?>
-			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $product['Product']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $product['Product']['id'])); ?>
+			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $product['Product']['id']), null, sprintf(__('Sei sicuro di voler eliminare il Prodotto # %s?', true), $product['Product']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

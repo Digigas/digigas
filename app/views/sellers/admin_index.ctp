@@ -18,7 +18,7 @@
 		<td class="actions">
             <?php echo $this->Html->link(__('Vedi i prodotti', true), array('controller' => 'products', 'action' => 'index', 'seller' => $seller['Seller']['id'])); ?>
 			<?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $seller['Seller']['id'])); ?>
-			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $seller['Seller']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $seller['Seller']['id'])); ?>
+			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $seller['Seller']['id']), null, sprintf(__('Sei sicuro di voler eliminare il FOrnitore # %s?', true), $seller['Seller']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
