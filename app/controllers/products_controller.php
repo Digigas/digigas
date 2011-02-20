@@ -218,8 +218,9 @@ class ProductsController extends AppController {
 			$this->Session->setFlash(sprintf(__('Id  non valido per il %s', true), 'prodotto'));
 			$this->redirect(array('action'=>'index'));
 		}
+        $seller_id = $this->Product->field('seller_id', array('id' =>$id));
+		
 
-		$seller_id = $this->Product->field('seller_id', $id);
 		if ($this->Product->delete($id)) {
 			$this->Session->setFlash(sprintf(__('%s eliminato', true), 'Prodotto'));
 			$this->redirect(array('action'=>'index', 'seller' => $seller_id));
