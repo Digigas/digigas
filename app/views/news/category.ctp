@@ -20,18 +20,6 @@
         <div class="news-date"><?php echo digi_date($one_news['News']['date_on']); ?></div>
         <h2><?php echo $this->Html->link($one_news['News']['title'], array('action'=>'view', $one_news['News']['id'])); ?></h2>
         <div class="summary"><?php echo $one_news['News']['summary']; ?>
-            <div class="comments-number">
-                <?php
-                    $comment_number = $one_news['Comment']['count'];
-                    if($comment_number)
-                    {
-                        if($comment_number == 1)
-                            echo $comment_number." ".__('commento', true); 
-                        else
-                            echo $comment_number." ".__('commenti', true); 
-                    }
-                ?>
-            </div>
             <span class="news-more">
                     <?php echo $html->link(__('Leggi tutto…', true), array('action'=>'view', $one_news['News']['id'])); ?>
             </span>

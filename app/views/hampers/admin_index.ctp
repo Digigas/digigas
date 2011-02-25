@@ -53,7 +53,7 @@
             <td><?php echo digi_date($hamper['Hamper']['start_date']); ?>&nbsp;</td>
             <td>
 				<?php
-				if (!date_is_empty($orderedProduct['Hamper']['end_date'])) {
+				if (!date_is_empty($hamper['Hamper']['end_date'])) {
 					echo digi_date($hamper['Hamper']['end_date']);
 				} else {
 					__('Data non assegnata');
@@ -63,7 +63,7 @@
             <td class="actions">
                     <?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $hamper['Hamper']['id'])); ?>
                     <?php echo $this->Html->link(__('Dettaglio ordini', true), array('controller' => 'ordered_products', 'action' => 'index_hamper', $hamper['Hamper']['id'])); ?>
-                    <?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $hamper['Hamper']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $hamper['Hamper']['id'])); ?>
+                    <?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $hamper['Hamper']['id']), null, sprintf(__('Sei sicuro di voler eliminare il Paniere # %s?', true), $hamper['Hamper']['id'])); ?>
 			</td>
 			<td class="actions">
 					<?php echo $this->Html->image('oxygen/16x16/mimetypes/pdf.png', array('url' => array('controller' => 'ordered_products', 'action' => 'print_pdf_hamper', $hamper['Hamper']['id']), 'title' => __('PDF', true))); ?>

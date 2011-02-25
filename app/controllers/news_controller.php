@@ -49,19 +49,13 @@ class NewsController extends AppController
             $conditions[] = $this->News->findActive(true);
         }
         $this->paginate = array(
-            'conditions'=>$conditions, 
-            'recursive' => 3,
+            'conditions'=>$conditions,
             'limit'=>5,  
             'order'=>array('News.date_on desc , News.created desc, News.id desc'),
             'contain' => array('Newscategory.id',  'Newscategory.name')
         );
         
         $news = $this->paginate();
-        
-        foreach($news as $key => $new)
-        {
-            $news[$key]['Comment']['count'] = $this->News->find('count', array('recursive' => 0, 'conditions' => array('News.parent_id' => $new['News']['id'])));
-        }
         
         $this->set('news', $news);
         $this->set('title_for_layout', __('News', true).' - '.Configure::read('GAS.name'));
