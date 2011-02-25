@@ -14,7 +14,9 @@ class DynamicCssHelper extends Helper {
 
 		foreach($this->cssParams as $param => $css) {
 			$config = Configure::read($param);
-			$return .= $css['selector'] . "{" . $css['style'] . ": " . $config . "} \n";
+			if(!empty($config)) {
+				$return .= $css['selector'] . "{" . $css['style'] . ": " . $config . "} \n";
+			}
 		}
 
 		return '<style type="text/css">' . $return . '</style>';

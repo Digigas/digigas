@@ -28,7 +28,7 @@ $this->Layout->blockEnd();
 ?>
 
 <div class="hampers view">
-    <h2><?php __('Riepilogo di'); ?> <?php echo $hamper['Hamper']['name']; ?></h2>
+    <h2><?php __('Paniere di'); ?> <?php echo $hamper['Hamper']['name']; ?></h2>
 
     <div class="report">
 		<?php
