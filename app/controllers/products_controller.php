@@ -93,6 +93,105 @@ class ProductsController extends AppController {
 		$this->set(compact('productCategories', 'sellers'));
 	}
 
+    function admin_import() 
+    {
+        
+//         debug($this->data);
+        if($this->data['importable'])
+        {
+            $imported = 0;
+            foreach($this->data['importable'] as $product)
+            {
+                $product = unserialize($product);
+                $seller_id = $product['Product']['seller_id'];
+                $product['Product']['id'] = null;
+                if(!$product['Product']['text'])
+                    $product['Product']['text'] = " ";
+                if(!$product['Product']['show_note'])
+                    $product['Product']['show_note'] = false;
+                
+                debug($product);
+                if(!$product['Product']['product_category_id'])
+                {   
+                    $product_category = $this->Product->ProductCategory->find('first', array('conditions'=> array('name' => $product['ProductCategory']['name']), 'recursive' => -1));
+                    $product_category_id = "";
+                    if($product_category)
+                    {
+                        $product['Product']['product_category_id'] = $product_category['ProductCategory']['id'];
+                    }
+                    else
+                    {
+                        $this->Product->ProductCategory->save(array('id' => null, 'name' => $product['ProductCategory']['name']));
+                        $product['Product']['product_category_id'] = $this->Product->ProductCategory->id;
+                    }
+                    $this->Product->save($product['Product']);
+                }
+                if($this->Product->save($product['Product']))
+                    $imported++;
+            }
+            $this->Session->setFlash("Importati correttamente Nr $imported prodotti");
+        }
+
+        $this->redirect(array('action' => 'index', 'seller' => $seller_id));
+    }
+    
+    function admin_upload() 
+    {
+        App::import('Vendor', 'iofactory', array('file' => 'PHPExcel'.DS.'IOFactory.php'));
+        if (!empty($this->data)) 
+        {
+            
+            if($this->data['Product']['spreadsheet']['tmp_name'])
+            {
+                $objPHPExcel = PHPExcel_IOFactory::load($this->data['Product']['spreadsheet']['tmp_name']);
+                $objPHPExcel->setActiveSheetIndex(0);
+                $counter=2;
+                $seller = $this->Product->Seller->find('first', array('conditions'=> array('id' => $this->data['Product']['seller_id']), 'recursive' => -1));
+
+                $products = array();
+                while($objPHPExcel->getActiveSheet()->getCell("A$counter")->getValue() && $counter < 100)
+                {
+                    $product_category = $this->Product->ProductCategory->find('first', array('conditions'=> array('name' => $objPHPExcel->getActiveSheet()->getCell("C$counter")->getValue()), 'recursive' => -1));
+                    $product_category_id = "";
+                    if($product_category)
+                        $product_category_id = $product_category['ProductCategory']['id'];
+                    $products[] = array(
+                        'Product' => array
+                        (
+                            'name' =>$objPHPExcel->getActiveSheet()->getCell("A$counter")->getValue(),
+                            'code' =>$objPHPExcel->getActiveSheet()->getCell("B$counter")->getValue(),
+                            'seller_id' => $this->data['Product']['seller_id'],
+                            'product_category_id' => $product_category_id,
+                            'weight' =>$objPHPExcel->getActiveSheet()->getCell("D$counter")->getValue(),
+                            'text' =>$objPHPExcel->getActiveSheet()->getCell("E$counter")->getValue(),
+                            'number' =>$objPHPExcel->getActiveSheet()->getCell("F$counter")->getValue(),
+                            'value' =>$objPHPExcel->getActiveSheet()->getCell("G$counter")->getValue(),
+                            'units' =>$objPHPExcel->getActiveSheet()->getCell("H$counter")->getValue(),
+                            'option_1' =>$objPHPExcel->getActiveSheet()->getCell("I$counter")->getValue(),
+                            'option_list_1' =>$objPHPExcel->getActiveSheet()->getCell("J$counter")->getValue(),
+                            'option_2' =>$objPHPExcel->getActiveSheet()->getCell("K$counter")->getValue(),
+                            'option_list_2' =>$objPHPExcel->getActiveSheet()->getCell("L$counter")->getValue(),
+                            'show_note' =>$objPHPExcel->getActiveSheet()->getCell("M$counter")->getValue()
+                        ),
+                        'Seller' => array
+                        (
+                            'name' => $seller['Seller']['name']
+                        ),
+                        'ProductCategory' => array
+                        (
+                            'name' =>$objPHPExcel->getActiveSheet()->getCell("C$counter")->getValue(),
+                            'id' => $product_category_id
+                        )
+                    );
+                    $counter++;
+                }
+            }
+        }
+        $productCategories = $this->Product->ProductCategory->generateTreeList(array(), '{n}.ProductCategory.id', '{n}.ProductCategory.name', ' - ');
+        $sellers = $this->Product->Seller->find('list');
+        $this->set(compact('productCategories', 'sellers', 'products'));
+    }
+
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Prodotto'));
@@ -119,8 +218,9 @@ class ProductsController extends AppController {
 			$this->Session->setFlash(sprintf(__('Id  non valido per il %s', true), 'prodotto'));
 			$this->redirect(array('action'=>'index'));
 		}
+        $seller_id = $this->Product->field('seller_id', array('id' =>$id));
+		
 
-		$seller_id = $this->Product->field('seller_id', $id);
 		if ($this->Product->delete($id)) {
 			$this->Session->setFlash(sprintf(__('%s eliminato', true), 'Prodotto'));
 			$this->redirect(array('action'=>'index', 'seller' => $seller_id));

@@ -1,7 +1,7 @@
 <div class="actions">
 	<ul>
 		<li><?php echo $html->link(__('indietro', true), array('action'=>'index'));?></li>
-        <li><?php echo $html->link(__('elimina', true), array('action'=>'delete', $form->value('Newscategory.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('Newscategory.id'))); ?></li>
+        <li><?php echo $html->link(__('elimina', true), array('action'=>'delete', $form->value('Newscategory.id')), null, sprintf(__('Sei sicuro di voler eliminare la Categoria # %s?', true), $form->value('Newscategory.id'))); ?></li>
 	</ul>
 </div>
 

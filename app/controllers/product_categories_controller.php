@@ -11,20 +11,6 @@ class ProductCategoriesController extends AppController {
         $this->set('activemenu_for_layout', 'products');
 		$this->set('title_for_layout', __('Categorie di prodotti', true));
     }
-
-	function index() {
-		$this->ProductCategory->recursive = 0;
-		$this->set('productCategories', $this->paginate());
-	}
-
-	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(sprintf(__('%s non valida', true), 'Categoria prodotto'));
-			$this->redirect(array('action' => 'index'));
-		}
-        $this->redirect(array('controller' => 'products', 'action' => 'index', $id));
-	}
-
 	
 	function admin_index() {
 		$this->ProductCategory->recursive = 0;

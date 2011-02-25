@@ -24,7 +24,7 @@
 		<td class="actions">
             <?php echo $this->Html->link(__('Copia da questo', true), array('action' => 'copy', $hamper['Hamper']['id'])); ?>
 			<?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $hamper['Hamper']['id'])); ?>
-			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $hamper['Hamper']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $hamper['Hamper']['id'])); ?>
+			<?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $hamper['Hamper']['id']), null, sprintf(__('Sei sicuro di voler eliminare il Paniere # %s?', true), $hamper['Hamper']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

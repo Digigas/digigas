@@ -11,33 +11,11 @@ class NewscategoriesController extends AppController {
 
         return parent::beforeFilter();
     }
-    
-	function index() {
-		$this->Newscategory->recursive = 0;
-                $this->paginate = array('order' => 'lft asc');
-		$this->set('newscategories', $this->paginate());
-	}
-
-	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Categoria News non valida.', true));
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set('newscategory', $this->Newscategory->read(null, $id));
-	}
 
 	function admin_index() {
 		$this->Newscategory->recursive = 0;
                 $this->paginate = array('order' => 'lft asc');
 		$this->set('newscategories', $this->paginate());
-	}
-
-	function admin_view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Categoria news non valida.', true));
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set('newscategory', $this->Newscategory->read(null, $id));
 	}
 
 	function admin_add() {

@@ -55,7 +55,7 @@
     <?php echo $this->Html->link(__('Modifica', true), array('action'=>'edit', $page['Page']['id'])); ?>
             </td>
             <td class="actions">
-    <?php echo $this->Html->link(__('Elimina', true), array('action'=>'delete', $page['Page']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $page['Page']['id'])); ?>
+    <?php echo $this->Html->link(__('Elimina', true), array('action'=>'delete', $page['Page']['id']), null, sprintf(__('Sei sicuro di voler eliminare la Pagina # %s?', true), $page['Page']['id'])); ?>
             </td>
         </tr>
 <?php endforeach; ?>

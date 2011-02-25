@@ -42,7 +42,7 @@ foreach ($newscategories as $newscategory):
             <?php echo $html->link(__('Modifica', true), array('action'=>'edit', $newscategory['Newscategory']['id'])); ?>
         </td>
 		<td class="actions">
-            <?php echo $html->link(__('Elimina', true), array('action'=>'delete', $newscategory['Newscategory']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $newscategory['Newscategory']['id'])); ?>
+            <?php echo $html->link(__('Elimina', true), array('action'=>'delete', $newscategory['Newscategory']['id']), null, sprintf(__('Sei sicuro di voler eliminare la Categoria # %s?', true), $newscategory['Newscategory']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
