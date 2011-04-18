@@ -5,7 +5,7 @@ class AppController extends Controller {
 	var $components = array(
 		'Auth' => array(
 			'loginError' => 'L\'autenticazione è fallita: username o password sbagliate',
-			'authError' => 'Non hai il permesso di accedere a questa pagina. Fatti riconoscere'
+			'authError' => 'Non hai il permesso di accedere a questa pagina. Registrati'
 		),
 		'Session',
 		'Cookie',
