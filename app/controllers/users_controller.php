@@ -3,13 +3,13 @@
 class UsersController extends AppController {
 
     var $name = 'Users';
-	var $paginate = array('order' => array('User.Last_name asc', 'User.first_name Asc'));
+    var $paginate = array('order' => array('User.Last_name asc', 'User.first_name Asc'));
 
     function beforeFilter() {
         parent::beforeFilter();
 
         $this->set('activemenu_for_layout', 'users');
-		$this->set('title_for_layout', __('Utenti', true));
+        $this->set('title_for_layout', __('Utenti', true));
 
         $this->Auth->deny('index', 'edit');
     }
@@ -38,9 +38,9 @@ class UsersController extends AppController {
         $id = $this->_getUserIdOrLogin();
 
         $user = $this->User->find('first', array(
-                'conditions' => array('User.id' => $id),
-                'contain' => array('Seller', 'Usergroup.name')
-            ));
+                    'conditions' => array('User.id' => $id),
+                    'contain' => array('Seller', 'Usergroup.name')
+                ));
 
         $this->set(compact('user'));
         $this->set('title_for_layout', __('Il mio profilo', true) . ' - ' . Configure::read('GAS.name'));
@@ -121,11 +121,11 @@ class UsersController extends AppController {
 
         if (isset($this->params['named']['family'])) {
             $this->paginate = am($this->paginate, array('conditions' => array(
-                'or' => array(
-                    'User.id' => $this->params['named']['family'],
-                    'User.parent_id' => $this->params['named']['family']
-                )),
-                'order' => 'User.parent_id asc'));
+                            'or' => array(
+                                'User.id' => $this->params['named']['family'],
+                                'User.parent_id' => $this->params['named']['family']
+                        )),
+                        'order' => 'User.parent_id asc'));
         }
 
         $fathers = $this->User->getFathers('list');
@@ -137,7 +137,7 @@ class UsersController extends AppController {
 
         $familiesCount = $this->User->find('count', array('conditions' => array('User.parent_id' => null)));
 
-        $this->set(compact('users', 'familiesCount','fathers'));
+        $this->set(compact('users', 'familiesCount', 'fathers'));
     }
 
     function admin_search($key = false) {
@@ -153,16 +153,16 @@ class UsersController extends AppController {
 
         $key = low(Inflector::humanize($key));
         $users = $this->User->find('all', array(
-                'conditions' => array(
-                    'or' => array(
-                        'first_name LIKE ' => '%' . $key . '%',
-                        'last_name LIKE ' => '%' . $key . '%',
-                        'username LIKE ' => '%' . $key . '%',
-                        'email LIKE ' => '%' . $key . '%',
-                    )
-                ),
-                'recursive' => -1
-            ));
+                    'conditions' => array(
+                        'or' => array(
+                            'first_name LIKE ' => '%' . $key . '%',
+                            'last_name LIKE ' => '%' . $key . '%',
+                            'username LIKE ' => '%' . $key . '%',
+                            'email LIKE ' => '%' . $key . '%',
+                        )
+                    ),
+                    'recursive' => -1
+                ));
 
         $fathers = $this->User->getFathers('list');
 
@@ -171,14 +171,21 @@ class UsersController extends AppController {
 
     function admin_add() {
         if (!empty($this->data)) {
+            if ($this->data['User']['parent_id']) {
+                $this->data['User']['mouths_to_feed'] = 0;
+            } else {
+                if($this->data['User']['mouths_to_feed']<1)
+                    $this->data['User']['mouths_to_feed'] = 1;
+            }
+
             $this->User->create();
             if ($this->User->save($this->data)) {
 
-				//mando una mail di notifica all'utente
-				$this->User->recursive = -1;
-				$user = $this->User->read(null, $this->User->id);
-				$users = array($user);
-				$this->_send_users_notification($users);
+                //mando una mail di notifica all'utente
+                $this->User->recursive = -1;
+                $user = $this->User->read(null, $this->User->id);
+                $users = array($user);
+                $this->_send_users_notification($users);
 
                 $this->Session->setFlash(sprintf(__("L'%s è stata salvato", true), 'utente'));
                 $this->redirect(array('action' => 'index'));
@@ -201,12 +208,12 @@ class UsersController extends AppController {
             $this->User->create();
             if ($this->User->save($this->data)) {
 
-				//mando una mail di notifica all'utente
-				$this->User->recursive = -1;
-				$user = $this->User->read(null, $this->User->id);
-				$users = array($user);
-				$this->_send_users_notification($users);
-				
+                //mando una mail di notifica all'utente
+                $this->User->recursive = -1;
+                $user = $this->User->read(null, $this->User->id);
+                $users = array($user);
+                $this->_send_users_notification($users);
+
                 $this->Session->setFlash(sprintf(__("L'%s è stata salvato", true), 'utente'));
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -214,11 +221,11 @@ class UsersController extends AppController {
             }
         }
 
-		$families = $this->User->find('list', array('conditions' => array('User.parent_id' => null), 'order' => 'User.last_name asc'));
+        $families = $this->User->find('list', array('conditions' => array('User.parent_id' => null), 'order' => 'User.last_name asc'));
 
         $usergroups = $this->User->Usergroup->generatetreelist(array('Usergroup.active' => 1), '{n}.Usergroup.id', '{n}.Usergroup.name', ' - ');
 
-		$sellers = $this->User->Seller->find('list');
+        $sellers = $this->User->Seller->find('list');
 
         $this->set(compact('families', 'usergroups', 'sellers'));
     }
@@ -229,6 +236,12 @@ class UsersController extends AppController {
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->data)) {
+           if ($this->data['User']['parent_id']) {
+                $this->data['User']['mouths_to_feed'] = 0;
+            } else {
+                if($this->data['User']['mouths_to_feed']<1)
+                    $this->data['User']['mouths_to_feed'] = 1;
+            }
             if ($this->User->save($this->data)) {
                 $this->Session->setFlash(sprintf(__("L'%s è stata salvato", true), 'utente'));
                 $this->redirect(array('action' => 'index'));
@@ -240,7 +253,7 @@ class UsersController extends AppController {
         }
 
         $userChildren = $this->User->find('count', array('conditions' => array('User.parent_id' => $this->data['User']['id'])));
-        if($userChildren == 0) {
+        if ($userChildren == 0) {
             //l'utente non è un capofamiglia
             $families = $this->User->find('list', array('conditions' => array('User.parent_id' => null), 'order' => 'User.last_name asc'));
         } else {
@@ -255,8 +268,8 @@ class UsersController extends AppController {
         $this->set(compact('families', 'roles', 'usergroups'));
 
         if ($this->data['User']['role'] == 2) {
-			$sellers = $this->User->Seller->find('list');
-			$this->set('sellers', $sellers);
+            $sellers = $this->User->Seller->find('list');
+            $this->set('sellers', $sellers);
 
             $this->render('admin_editseller');
         }
@@ -289,12 +302,12 @@ class UsersController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
-	function _send_users_notification($users) {
-		if(!$users) {
-			return false;
-		}
-		
-		foreach ($users as $user) {
+    function _send_users_notification($users) {
+        if (!$users) {
+            return false;
+        }
+
+        foreach ($users as $user) {
             $this->Email->reset();
 
             $this->Email->to = $user['User']['email'];
@@ -316,8 +329,7 @@ class UsersController extends AppController {
         } else {
             $this->Session->setFlash(__('Si sono verificati degli errori nell\'invio delle email', true));
         }
-	}
+    }
 
 }
-
 ?>

@@ -53,6 +53,7 @@ if(isset($role)) {
             <th><?php echo $this->Paginator->sort(__('Tipo', true), 'role');?></th>
             <th><?php echo $this->Paginator->sort(__('Attivo', true), 'active');?></th>
             <th><?php echo $this->Html->link(__('Famiglia', true), array('fathers' => true));?></th>
+            <th><?php echo $this->Paginator->sort(__('Componenti', true), 'mouths_to_feed');?></th>
             <th class="actions"><?php __('Azioni');?></th>
         </tr>
         <?php
@@ -84,6 +85,7 @@ if(isset($role)) {
                 }
                 ?>
             </td>
+            <td><?php echo $user['User']['mouths_to_feed']; ?>&nbsp;</td>
             <td class="actions">
                 <?php echo $this->Html->link(__('Modifica', true), array('action' => 'edit', $user['User']['id'])); ?>
                 <?php echo $this->Html->link(__('Elimina', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Sei sicuro di voler eliminare l\'utente # %s?', true), $user['User']['id'])); ?>
