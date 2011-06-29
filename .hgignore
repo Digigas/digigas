@@ -1,0 +1,14 @@
+syntax: glob
+
+\.orig$
+\.orig\..*$
+\.chg\..*$
+\.rej$
+\.conflict\~$
+*~
+**.DS_Store
+app/tmp
+app/webroot/documents
+app/webroot/img/imagecache
+app/config/database.php
+nbproject
