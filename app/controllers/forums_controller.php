@@ -116,36 +116,38 @@ class ForumsController extends AppController {
 	}
 
 	function view_topic($id) {
-		$topic = $this->Comment->find('first', array(
-				'conditions' => array('Comment.id' => $id, 'Comment.active' => 1),
-				'contain' => array('User')
-			));
-		if (!empty($topic)) {
-			$forum = $this->Forum->find('first', array(
-					'conditions' => array('Forum.id' => $topic['Comment']['item_id'], 'Forum.active' => 1, 'Forum.access_level >= ' => $this->Auth->user('role')),
-					'fields' => array('Forum.id', 'Forum.name'),
-					'contain' => array()
-				));
 
-			//forum non attivo o utente non autenticato
-			if (empty($forum)) {
-				$this->Session->setFlash(__('Non puoi accedere a questa discussione', true));
-				$this->redirect(array('action' => 'index'));
-			}
+            $topic = $this->Comment->find('first', array(
+                            'conditions' => array('Comment.id' => $id, 'Comment.active' => 1),
+                            'contain' => array('User')
+                    ));
+            
+            if (!empty($topic)) {
+                $forum = $this->Forum->find('first', array(
+                        'conditions' => array('Forum.id' => $topic['Comment']['item_id'], 'Forum.active' => 1, 'Forum.access_level >= ' => $this->Auth->user('role')),
+                        'fields' => array('Forum.id', 'Forum.name'),
+                        'contain' => array()
+                ));
 
-			$this->paginate = array('Comment' => array(
-					'conditions' => array('Comment.parent_id' => $id, 'Comment.active' => 1),
-					'order' => array('Comment.created ASC'),
-					'limit' => 25
-				));
-			$comments = $this->paginate($this->Comment);
+                //forum non attivo o utente non autenticato
+                if (empty($forum)) {
+                        $this->Session->setFlash(__('Non puoi accedere a questa discussione', true));
+                        $this->redirect(array('action' => 'index'));
+                }
 
-			$this->set(compact('forum', 'topic', 'comments'));
-		} else {
-			//topic non attivo
-			$this->Session->setFlash(__('Non puoi accedere a questa discussione', true));
-			$this->redirect(array('action' => 'index'));
-		}
+                $this->paginate = array('Comment' => array(
+                                'conditions' => array('Comment.parent_id' => $id, 'Comment.active' => 1),
+                                'order' => array('Comment.created ASC'),
+                                'limit' => 25
+                        ));
+                $comments = $this->paginate($this->Comment);
+
+                $this->set(compact('forum', 'topic', 'comments'));
+            } else {
+                //topic non attivo
+                $this->Session->setFlash(__('Non puoi accedere a questa discussione', true));
+                $this->redirect(array('action' => 'index'));
+            }
 	}
 
 	function admin_index() {

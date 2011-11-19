@@ -528,22 +528,19 @@ dl
 
 .comments
 {
-    clear:both;
+    
 }
 .comment
 {
-    clear:both;
-	margin:0;
-    padding: 0 10px 5px 10px;
-    height:auto;
-    overflow:hidden;
+    position: relative;
 }
-.comment.alt
+.comment .alt
 {
     background:#f0f0f0;
 }
 .comment .comment-author,
-.comment .comment-date
+.comment .comment-date,
+.comment .comment-number
 {
     float:left;
     font-size:10px;
@@ -552,7 +549,15 @@ dl
 .comment .comment-author
 {
     color: #62AF56;
+    font-weight: bold;
 }
+
+.comment .comment-number
+{
+    color: #62AF56;
+    font-weight: bold;
+}
+
 .comment .comment-date
 {
     color: #f90;
@@ -568,6 +573,18 @@ dl
     clear:right;
     float:right;
     font-size:10px;
+}
+
+.comment .comment-body
+{
+    border-top: 1px dotted lightgray;
+    padding-top: 5px;
+    clear: left;
+}
+
+.comment .comment-text
+{
+    
 }
 .comment .comment-text,
 .comment .comment-title
@@ -639,13 +656,42 @@ dl
     padding:0;
 }
 
-.comment.comment-topic
+.comments .paging
 {
-    position:relative;
-	padding-top:5px;
-    padding-bottom:25px;
-    border-bottom:1px solid #62AF56;
+    text-align: right;
 }
+
+.avatar
+{
+    left: 0;
+    position: absolute;
+    background: #8a8;
+    
+}
+.comment .comment-topic
+{
+    
+    margin-left: 60px;
+    margin-top: 20px;
+    
+/*     border: 1px solid #62AF56;*/
+    border: 1px solid #ccc;
+/*    padding-bottom:25px;*/
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    
+}
+
+.comment .comment-topic.first
+{
+    background:  #F0F0F0;
+    border-left:5px solid #f90;
+
+}
+
 .comment.comment-topic a.read
 {
     position:absolute;
@@ -668,21 +714,26 @@ dl
 	color:#fff;
 }
 
+.comment .edit {
+
+    
+   padding-bottom: 3px;
+   padding-top: 10px;
+   text-align: right;
+   margin-right: -10px;
+}
+
 .comment .edit a {
-    position:absolute;
-    bottom:0;
-    left:0;
-    display:block;
-    float:right;
-    padding:3px 8px;
-    color:#fff;
     background: #ccc;
+    padding: 3px 8px;;
+    color:#fff;
     text-decoration:none;
-    border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
     font-size:10px;
     font-weight:normal;
+    border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+
 }
 
 .comment.topic
