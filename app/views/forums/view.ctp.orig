@@ -9,10 +9,10 @@
 	<table cellpadding="0" cellspacing="0">
         <tr>
             <th></th>
-            <th><?php echo $this->Paginator->sort(__('Oggetto', true), 'title');?></th>
-            <th><?php echo $this->Paginator->sort(__('Aperta da', true), 'user_id');?></th>
-            <th><?php echo $this->Paginator->sort(__('Risposte', true), '');?></th>
-            <th><?php echo $this->Paginator->sort(__('Ultimo commento', true), 'created');?></th>
+            <th><?php echo $this->Paginator->sort(__('Oggetto', true), 'username');?></th>
+            <th><?php echo $this->Paginator->sort(__('Aperta da', true), 'email');?></th>
+            <th><?php echo $this->Paginator->sort(__('Risposte', true), 'role');?></th>
+            <th><?php echo $this->Paginator->sort(__('Ultimo commento', true), 'active');?></th>
         </tr>
         <?php
         $i = 0;

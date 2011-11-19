@@ -110,7 +110,7 @@ class ProductsController extends AppController {
                 if(!$product['Product']['show_note'])
                     $product['Product']['show_note'] = false;
                 
-                debug($product);
+                //debug($product);
                 if(!$product['Product']['product_category_id'])
                 {   
                     $product_category = $this->Product->ProductCategory->find('first', array('conditions'=> array('name' => $product['ProductCategory']['name']), 'recursive' => -1));

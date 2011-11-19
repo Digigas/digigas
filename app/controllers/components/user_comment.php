@@ -9,22 +9,23 @@ class UserCommentComponent extends Object {
 
 	//called after Controller::beforeFilter()
 	function startup(&$controller) {
-		if(!empty($controller->data)
-			&& isset($controller->data['Comment'])) {
-			$url = '/' . $controller->params['url']['url'];
-			$controller->data['Comment']['url'] = $url;
-			$model = $controller->data['Comment']['model'];
-			if(in_array($model, $controller->modelNames)) {
-				if($controller->{$model}->saveComment($controller->data)) {
-					$controller->redirect($url);
-				} else {
-					$controller->Session->setFlash(__('Si è verificato un errore.', true));
-				}
-			}
-			else {
-				$controller->Session->setFlash(__('Non cercare di imbrogliarmi.', true));
-			}
-		}
+            if(!empty($controller->data)
+                && isset($controller->data['Comment'])) {
+                $url = '/' . $controller->params['url']['url'];
+                $controller->data['Comment']['url'] = $url;
+                $model = $controller->data['Comment']['model'];
+                if(in_array($model, $controller->modelNames)) {
+                    if($controller->{$model}->saveComment($controller->data)) {
+                            $comment_id = $controller->{$model}->Comment->getInsertID();
+                            $controller->redirect($url.'#'.$comment_id);
+                    } else {
+                            $controller->Session->setFlash(__('Si è verificato un errore.', true));
+                    }
+                }
+                else {
+                    $controller->Session->setFlash(__('Non cercare di imbrogliarmi.', true));
+                }
+            }
 	}
 
 	//called after Controller::beforeRender()
