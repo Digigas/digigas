@@ -129,7 +129,7 @@ class OrderedProduct extends AppModel {
 
     function getUserOrder($user) {
         $userOrder = $this->find('all', array(
-            'conditions' => array('retired' => '0', 'user_id' => $user['User']['id']),
+            'conditions' => array('retired' => '0', 'OrderedProduct.user_id' => $user['User']['id']),
             'contain' => array(
                 'Product',
                 'Seller'=> array('fields' => array('name')),
@@ -217,7 +217,7 @@ class OrderedProduct extends AppModel {
 	//restiruisce i prodotti pendenti per utente
     function getPendingForUser($user_id) {
         $pendings = $this->find('all', array(
-            'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
+            'conditions' => array('OrderedProduct.user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
@@ -326,7 +326,7 @@ class OrderedProduct extends AppModel {
 
     function updateMoneyBox($direction, $value, $user_id, $ordered_product_id, $message = 'null') {
         $data = array('MoneyBox' => array(
-            'user_id' => $user_id,
+            'OrderedProduct.user_id' => $user_id,
             'ordered_product_id' => $ordered_product_id,
             'text' => $message
         ));

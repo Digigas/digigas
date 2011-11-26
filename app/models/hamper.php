@@ -12,6 +12,7 @@ class Hamper extends AppModel {
 			'fields' => '',
 			'order' => ''
 		)
+
 	);
 
     var $hasMany = array(
@@ -42,7 +43,7 @@ class Hamper extends AppModel {
         'end_date' => array('rule' => 'notEmpty', 'on' => 'create')
     );
 
-    var $actsAs = array('Containable', 'Commentable');
+    var $actsAs = array('Containable', 'Commentable' => array('forumName' => 'Panieri'));
 
 	function beforeFind($queryData) {
 		if(Configure::read('ReferentUser.allowed_sellers')) {
