@@ -22,7 +22,7 @@ class OrderedProductsController extends AppController {
         $user = $this->Auth->user();
         $this->paginate = array(
             'conditions' => array(
-                'user_id' => $user['User']['id']),
+                'OrderedProduct.user_id' => $user['User']['id']),
             'order' => array(
                 'OrderedProduct.created desc'
             ));
@@ -452,7 +452,7 @@ class OrderedProductsController extends AppController {
 
         //dati dell'ordine
         $orderedProducts = $this->OrderedProduct->find('all', array(
-            'conditions' => array('user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
+            'conditions' => array('OrderedProduct.user_id' => $user_id, 'or' => array('paid' => 0, 'retired' => 0)),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
                 'Seller' => array('fields' => array('id', 'name')),
@@ -841,7 +841,7 @@ class OrderedProductsController extends AppController {
                 'conditions' => array
                 (
                     'OrderedProduct.hamper_id' => $hamper_id, 
-                    'user_id' => $user['User']['id'],
+                    'OrderedProduct.user_id' => $user['User']['id'],
                     'OrderedProduct.product_id' => $product['Product']['id'], 
                     'OrderedProduct.option_1' => $product['OrderedProduct']['option_1'],
                     'OrderedProduct.option_2' => $product['OrderedProduct']['option_2']

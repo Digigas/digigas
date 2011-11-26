@@ -57,7 +57,24 @@ class ForumsController extends AppController {
 			'contain' => array('User.fullname')
 		));
 
-		$this->set(compact('forums', 'conversationCount', 'messagesCount', 'lastUpdates', 'lastMessages'));
+                # Altri Commentables
+
+                $commentables = array('Hamper', 'Product');
+
+                $commentableStats = $this->Comment->find('all', array(
+                        'conditions' => array('Comment.model' => $commentables, 'Comment.active' => 1),
+                        'fields' => array('Comment.model', 'count(DISTINCT item_id) as conversations', 'count(id) as messages', 'MAX(created) as created'),
+                        'group' => 'Comment.model',
+                        'recursive' => -1
+                    ));
+                
+                $commentableStats = Set::combine($commentableStats, '{n}.Comment.model', '{n}.0');
+                foreach($commentables as $commentable) {
+                    $this->loadModel($commentable);
+                    $commentableStats[$commentable]['forumName'] = $this->{$commentable}->getForumName();
+                }
+                
+                $this->set(compact('forums', 'conversationCount', 'messagesCount', 'lastUpdates', 'lastMessages','commentables', 'commentableStats'));
 	}
 
 	function view($id = null) {
@@ -113,6 +130,36 @@ class ForumsController extends AppController {
 
 		$this->set(compact('forum', 'comments', 'commentsChildren', 'lastUpdates', 'lastMessages'));
 		$this->set('title_for_layout', 'Forum - ' . $forum['Forum']['name']);
+	}
+
+        function threadIndex($model = null) {
+		if (!$model) {
+			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Forum'));
+			$this->redirect(array('action' => 'index'));
+		}
+
+                $this->loadModel($model);
+                $this->paginate = array($model => array(
+                        'fields' => array($model.'.*',$model.'.name', "CONCAT(LastUser.first_name, ' ', LastUser.last_name) AS LastUser__fullname", "CONCAT(User.first_name, ' ', User.last_name) AS User__fullname"),
+                        'contain' => array('LastUser', 'LastComment.created', 'User' ),
+                        'order' => 'LastComment.created DESC',
+                        'recursive' => 1
+                    )
+                );
+                $threads = $this->paginate($model);
+               
+		$commentIds = Set::extract("/$model/id", $threads);
+                
+                
+		$lastMessages = $this->Comment->find('all', array(
+			'conditions' => array('Comment.model' => $model, 'Comment.active' => 1),
+                        'order' => array('Comment.created DESC'),
+			'limit' => 10,
+			'contain' => array('User.fullname')
+		));
+                $forumName = $this->{$model}->getForumName();
+		$this->set(compact('threads', 'lastMessages',  'model', 'forumName'));
+		$this->set('title_for_layout',  $this->{$model}->getForumName());
 	}
 
 	function view_topic($id) {

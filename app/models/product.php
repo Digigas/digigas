@@ -47,7 +47,7 @@ class Product extends AppModel {
 		'number' => array('numeric')
     );
 
-    var $actsAs = array('Containable', 'Commentable', 'MultipleUpload' =>
+    var $actsAs = array('Containable', 'Commentable' => array('forumName' => 'Prodotti'), 'MultipleUpload' =>
                             array(
                                 'image' => array(
                                     'field' => 'image',
@@ -71,11 +71,15 @@ class Product extends AppModel {
 	}
 
     function beforeSave() {
-		$number = str_replace(',', '.', $this->data['Product']['number']);
-        $this->data['Product']['number'] = $number;
+        if(isset($this->data['Product']['number'])) {
+            $number = str_replace(',', '.', $this->data['Product']['number']);
+            $this->data['Product']['number'] = $number;
+        }
 
-        $value = str_replace(',', '.', $this->data['Product']['value']);
-        $this->data['Product']['value'] = $value;
+        if(isset($this->data['Product']['value'])) {
+            $value = str_replace(',', '.', $this->data['Product']['value']);
+            $this->data['Product']['value'] = $value;
+        }
         return parent::beforeSave();
     }
     

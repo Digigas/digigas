@@ -44,9 +44,33 @@ $this->Layout->blockEnd();
 		<h3 class="forum-title"><?php echo $this->Html->link($forum['Forum']['name'], array('controller' => 'forums', 'action' => 'view', $forum['Forum']['id'])); ?>&nbsp;</h3>
 		<div class="description"><?php echo $forum['Forum']['text']; ?></div>
 	</div>
-<?php endforeach; ?>
-	
-	<p>
+        <?php endforeach; ?>
+
+        <?php
+	$i = 0;
+	foreach ($commentables as $commentable):
+		$class = null;
+		if ($i++ % 2 == 0) {
+			$class = ' altrow';
+		}
+	?>
+	<div class="forum <?php echo $commentable;?>">
+
+                <div class="forum-messages">
+                        <?php echo $commentableStats[$commentable]['messages']; ?> <?php __('messaggi in'); ?>
+                        <?php echo $commentableStats[$commentable]['conversations']; ?> <?php __('conversazioni'); ?>
+                </div>
+                <div class="forum-lastupdate">
+                        <?php __('Aggiornato a'); ?> <?php echo $this->Time->relativeTime($commentableStats[$commentable]['created']); ?>
+                </div>
+
+
+		<h3 class="forum-title"><?php echo $this->Html->link($commentableStats[$commentable]['forumName'], array('controller' => 'forums', 'action' => 'threadIndex', $commentable)); ?>&nbsp;</h3>
+		<div class="description"><?php echo '' ?></div>
+	</div>
+        <?php endforeach; ?>
+
+		<p>
 	<?php
 	echo $this->Paginator->counter(array(
 	'format' => __('Pagina %page% di %pages%', true)
