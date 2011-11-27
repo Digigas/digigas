@@ -36,7 +36,7 @@
         <tr<?php echo $class;?>>
             <td>
             </td>
-            <td class='discussion_title'><?php echo $this->Html->link($thread[$model]['name'], array('controller' => Inflector::pluralize($model), 'page' => 'last', '#' => $thread[$model]['last_comment_id'],  'action' => 'view', $thread[$model]['id']), array('class' => 'read')); ?></td>
+            <td class='discussion_title'><?php echo $this->Html->link($thread[$model]['displayField'], array('controller' => Inflector::pluralize($model), 'page' => 'last', '#' => $thread[$model]['last_comment_id'],  'action' => 'view', $thread[$model]['id']), array('class' => 'read')); ?></td>
             <td class='discussion_author'><?php echo $this->Html->div('comment-author', $thread['User']['fullname']);?> </td>
             <td class='discussion_answers'><?php echo $thread[$model]['comments_count'];?> </td>
             <td>
