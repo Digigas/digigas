@@ -47,12 +47,18 @@ $this->Layout->blockEnd();
         <?php endforeach; ?>
 
         <?php
+           
 	$i = 0;
 	foreach ($commentables as $commentable):
+         
 		$class = null;
 		if ($i++ % 2 == 0) {
 			$class = ' altrow';
 		}
+                if(!isset($commentableStats[$commentable]['messages']))
+                    $commentableStats[$commentable]['messages'] = 0;
+                if(!isset($commentableStats[$commentable]['conversations']))
+                    $commentableStats[$commentable]['conversations'] = 0;
 	?>
 	<div class="forum <?php echo $commentable;?>">
 
@@ -61,7 +67,12 @@ $this->Layout->blockEnd();
                         <?php echo $commentableStats[$commentable]['conversations']; ?> <?php __('conversazioni'); ?>
                 </div>
                 <div class="forum-lastupdate">
-                        <?php __('Aggiornato a'); ?> <?php echo $this->Time->relativeTime($commentableStats[$commentable]['created']); ?>
+                    <?php 
+                    if(isset($commentableStats[$commentable]['created']))
+                    {
+                        __('Aggiornato a'); ?> <?php echo $this->Time->RelativeTime($commentableStats[$commentable]['created']); 
+                    }?>
+
                 </div>
 
 
