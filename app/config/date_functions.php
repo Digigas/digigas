@@ -234,3 +234,37 @@ function date_is_empty($date) {
 function monthToString($monthNumber) {
 	return date_translate('F', strtotime('1970-' . str_pad($monthNumber, 2, '0', STR_PAD_LEFT) . '-01'));
 }
+
+function plural($per, $num) {
+    $r = $per;
+    if ($num == 1)
+    {
+        switch($per) {
+            case  "secondi":  $r = "secondo"; break;
+            case  "minuti":  $r = "minuto"; break;
+            case  "ore":  $r = "ora"; break;
+            case  "giorni":  $r = "giorno"; break;
+            case  "settimane":  $r = "settimana"; break;
+         }
+        return " ".$r;
+    }
+}
+
+function getRelativeTime($date) {
+    $diff = time() - strtotime($date);
+    if ($diff<60)
+        return $diff . plural("secondi", $diff) . " fa";
+    $diff = round($diff/60);
+    if ($diff<60)
+        return $diff . plural("minuti", $diff) . " fa";
+    $diff = round($diff/60);
+    if ($diff<24)
+        return $diff . plural("ore", $diff) . " fa";
+    $diff = round($diff/24);
+    if ($diff<7)
+        return $diff.plural("giorni", $diff) . " fa";
+    $diff = round($diff/7);
+    if ($diff<4)
+        return $diff.plural("settimane", $diff) . " fa";
+return "il " .digi_date($date);
+}

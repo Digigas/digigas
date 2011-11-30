@@ -12,13 +12,17 @@
 				<?php echo $this->Html->image('oxygen/16x16/mimetypes/pdf.png'); ?>
 				<?php __('Salva in PDF'); ?>
             </a></li>
-		<li><a href="<?php echo $this->Html->url(array('controller' => 'ordered_products', 'action' => 'print_excel_hamper', $hamper['Hamper']['id'])); ?>">
-				<?php echo $this->Html->image('oxygen/16x16/mimetypes/application_vnd.ms_excel.png'); ?>
-				<?php __('Salva in Excel'); ?>
+
+	<li><a href="<?php echo $this->Html->url(array('controller' => 'ordered_products', 'action' => 'print_pdf_hamper', $hamper['Hamper']['id'])); ?>">
+				<?php echo $this->Html->image('oxygen/16x16/mimetypes/pdf.png'); ?>
+				<?php __('Salva in PDF'); ?>
             </a></li>
 		<li><?php
 				echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
-				echo $this->Html->link(__('email algli utenti', true), array('action' => 'admin_mail_hamper_to_users', $hamper['Hamper']['id'])); ?></li>
+				echo $this->Html->link(__('email agli utenti', true), array('action' => 'admin_mail_hamper_to_users', $hamper['Hamper']['id'])); ?></li>
+                <li><?php
+				echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
+				echo $this->Html->link(__('PDF agli utenti', true), array('controller' => 'hampers',  'action' => 'admin_mail_to_users', $hamper['Hamper']['id'])); ?></li>
 		</ul>
 	</div>
 

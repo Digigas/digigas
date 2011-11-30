@@ -34,6 +34,7 @@
     ?>
         <tr<?php echo $class;?>>
             <td>
+                <?php echo $this->Html->image('oxygen/16x16/actions/'.$comment['Comment']['status'].'.png'); // $thread[$model]['status'];?>
             </td>
             <td class='discussion_title'><?php echo $this->Html->link($comment['Comment']['title'], array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read')); ?></td>
             <td class='discussion_author'><?php echo $this->Html->div('comment-author', $comment['User']['fullname']);?> </td>

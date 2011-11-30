@@ -665,9 +665,28 @@ dl
 {
     left: 0;
     position: absolute;
-    background: #8a8;
+    background: #bbb;
+    border: 1px solid #ccc;
     
 }
+
+.user_0 {  background: #aaa; }
+.user_1 {  background: #c77; }
+.user_2 {  background: #77c; }
+.user_3 {  background: #7c7; }
+.user_4 {  background: #7cc; }
+.user_5 {  background: #c7c; }
+.user_6 {  background: #7c7; }
+.user_7 {  background: #62AF56; }
+.user_8 {  background: black; }
+.user_9 {  background: red; }
+.user_10 {  background: red; }
+.user_11 {  background: red; }
+.user_12 {  background: red; }
+.user_13 {  background: red; }
+.user_14 {  background: red; }
+.user_15 {  background: red; }
+
 .comment .comment-topic
 {
     

@@ -23,7 +23,7 @@ class OrderedProduct extends AppModel {
                 'foreignKey' => 'product_id',
                 'conditions' => '',
                 'fields' => '',
-                'order' => ''
+                'order' => 'product_category_id'
         ),
         'Hamper' => array(
                 'className' => 'Hamper',

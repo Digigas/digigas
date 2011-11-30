@@ -46,7 +46,6 @@ class UserCommentHelper extends Helper {
         $return = '';
         
         if(!empty($data)) {
-
             if($paginate) {
                 //paginator
                 $return .= $this->Html->div('paging', $this->Html->tag('p', $this->Paginator->counter(array(
@@ -55,7 +54,8 @@ class UserCommentHelper extends Helper {
             }
 
             $i = $this->params['paging']['Comment']['options']['limit']*($this->params['paging']['Comment']['options']['page']-1);
-
+            $colorIndex=0;
+            $userColors = array();
             foreach ($data as $comment) {
                 $class = null;
                 if ($i++ % 2 == 1) {
@@ -66,7 +66,7 @@ class UserCommentHelper extends Helper {
 
                 if (isset($comment['User'])) {
                         $author = $this->Html->div('comment-author', $comment['User']['fullname']);
-                        if($this->user_can_edit($comment['Comment']['user_id'])) {
+                            if($this->user_can_edit($comment['Comment']['user_id'])) {
                                 $editComment = true;
                         }
                 } else {
@@ -78,6 +78,17 @@ class UserCommentHelper extends Helper {
                 } else {
                         $editComment = '';
                 }
+               
+//
+//                if(isset($userColors[$comment['Comment']['user_id']])) {
+//                    $color = $userColors[$comment['Comment']['user_id']];
+//                }
+//                else {
+//                    $color = "user_".++$colorIndex;
+//                    $userColors[$comment['Comment']['user_id']] = $color;
+//                }
+
+                $color = '';
 
                 $date = $this->Html->div('comment-date', digi_date($comment['Comment']['created']));
                 $text = $this->Html->div('comment-body', $comment['Comment']['text']);
@@ -85,7 +96,7 @@ class UserCommentHelper extends Helper {
                 $number = $this->Paginator->link('# '.$i, array('#' => $comment['Comment']['id']));
                 $number = $this->Html->div('comment-number', $number);
                 $meta =  $this->Html->tag('span', $number.$author.$date, array('class' => 'comment-metadata'));
-                $avatar = $this->Html->image('avatars/empty.png', array('class'=>'avatar'));
+                $avatar = $this->Html->image('avatars/empty.png', array('class'=>"avatar $color"));
                 $comment_topic = $this->Html->div('comment-topic' . $class, $meta.$text.$editComment  );
                 $return .= $this->Paginator->link('', '', array( 'name'=> $comment['Comment']['id']));
                 $return .= $this->Html->div('comment', $avatar.$comment_topic );
