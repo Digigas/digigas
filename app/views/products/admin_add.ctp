@@ -14,10 +14,11 @@
 		echo $this->Form->input('number', array('label' => __('Unità minima di prodotto (se non sai come usarlo, lascia il valore 1)', true), 'value' => 1));
 		echo $this->Form->input('value', array('label' => __('Prezzo &euro; per unità', true)));
 		echo $this->Form->input('units', array('label' => __('Unità di misura per l\'acquisto', true), 'options' => Configure::read('Product.units')));
-        echo $this->Form->input('option_1', array('label' => __('Opzioni 1: etichetta', true)));
-        echo $this->Form->input('option_list_1', array('label' => __("Opzioni 1: elenco opzioni (separate da ';')", true)));
-        echo $this->Form->input('option_2', array('label' => __('Opzioni 2: etichetta', true)));
-        echo $this->Form->input('option_list_2', array('label' => __("Opzioni 2: elenco opzioni (separate da ';')", true)));
+                echo $this->Form->input('items_in_a_box', array('label' => __('Pezzi per collo', true)));
+                echo $this->Form->input('option_1', array('label' => __('Opzioni 1: etichetta', true)));
+                echo $this->Form->input('option_list_1', array('label' => __("Opzioni 1: elenco opzioni (separate da ';')", true)));
+                echo $this->Form->input('option_2', array('label' => __('Opzioni 2: etichetta', true)));
+                echo $this->Form->input('option_list_2', array('label' => __("Opzioni 2: elenco opzioni (separate da ';')", true)));
 		echo $this->Form->input('show_note', array('label' => __('Visualizza un campo di testo per le note', true)));
 
 	?>

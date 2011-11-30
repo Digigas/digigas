@@ -16,7 +16,7 @@ class News extends AppModel {
 	var $actsAs = array(
         'Sluggable'=>array('label'=>array('title'), 'overwrite' => true),
         'Containable',
-		'Commentable'
+		'Commentable' => array ('forumName' => 'News', 'displayField' => 'title')
         );
 
 	function beforeSave() {

@@ -59,7 +59,7 @@ class ForumsController extends AppController {
 
                 # Altri Commentables
 
-                $commentables = array('Hamper', 'Product');
+                $commentables = array('Hamper', 'Product', 'News');
 
                 $commentableStats = $this->Comment->find('all', array(
                         'conditions' => array('Comment.model' => $commentables, 'Comment.active' => 1),
@@ -84,7 +84,7 @@ class ForumsController extends AppController {
 		}
 		$forum = $this->Forum->find('first', array(
 				'conditions' => array('Forum.id' => $id, 'Forum.active' => 1, 'Forum.access_level >= ' => $this->Auth->user('role')),
-				'contain' => array('User.fullname')
+				'contain' => array('User.fullname', 'User.id')
 			));
 
 		if (empty($forum)) {
@@ -103,7 +103,10 @@ class ForumsController extends AppController {
 				'limit' => 25
 			));
 		$comments = $this->paginate($this->Forum->Comment);
-
+                foreach($comments as $key => $comment )
+                {
+                    $comments[$key]['Comment']['status'] = $this->Forum->getThreadStatus($comment['Comment']['id']);
+                }
 		$commentIds = Set::extract('/Comment/id', $comments);
 		$commentsChildren = $this->Comment->find('all', array(
 			'conditions' => array('Comment.model' => 'Forum', 'Comment.parent_id' => $commentIds, 'Comment.active' => 1),
@@ -139,15 +142,20 @@ class ForumsController extends AppController {
 		}
 
                 $this->loadModel($model);
+                $displayField= $this->{$model}->getDisplayField();
                 $this->paginate = array($model => array(
-                        'fields' => array($model.'.*',$model.'.name', "CONCAT(LastUser.first_name, ' ', LastUser.last_name) AS LastUser__fullname", "CONCAT(User.first_name, ' ', User.last_name) AS User__fullname"),
+                        'fields' => array($model.'.*',$model.'.'.$displayField.' AS displayField', "CONCAT(LastUser.first_name, ' ', LastUser.last_name) AS LastUser__fullname", "CONCAT(User.first_name, ' ', User.last_name) AS User__fullname"),
                         'contain' => array('LastUser', 'LastComment.created', 'User' ),
                         'order' => 'LastComment.created DESC',
                         'recursive' => 1
                     )
                 );
                 $threads = $this->paginate($model);
-               
+                foreach($threads as $key => $thread )
+                {
+                    $threads[$key][$model]['status'] = $this->{$model}->getThreadStatus($thread[$model]['id']);
+                }
+                
 		$commentIds = Set::extract("/$model/id", $threads);
                 
                 

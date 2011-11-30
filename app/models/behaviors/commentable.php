@@ -15,29 +15,7 @@ class CommentableBehavior extends ModelBehavior {
 
         }
 
-        function commentsReaded(&$Model, $id)
-        {
-            $user_id = User::get('id');
-            if($Model->name == 'Forum')
-            {
-                $Model->Comment->updateAll(
-                    array('unreaded_comments' => 0),
-                    array(
-                        'Comment.user_id =' => User::get('id'),
-                        'Comment.model' => $Model->name,
-                        'Comment.parent_id' => $id
-                    ));
-            }
-            else {
-            $Model->Comment->updateAll(
-                array('unreaded_comments' => 0),
-                array(
-                    'Comment.user_id =' => User::get('id'),
-                    'Comment.model' => $Model->name,
-                    'Comment.item_id' => $id
-                ));
-            }
-        }
+        
         
 	function setup(&$Model, $settings = array()) {
 		if (!isset($this->settings[$Model->alias])) {
@@ -93,82 +71,146 @@ class CommentableBehavior extends ModelBehavior {
 
 		$ret =  $Model->Comment->save($data);
                 
-                #ToDo verificare se viene invocato solo all'inserimento di un nuovo commento o per caso anche all'update
+                $thread_id = null;
                 if($Model->name == 'Forum')
                 {
-                    $Model->Comment->save(
-                            array('Comment' => array (
-                                'id' => $data['Comment']['parent_id'],
-                                'last_comment_user_id' => $data['Comment']['user_id'],
-                                'comments_count' => $Model->Comment->find('count', array(
-                                    'conditions' => array(
-                                        'Comment.parent_id' => $data['Comment']['parent_id'],
-                                        'model' => 'Forum'
-                                        ))),
-                                'last_comment_id' => $Model->Comment->getLastInsertId()))
-                            );
-                    $Model->Comment->updateAll(
-                        array('unreaded_comments' => 'unreaded_comments + 1'),
-                        array(
-                            'Comment.user_id !=' => User::get('id'),
-                            'Comment.model' => $Model->name,
-                            'Comment.parent_id' => $data['Comment']['parent_id']
-                        ));
-
-                    $userToEmail = $Model->Comment->find('all', array(
-                        'fields' => 'DISTINCT user_id',
-                        'conditions' => array(
-                            'model' => $Model->name,
-                            'Comment.parent_id' => $data['Comment']['parent_id'],
-                            'unreaded_comments =' => 1
-                        )
-                    ));
-
+                    if(isset($data['Comment']['parent_id']))
+                        $thread_id =  $data['Comment']['parent_id'];
                 }
                 else
                 {
-                    # Aggiorno il Modello con i dati sull'ultimo commento
-                    $Model->save(
-                            array($Model->name => array (
-                                'id' => $data['Comment']['item_id'],
-                                'last_comment_user_id' => $data['Comment']['user_id'],
-                                'comments_count' => $Model->Comment->find('count', array(
-                                    'conditions' => array(
-                                        'item_id' => $data['Comment']['item_id'],
-                                        'model' => $Model->name
-                                        ))),
-                                'last_comment_id' => $Model->Comment->getLastInsertId()))
-                            );
-
-                    # Aggiorno i commenti con i commenti non letti
-
-                    $Model->Comment->updateAll(
-                        array('unreaded_comments' => 'unreaded_comments + 1'),
-                        array(
-                            'user_id !=' => User::get('id'),
-                            'model' => $Model->name,
-                            'item_id' => $data['Comment']['item_id']
-                        ));
-
-                    # Cerco gli Id Utenti a cui mandare email
-
-                    $userToEmail = $Model->Comment->find('all', array(
-                        'fields' => 'DISTINCT user_id',
-                        'conditions' => array(
-                            'model' => $Model->name,
-                            'item_id' => $data['Comment']['item_id'],
-                            'unreaded_comments >' => 1
-                        )
-                    ));
+                    $thread_id =  $data['Comment']['item_id'];
                 }
+                # Aggiorno il Modello con i dati sull'ultimo commento
+                $Model->save(
+                        array($Model->name => array (
+                            'id' => $data['Comment']['item_id'],
+                            'last_comment_user_id' => $data['Comment']['user_id'],
+                            'comments_count' => $Model->Comment->find('count', array(
+                                'conditions' => array(
+                                    'item_id' => $thread_id,
+                                    'model' => $Model->name
+                                    ))),
+                            'last_comment_id' => $Model->Comment->getLastInsertId()))
+                        );
+
+                $Model->User->ReadedThread->updateAll(
+                    array('unreaded_comments' => 'unreaded_comments + 1'),
+                    array(
+                        'ReadedThread.user_id !=' => User::get('id'),
+                        'ReadedThread.model' => $Model->name,
+                        'ReadedThread.thread_id' => $thread_id
+                    ));
+                $userToEmail = $Model->User->ReadedThread->find('all', array(
+                    'fields' => 'DISTINCT user_id',
+                    'conditions' => array(
+                        'ReadedThread.model' => $Model->name,
+                        'ReadedThread.thread_id' => $thread_id,
+                        'ReadedThread.unreaded_comments =' => 1
+                    )
+                ));
+                    
                 return $ret;
 	}
 
+
+        function userHasReaded(&$Model, $thread_id) {
+            
+             $rs = $Model->User->ReadedThread->find('all', array(
+                    'fields' => 'unreaded_comments',
+                    'conditions' => array(
+                        'ReadedThread.model' => $Model->name,
+                        'ReadedThread.thread_id' => $thread_id,
+                        'ReadedThread.user_id' => User::get('id')
+                    )
+                ));
+             if(empty($rs) || $rs[0]['ReadedThread']['unreaded_comments'] > 0)
+                 return false;
+             else
+                 return true;
+        }
+
+        function userHasAnswered(&$Model, $thread_id) {
+            # ToDo: nei forum non tiene in considerazone l'autore del post di apertura
+            
+            if($Model->name == 'Forum') {
+                $condition = 'Comment.parent_id';
+            }
+            else{
+                $condition = 'Comment.item_id';
+            }
+
+            $answers = $Model->Comment->find('count', array(
+                'conditions' => array(
+                    'Comment.model' => $Model->name,
+                    $condition => $thread_id,
+                    'Comment.user_id' => User::get('id')
+                )
+            ));
+            
+             if($answers)
+                 return true;
+             else
+                 return false;
+        }
+
+        function getThreadStatus(&$Model, $thread_id) {
+            $s = "";
+            if($this->userHasReaded($Model, $thread_id))
+                $s = 'mail_mark_read';
+            else
+                $s = 'mail_mark_unread';
+            $s .= "";
+            if($this->userHasAnswered($Model, $thread_id))
+                $s .= '_new';
+            else
+                $s .= '';
+            return $s;
+        }
+
+        function getDisplayField(&$Model) {
+            $r = 'name';
+            if(isset($this->settings[$Model->name]['displayField']))
+                    $r = $this->settings[$Model->name]['displayField'];
+            return $r;
+
+        }
+
+        function commentsReaded(&$Model, $id)
+        {
+            if(isset($_SESSION['Auth']['User']))
+            {
+                $user_id = User::get('id');
+                $isReaded = $Model->User->ReadedThread->find('all', array(
+                    'conditions' =>  array(
+                        'ReadedThread.user_id' => $user_id,
+                        'ReadedThread.model' => $Model->name,
+                        'ReadedThread.thread_id' => $id
+                        )
+                    )
+                 );
+//                debug($isReaded); die();
+                if(empty($isReaded)) {
+                    $readed_thread_id = null;
+                }
+                else
+                {
+                    $readed_thread_id = $isReaded[0]['ReadedThread']['id'];
+                }
+                $Model->User->ReadedThread->save( array('ReadedThread' => array(
+                    'id' =>  $readed_thread_id,
+                    'user_id' => $user_id,
+                    'model' => $Model->name,
+                    'thread_id' => $id,
+                    'unreaded_comments' => 0
+                    )));
+//                }
+            }
+        }
+        
 	function beforeSave(&$Model) {
             if(!isset($Model->data[$Model->name]['id']))
                     $Model->data[$Model->name]['user_id'] = User::get('id');
-//            debug($Model); 
-
         }
 
 }

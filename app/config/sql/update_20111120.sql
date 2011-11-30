@@ -12,7 +12,6 @@ ALTER TABLE `products` ADD `last_comment_id` INT NULL  ;
 ALTER TABLE `comments` ADD `last_comment_user_id` INT NULL  ;
 ALTER TABLE `comments` ADD `comments_count` INT NULL  ;
 ALTER TABLE `comments` ADD `last_comment_id` INT NULL  ;
-ALTER TABLE `comments` ADD `unreaded_comments` INT DEFAULT 0 ;
 
 
 ALTER TABLE `news` ADD `last_comment_user_id` INT NULL  ;
