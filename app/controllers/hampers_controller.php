@@ -345,10 +345,34 @@ class HampersController extends AppController {
         $this->render('admin_print_pdf', '');
 
         $orderedProducts = $this->viewVars['orderedProducts'];
+//        Configure::write('debug', 2);
+//        debug($orderedProducts); die();
 
-      
-
+        $admins = $this->User->find('all', array('conditions'=> array('role'=>1)));
         $failed = false;
+        foreach($admins as $admin)
+        {
+            $this->set('userFullName', $admin['User']['fullname']);
+            $this->Email->to = $admin['User']['email'];
+            $this->Email->subject = '['.Configure::read('GAS.name').'] '.__('Riepilogo Ordine ', true)
+                    .$hamper['Hamper']['name']
+                    .' di '.$hamper['Seller']['name'];
+            $this->Email->from = Configure::read('email.from');
+            $this->Email->sendAs = 'html';
+            $this->Email->template = 'admin_mail_pdf_hamper_to_admins';
+            $file_name = 'Paniere_'.$hamper['Hamper']['id'];
+            $this->Email->attachments = array(
+                TMP . $file_name.'.pdf'
+            );
+
+            if($this->Email->send()) {
+                    //mail ok
+            } else {
+                    //mail error
+                    $failed = true;
+            }
+        }
+        
         foreach($orderedProducts as $userOrder) {
             $this->set('userFullName', $userOrder['User']['fullname']);
 

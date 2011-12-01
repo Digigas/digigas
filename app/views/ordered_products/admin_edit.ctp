@@ -60,6 +60,7 @@
 				}
 
 				echo $this->Form->input('value', array('label' => __('Costo totale', true)));
+                                echo $this->Form->checkbox('do_not_recalculate', array('label' => __('Forza valore')));
 				echo $this->Form->input('paid', array('label' => __('Pagato', true)));
 				echo $this->Form->input('retired', array('label' => __('Ritirato', true)));
 

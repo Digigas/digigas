@@ -41,7 +41,7 @@ if(empty($hamper_user_id)){
         $pdf->SetFont('Arial','B',9);
         $pdf->Cell(20,6, __('Codice', true));
         $pdf->Cell(110,6, __('Prodotto', true));
-        $pdf->Cell(20,6, __('Quantita', true));
+        $pdf->Cell(18,6, __('Quantita', true));
         $pdf->Cell(10,6, __('Colli', true));
         $pdf->Cell(28,6, __('Totale euro', true), '', '',  'R');
         $pdf->SetFont('Arial','',9);
@@ -50,7 +50,7 @@ if(empty($hamper_user_id)){
             
             $pdf->Cell(20,6, $product['Product']['code']);
             $pdf->Cell(110,6, $product['Product']['name']);
-            $pdf->Cell(20,6, clean_number($product['OrderedProduct']['quantity']) . ' ' . $product['Product']['units']);
+            $pdf->Cell(18,6, clean_number($product['OrderedProduct']['quantity']) . ' ' . $product['Product']['units']);
             
                 
 
@@ -60,13 +60,20 @@ if(empty($hamper_user_id)){
             {
                 $modulus = ($product['OrderedProduct']['quantity'])%($items_in_a_box);
                 $boxes = ($product['OrderedProduct']['quantity']-$modulus)/($items_in_a_box);
+                $pdf->Cell(5.9,6, $boxes, '', '',  '');
                 if($modulus){
-                    $boxes = $boxes.' + '.$modulus;
                     $pdf->SetTextColor(255, 0, 0);
+                    $pdf->Cell(.2,6, '+', '', '',  'C');
+                    $pdf->Cell(5.9,6, $modulus, '', '',  'R');
                 }
+                else
+                    $pdf->Cell(6.1,6);
+                
+                $pdf->SetTextColor(0, 0, 0);
             }
-            $pdf->Cell(10,6, $boxes, '', '',  'R');
-            $pdf->SetTextColor(0, 0, 0);
+            else
+                $pdf->Cell(12,6);
+            
             $pdf->Cell(28,6, $product['OrderedProduct']['total'] . EURO, '', '',  'R');
             if($product['OrderedProduct']['option_1'].$product['OrderedProduct']['option_2'])
             {
