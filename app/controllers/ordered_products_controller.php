@@ -652,11 +652,14 @@ class OrderedProductsController extends AppController {
                         'product_id' => $product_id,
                         'hamper_id' => $this->data['OrderedProduct']['hamper_id'],
                         'seller_id' => $this->data['OrderedProduct']['seller_id'],
-						'option_1' => $data['option_1'],
-						'option_2' => $data['option_2'],
-						'note' => $data['note'],
-                        'quantity' => $data['quantity']
+			'quantity' => $data['quantity']
                 ));
+                if(isset($data['option_1']))
+                    $dataToValidate['OrderedProduct']['option_1'] = $data['option_1'];
+                if(isset($data['option_2']))
+                    $dataToValidate['OrderedProduct']['option_2'] = $data['option_2'];
+                if(isset($data['note']))
+                    $dataToValidate['OrderedProduct']['note'] = $data['note'];
                 //debug($dataToValidate);
                 $dataToSave = $this->OrderedProduct->buildOrder($dataToValidate, $user);
                 //debug($dataToSave);
