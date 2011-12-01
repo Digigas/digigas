@@ -568,7 +568,12 @@ class OrderedProductsController extends AppController {
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->data)) {
+            $orderedProduct = $this->OrderedProduct->find('first', array('conditions' => array('OrderedProduct.id' => $this->data['OrderedProduct']['id'])));
+//            debug($this->data); die();
+            if($this->data['OrderedProduct']['do_not_recalculate'] == false)
+                $this->data['OrderedProduct']['value'] = $orderedProduct['Product']['value'] * $this->data['OrderedProduct']['quantity'];
             if ($this->OrderedProduct->save($this->data)) {
+
                 $this->Session->setFlash(sprintf(__('Il %s è stata salvato', true), 'Il prodotto ordinato'));
                 if(isset($this->data['Referer'])) {
 					$this->redirect($this->data['Referer']);
