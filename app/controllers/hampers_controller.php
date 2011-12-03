@@ -348,7 +348,7 @@ class HampersController extends AppController {
 //        Configure::write('debug', 2);
 //        debug($orderedProducts); die();
 
-        $admins = $this->User->find('all', array('conditions'=> array('role'=>1)));
+        $admins = $this->Hamper->User->find('all', array('conditions'=> array('role'=>1)));
         $failed = false;
         foreach($admins as $admin)
         {

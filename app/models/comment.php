@@ -2,7 +2,13 @@
 class Comment extends AppModel {
 	var $name = 'Comment';
 
-	var $belongsTo = array('User');
+	var $belongsTo = array('User',
+                                'LastUser' => array(
+                                        'className' => 'User',
+                                        'foreignKey' => 'last_comment_user_id',
+                                        'dependent' => true
+
+				));
 	var $hasMany = array(
 		'RelatedComment' => array(
 			'className' => 'Comment',
@@ -12,7 +18,7 @@ class Comment extends AppModel {
 		)
 	);
 
-	var $actsAs = array('Containable');
+	var $actsAs = array('Containable', 'Commentable');
 
 	function toggle_active($id)
 	{

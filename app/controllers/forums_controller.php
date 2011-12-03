@@ -98,8 +98,9 @@ class ForumsController extends AppController {
 					'Comment.item_id' => $id,
 					'Comment.active' => 1,
 					'Comment.parent_id' => 0),
+                                'fields' => array('Comment.*', "CONCAT(LastUser.first_name, ' ', LastUser.last_name) AS LastUser__fullname", "CONCAT(User.first_name, ' ', User.last_name) AS User__fullname"),
 				'order' => array('Comment.created DESC'),
-				'contain' => array('User.id', 'User.fullname'),
+				'contain' => array('Comment', 'User',  'LastUser', 'LastComment.created'),
 				'limit' => 25
 			));
 		$comments = $this->paginate($this->Forum->Comment);
@@ -135,22 +136,42 @@ class ForumsController extends AppController {
 		$this->set('title_for_layout', 'Forum - ' . $forum['Forum']['name']);
 	}
 
-        function threadIndex($model = null) {
+        function threadIndex($model = null, $item_id = null) {
 		if (!$model) {
-			$this->Session->setFlash(sprintf(__('%s non valido', true), 'Forum'));
-			$this->redirect(array('action' => 'index'));
+                    $this->Session->setFlash(sprintf(__('%s non valido', true), 'Forum'));
+                    $this->redirect(array('action' => 'index'));
 		}
 
-                $this->loadModel($model);
-                $displayField= $this->{$model}->getDisplayField();
-                $this->paginate = array($model => array(
-                        'fields' => array($model.'.*',$model.'.'.$displayField.' AS displayField', "CONCAT(LastUser.first_name, ' ', LastUser.last_name) AS LastUser__fullname", "CONCAT(User.first_name, ' ', User.last_name) AS User__fullname"),
-                        'contain' => array('LastUser', 'LastComment.created', 'User' ),
-                        'order' => 'LastComment.created DESC',
-                        'recursive' => 1
-                    )
-                );
-                $threads = $this->paginate($model);
+                if($model != 'Forum')
+                {
+                    $this->loadModel($model);
+                    $displayField= $this->{$model}->getDisplayField();
+                    $this->paginate = array($model => array(
+                            'fields' => array($model.'.*',$model.'.'.$displayField.' AS displayField', "CONCAT(LastUser.first_name, ' ', LastUser.last_name) AS LastUser__fullname", "CONCAT(User.first_name, ' ', User.last_name) AS User__fullname"),
+                            'contain' => array('LastUser', 'LastComment.created', 'User' ),
+                            'order' => 'LastComment.created DESC',
+                            'recursive' => 1
+                        )
+                    );
+                    $threads = $this->paginate($model);
+                    
+                }
+                else{
+                    $displayField= 'title';
+                    $model = 'Comment';
+                    $this->paginate = array($model => array(
+                            'fields' => array($model.'.*',$model.'.'.$displayField.' AS displayField', "CONCAT(LastUser.first_name, ' ', LastUser.last_name) AS LastUser__fullname", "CONCAT(User.first_name, ' ', User.last_name) AS User__fullname"),
+                            'contain' => array('LastUser', 'LastComment.created', 'User' ),
+                            'order' => 'LastComment.created DESC',
+                            'conditions' => array('Comment.item_id' => $item_id, 'Comment.model' => 'Forum', 'Comment.parent_id' => 0),
+                            'recursive' => 1
+                        )
+                    );
+                    $threads = $this->paginate('Comment');
+//                    debug($threads); die();
+                }
+                    
+
                 foreach($threads as $key => $thread )
                 {
                     $threads[$key][$model]['status'] = $this->{$model}->getThreadStatus($thread[$model]['id']);

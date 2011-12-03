@@ -6,7 +6,7 @@
 
 	<?php if (!empty($comments)): ?>
 	
-	<table cellpadding="0" cellspacing="0">
+	<table cellpadding="0" cellspacing="0" class="threads">
         <tr>
             <th></th>
             <th><?php echo $this->Paginator->sort(__('Oggetto', true), 'title');?></th>
@@ -39,10 +39,11 @@
             <td class='discussion_title'><?php echo $this->Html->link($comment['Comment']['title'], array('action' => 'view_topic', $comment['Comment']['id']), array('class' => 'read')); ?></td>
             <td class='discussion_author'><?php echo $this->Html->div('comment-author', $comment['User']['fullname']);?> </td>
             <td class='discussion_answers'><?php echo $children;?> </td>
-            <td><?php if(isset($lastAuthor[$comment['Comment']['id']] )) 
-                echo $lastUpdatesView."<br>da<strong> ".$lastAuthor[$comment['Comment']['id']]."</strong>";
-            else
-                echo $this->Time->relativeTime($comment['Comment']['created'])."<br>da<strong> ".$comment['User']['fullname']."</strong>";
+            <td><?php if(isset($comment['LastComment']['created'] ))
+            {
+                $lastUpdatesView =  $this->Time->relativeTime($comment['LastComment']['created']);
+                echo $lastUpdatesView."<br>da<strong> ".$comment['LastUser']['fullname']."</strong>";
+            }
                 ?> </td>
             
         </tr>
