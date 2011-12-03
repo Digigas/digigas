@@ -27,13 +27,14 @@ class CommentableBehavior extends ModelBehavior {
 	}
 
 	function init(&$Model) {
+                $modelName = $Model->name == 'Comment'? 'Forum' : $Model->name;
 		$Model->bindModel(array(
                     'hasMany' => array(
 				'Comment' => array(
 					'className' => 'Comment',
 					'foreignKey' => 'item_id',
 					'conditions' => array(
-						'Comment.model' => $Model->name,
+						'Comment.model' => $modelName,
 						'Comment.active' => '1'),
 					'order' => 'Comment.created ASC',
 					'limit' => '25',
@@ -44,7 +45,7 @@ class CommentableBehavior extends ModelBehavior {
 					'className' => 'Comment',
 					'foreignKey' => 'last_comment_id',
 					'conditions' => array(
-						'LastComment.model' => $Model->name,
+						'LastComment.model' => $modelName,
 						'LastComment.active' => '1'),
 					'dependent' => true
 				),
@@ -62,55 +63,75 @@ class CommentableBehavior extends ModelBehavior {
 	}
 
 	function saveComment(&$Model, $data) {
-            	$data['Comment']['user_id'] = User::get('id');
-		if($this->settings[$Model->alias]['setActive'] == 1) {
-			$data['Comment']['active'] = 1;
-		} else {
-			$data['Comment']['active'] = 0;
-		}
+            $data['Comment']['user_id'] = User::get('id');
+            if($this->settings[$Model->alias]['setActive'] == 1) {
+                    $data['Comment']['active'] = 1;
+            } else {
+                    $data['Comment']['active'] = 0;
+            }
 
-		$ret =  $Model->Comment->save($data);
+            $ret =  $Model->Comment->save($data);
+            $last_comment_id = $Model->Comment->getLastInsertId();
+            $thread_id = null;
+            $tempModel = $Model;
+            $field = 'Comment.item_id';
+            if($Model->name == 'Forum')
+            {
+                if(isset($data['Comment']['parent_id']))
+                    $thread_id =  $data['Comment']['parent_id'];
+                # Aggiorno il Modello con i dati sull'ultimo commento
+                $Model->Comment->save(
+                    array('Comment' => array (
+                        'id' => $data['Comment']['parent_id'],
+                        'last_comment_user_id' => $data['Comment']['user_id'],
+                        'comments_count' => $Model->Comment->find(
+                            'count', array(
+                                'conditions' => array(
+                                    'Comment.parent_id' => $thread_id,
+                                    'Comment.model' => $Model->name
+                                ))),
+                        'last_comment_id' => $last_comment_id
+                        )
+                    )
+                );
                 
-                $thread_id = null;
-                if($Model->name == 'Forum')
-                {
-                    if(isset($data['Comment']['parent_id']))
-                        $thread_id =  $data['Comment']['parent_id'];
-                }
-                else
-                {
-                    $thread_id =  $data['Comment']['item_id'];
-                }
+            }
+            else
+            {
+                $thread_id = $data['Comment']['item_id'];
                 # Aggiorno il Modello con i dati sull'ultimo commento
                 $Model->save(
-                        array($Model->name => array (
-                            'id' => $data['Comment']['item_id'],
-                            'last_comment_user_id' => $data['Comment']['user_id'],
-                            'comments_count' => $Model->Comment->find('count', array(
-                                'conditions' => array(
-                                    'item_id' => $thread_id,
-                                    'model' => $Model->name
-                                    ))),
-                            'last_comment_id' => $Model->Comment->getLastInsertId()))
-                        );
+                    array($Model->name => array (
+                        'id' => $data['Comment']['item_id'],
+                        'last_comment_user_id' => $data['Comment']['user_id'],
+                        'comments_count' => $Model->Comment->find('count', array(
+                            'conditions' => array(
+                                'Comment.item_id' => $thread_id,
+                                'Comment.model' => $Model->name
+                                ))),
+                        'last_comment_id' => $last_comment_id))
+                    );
+            }
+            
 
-                $Model->User->ReadedThread->updateAll(
-                    array('unreaded_comments' => 'unreaded_comments + 1'),
-                    array(
-                        'ReadedThread.user_id !=' => User::get('id'),
-                        'ReadedThread.model' => $Model->name,
-                        'ReadedThread.thread_id' => $thread_id
-                    ));
-                $userToEmail = $Model->User->ReadedThread->find('all', array(
-                    'fields' => 'DISTINCT user_id',
-                    'conditions' => array(
-                        'ReadedThread.model' => $Model->name,
-                        'ReadedThread.thread_id' => $thread_id,
-                        'ReadedThread.unreaded_comments =' => 1
-                    )
+
+            $Model->User->ReadedThread->updateAll(
+                array('unreaded_comments' => 'unreaded_comments + 1'),
+                array(
+                    'ReadedThread.user_id !=' => User::get('id'),
+                    'ReadedThread.model' => $Model->name,
+                    'ReadedThread.thread_id' => $thread_id
                 ));
-                    
-                return $ret;
+            $userToEmail = $Model->User->ReadedThread->find('all', array(
+                'fields' => 'DISTINCT user_id',
+                'conditions' => array(
+                    'ReadedThread.model' => $Model->name,
+                    'ReadedThread.thread_id' => $thread_id,
+                    'ReadedThread.unreaded_comments =' => 1
+                )
+            ));
+
+            return $ret;
 	}
 
 

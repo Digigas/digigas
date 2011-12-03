@@ -6,7 +6,7 @@
         
 	<?php if (!empty($threads)): ?>
 
-	<table cellpadding="0" cellspacing="0">
+	<table cellpadding="0" cellspacing="0" class="threads">
         <tr>
             <th></th>
             <th><?php echo $this->Paginator->sort(__('Oggetto', true), 'name');?></th>
@@ -18,6 +18,7 @@
         
         $i = 0;
         
+        if($model == 'Forum') $model = 'Comments';
         foreach ($threads as $thread):
             $class = null;
             if ($i++ % 2 == 0) {

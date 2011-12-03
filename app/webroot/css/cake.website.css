@@ -613,6 +613,12 @@ dl
     font-size:10px;
 }
 
+table.threads tr td {
+
+    vertical-align:  middle;
+}
+
+
 /* forum */
 .forums .forum
 {
