@@ -28,7 +28,7 @@
             <?php
             echo $this->Form->input('parent_id', array('label' => __('Appartiene alla famiglia di', true), 'empty' => 'Nessuno: è capofamiglia', 'options' => $families));
             echo $this->Form->input('mouths_to_feed', array('label' => __('Bocche da sfamare', true)));
-            echo $this->Form->input('usergroup_id', array('label' => __('Gruppo', true)));
+            echo $this->Form->input('usergroup_id', array('empty' => true, 'label' => __('Gruppo', true)));
             echo $this->Form->input('role', array('label' => __('Ruolo', true), 'value' => 3));
             echo $this->Form->input('active', array('label' => 'Attivo', 'checked' => 'checked'));
             ?>

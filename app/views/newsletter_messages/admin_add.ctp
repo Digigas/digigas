@@ -5,7 +5,7 @@
         <h3 class="expander"><?php __('Componi email'); ?></h3>
         <div class="accordion">
         <?php
-        echo $this->Form->input('usergroup_id', array('label' => __('Invia a questo gruppo di destinatari', true)));
+        echo $this->Form->input('usergroup_id', array('empty' => true,'label' => __('Invia a questo gruppo di destinatari', true)));
         echo $this->Form->input('title', array('label' => __('Titolo', true)));
         echo $this->Form->input('text', array('label' => __('Testo', true)));
         ?>
