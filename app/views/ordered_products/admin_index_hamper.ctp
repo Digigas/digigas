@@ -46,6 +46,7 @@
 					<th><?php __('Codice'); ?></th>
 					<th><?php __('Categoria'); ?></th>
 					<th><?php __('Quantità'); ?></th>
+                                        <th><?php __('Colli'); ?></th>
 					<th><?php __('Totale'); ?></th>
 				</tr>
 
@@ -81,11 +82,28 @@
 					&nbsp;
 				<?php echo $product['Product']['units']; ?>
 				</td>
-				<td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
+				
+                                <?php
+                                $items_in_a_box = $product['Product']['items_in_a_box'];
+                                $boxes='';
+                                $class = '';
+                                if($items_in_a_box)
+                                {
+                                    $modulus = ($product['0']['quantity'])%($items_in_a_box);
+                                    $boxes = ($product['0']['quantity']-$modulus)/($items_in_a_box);
+                                    if($modulus) {
+                                        $boxes .= " + ".$modulus;
+                                        $class = 'style= "color: red"';
+                                    }
+                                }
+
+                                ?>
+                                <td class="quantity" <?php echo $class; ?>><?php echo $boxes; ?> </td>
+                                <td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
 			</tr>
 		<?php endforeach; ?>
 					<tr>
-						<td colspan="3">
+						<td colspan="4">
 							<strong><?php __('Totale') ?></strong>
 						</td>
 						<td></td>

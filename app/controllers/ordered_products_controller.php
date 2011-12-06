@@ -165,7 +165,7 @@ class OrderedProductsController extends AppController {
 			'order' => array('User.last_name asc', 'User.first_name asc', 'Product.product_category_id'),
             'contain' => array(
                 'User' => array('fields' => array('id', 'fullname')),
-                'Product' => array('fields' => array('id', 'name', 'code', 'option_1', 'option_2', 'units')),
+                'Product' => array('fields' => array('id', 'name', 'code', 'option_1', 'option_2', 'units', 'items_in_a_box')),
                 'Product.ProductCategory' => array('fields' => array('id', 'name'))
                 )
         ));
@@ -186,7 +186,7 @@ class OrderedProductsController extends AppController {
 		//trovo il totale per ogni prodotto
         $totals = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
-            'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'Product.items_in_a_box','SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
             'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
             'order' => array('hamper_id desc', 'Product.product_category_id'),
             'contain' => array(

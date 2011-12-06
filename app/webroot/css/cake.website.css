@@ -347,6 +347,11 @@ dl
     font-size:14px;
     color:#2D6324;
 }
+
+.modulus
+{
+    color: red;
+}
 .orderedProducts .product .value
 {
     padding:5px;
