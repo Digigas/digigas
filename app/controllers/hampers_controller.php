@@ -85,6 +85,69 @@ class HampersController extends AppController {
 		$this->set('title_for_layout', __('Panieri', true));
     }
 
+    function admin_view($hamper_id) {
+        //dettagli paniere
+        $hamper = $this->Hamper->find('first', array(
+            'conditions' => array('Hamper.id' => $hamper_id),
+            'contain' => array(
+                    'Seller.name'
+            )
+        ));
+
+        //dettagli prodotti ordinati
+        $_orderedProducts = $this->Hamper->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
+            'order' => array('User.last_name asc', 'User.first_name asc', 'Product.product_category_id'),
+            'contain' => array(
+                'User' => array('fields' => array('id', 'fullname')),
+                'Product' => array('fields' => array('id', 'name', 'code', 'option_1', 'option_2', 'units', 'items_in_a_box')),
+                'Product.ProductCategory' => array('fields' => array('id', 'name'))
+            )
+        ));
+        
+        $orderedProducts = array();
+            foreach($_orderedProducts as $orderedProduct) {
+                    $product_id = $orderedProduct['Product']['id'].$orderedProduct['OrderedProduct']['option_1'].$orderedProduct['OrderedProduct']['option_2'];
+                    $orderedProducts[$product_id]['Product'] = $orderedProduct['Product'];
+                    $orderedProducts[$product_id]['Product']['option_1_value'] = $orderedProduct['OrderedProduct']['option_1'];
+                    $orderedProducts[$product_id]['Product']['option_2_value'] = $orderedProduct['OrderedProduct']['option_2'];
+                    $orderedProducts[$product_id]['OrderedProduct'][] = $orderedProduct;
+
+
+                    //calcolo il totale per prodotto
+                    if(isset($orderedProducts[$product_id]['Total'])) {
+                        $orderedProducts[$product_id]['Total'] += $orderedProduct['OrderedProduct']['value'];
+                    } else {
+                        $orderedProducts[$product_id]['Total'] = $orderedProduct['OrderedProduct']['value'];
+                    }
+            }
+            
+		//trovo il totale per ogni prodotto
+        $totals = $this->Hamper->OrderedProduct->find('all', array(
+            'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
+            'fields' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note', 'Product.items_in_a_box','SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2', 'OrderedProduct.note'),
+            'order' => array('hamper_id desc', 'Product.product_category_id'),
+            'contain' => array(
+                'Product' => array('name', 'code', 'option_1', 'option_2', 'units'), 'Hamper.delivery_date_on',
+                'Product.ProductCategory' => array('fields' => array('id', 'name'))
+                )
+        ));
+		// totale
+		$total = array_sum(Set::extract('/0/total', $totals));
+
+		//trovo l'elenco degli utenti con ordini attivi
+        $users = $this->Hamper->OrderedProduct->getPendingUsers();
+
+        //trovo l'elenco dei produttori con ordini attivi
+        $sellers = $this->Hamper->OrderedProduct->getPendingSellers();
+
+		//trovo l'elenco dei panieri con ordini attivi
+        $hampers = $this->Hamper->OrderedProduct->getPendingHampers();
+
+		$this->set(compact('orderedProducts', 'hamper', 'users', 'sellers', 'hampers', 'totals', 'total'));
+	}
+
     function admin_index_templates() {
         $this->Hamper->recursive = 0;
         $this->paginate = array('conditions' => array('is_template' => 1), 'order' => array('Hamper.id desc'));

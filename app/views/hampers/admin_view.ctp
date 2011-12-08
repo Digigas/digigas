@@ -13,10 +13,9 @@
 				<?php __('Salva in PDF'); ?>
             </a></li>
 
-        	<li><a href="<?php echo $this->Html->url(array('controller' => 'ordered_products', 'action' => 'print_excel_hamper', $hamper['Hamper']['id'])); ?>">
+		<li><a href="<?php echo $this->Html->url(array('controller' => 'ordered_products', 'action' => 'print_excel_hamper', $hamper['Hamper']['id'])); ?>">
 				<?php echo $this->Html->image('oxygen/16x16/mimetypes/application_vnd.ms_excel.png'); ?>
-				<?php __('Salva in Excel'); ?></li>
-
+				<?php __('Salva in Excel'); ?>
 		<li><?php
 				echo $this->Html->image('oxygen/16x16/actions/mail_generic.png');
 				echo $this->Html->link(__('email agli utenti', true), array('action' => 'admin_mail_hamper_to_users', $hamper['Hamper']['id'])); ?></li>
@@ -115,21 +114,30 @@
 
 				<h2>
 		<?php
-					__('Dettaglio per utente');
+					__('Dettaglio per prodotto');
 		?>
 				</h2>
 
-	<?php foreach ($orderedProducts as $products): ?>
+	<?php  foreach ($orderedProducts as $products): ?>
 						<h3>
 		<?php
-						echo $products['User']['fullname'];
+
+						echo $products['Product']['name'];
+                                                $details = '';
+                                                if (!empty($products['Product']['option_1'])) {
+                                                        $details .= $products['Product']['option_1'] . ': ' . $products['Product']['option_1_value'];
+                                                }
+                                                if (!empty($products['Product']['option_2'])) {
+                                                        $details .= ' | ' . $products['Product']['option_2'] . ': ' . $products['Product']['option_2_value'];
+                                                }
+                                                if (!empty($details)) {
+                                                        echo $html->div('product_details', $details);
+                                                }
 		?>
 					</h3>
 					<table cellpadding="0" cellspacing="0">
 						<tr>
-							<th><?php __('Prodotto'); ?></th>
-							<th><?php __('Codice'); ?></th>
-							<th><?php __('Categoria'); ?></th>
+							<th><?php __('Utente'); ?></th>
 							<th class="small-w"><?php __('Quantità'); ?></th>
 							<th class="small-w"><?php __('Totale'); ?></th>
 							<th class="actions small-w"><?php __('Pagato'); ?></th>
@@ -137,8 +145,9 @@
 							<th class="actions"><?php __('Azioni') ?></th>
 						</tr>
 		<?php
-						$i = 0;
-						foreach ($products['Products'] as $product):
+                    				$i = 0;
+                                                
+						foreach ($products['OrderedProduct'] as $product):
 							$class = null;
 							if ($i++ % 2 == 0) {
 								$class = ' class="altrow"';
@@ -147,28 +156,13 @@
 							<tr<?php echo $class; ?>>
 								<td>
 				<?php
-							echo $product['Product']['name'];
+							echo $product['User']['fullname'];
 
-							$details = '';
-							if (!empty($product['OrderedProduct']['option_1'])) {
-								$details .= $product['Product']['option_1'] . ': ' . $product['OrderedProduct']['option_1'];
-							}
-							if (!empty($product['OrderedProduct']['option_2'])) {
-								$details .= ' | ' . $product['Product']['option_2'] . ': ' . $product['OrderedProduct']['option_2'];
-							}
-							if (!empty($product['OrderedProduct']['note'])) {
-								$details .= '<br/>' . $product['OrderedProduct']['note'];
-							}
-							if (!empty($details)) {
-								echo $html->div('product_details', $details);
-							}
+							
 				?>
 
 						</td>
-						<td>
-						<?php echo $product['Product']['code']; ?>&nbsp;
-						</td>
-						<td class="product_category"><?php echo $product['Product']['ProductCategory']['name']; ?></td>
+						
 						<td>
 				<?php echo clean_number($product['OrderedProduct']['quantity']); ?>&nbsp;
 				<?php echo $product['Product']['units']; ?>
@@ -189,12 +183,12 @@
 							}
 				?></td>
 						<td class="actions">
-				<?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('action' => 'edit', $product['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
+				<?php echo $this->Html->image('oxygen/16x16/actions/edit.png', array('url' => array('controller'=>'orderedProducts',  'action' => 'edit', $product['OrderedProduct']['id']), 'title' => __('modifica', true))); ?>
 			            </td>
 					</tr>
 		<?php endforeach; ?>
 							<tr>
-								<td colspan="3">
+								<td colspan="1">
 									<strong><?php __('Totale'); ?></strong>
 								</td>
 								<td></td>
