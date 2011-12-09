@@ -33,7 +33,7 @@ $pdf->Ln();
 foreach($totals as $product) {
     $pdf->Cell(80,6, $product['Product']['name']);
     $pdf->Cell(30,6, $product['0']['quantity']);
-    $pdf->Cell(40,6, $product['0']['total'] . EURO);
+    $pdf->Cell(40,6, EURO." ".money_format('%.2n',$product['0']['total']));
     $pdf->Cell(50,6, digi_date($product['Hamper']['delivery_date_on']));
     $pdf->Ln();
     $h = $pdf->GetY();
@@ -50,7 +50,7 @@ $pdf->SetFont('Arial','',9);
 $pdf->Ln();
 foreach($totalsByHamper as $date => $total) {
     $pdf->Cell(100,6, digi_date($date));
-    $pdf->Cell(100,6, $total . EURO);
+    $pdf->Cell(100,6, EURO." ".money_format('%.2n',$total) );
     $pdf->Ln();
     $h = $pdf->GetY();
     $pdf->Line(10,$h, 200,$h);
@@ -70,7 +70,7 @@ foreach ($orderedProducts as $orderedProduct) {
     $pdf->Cell(70,6, $orderedProduct['User']['fullname']);
     $pdf->Cell(80,6, $orderedProduct['Product']['name']);
     $pdf->Cell(20,6, $orderedProduct['OrderedProduct']['quantity']);
-    $pdf->Cell(30,6, $orderedProduct['OrderedProduct']['value'] . EURO);
+    $pdf->Cell(30,6, EURO." ".money_format('%.2n',$orderedProduct['OrderedProduct']['value']));
     $pdf->Ln();
     $h = $pdf->GetY();
     $pdf->Line(10,$h, 200,$h);
