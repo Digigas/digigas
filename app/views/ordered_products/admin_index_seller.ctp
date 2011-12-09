@@ -31,7 +31,7 @@
 					<th><?php __('Prodotto'); ?></th>
 					<th><?php __('Codice'); ?></th>
 					<th><?php __('Quantità'); ?></th>
-					<th><?php __('Totale'); ?></th>
+					<th class="value"><?php __('Totale'); ?></th>
 					<th><?php __('Data di consegna'); ?></th>
 				</tr>
 		<?php foreach ($totals as $product): ?>
@@ -63,7 +63,7 @@
 					&nbsp;
 				<?php echo $product['Product']['units']; ?>
 				</td>
-				<td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
+				<td class="value"><?php echo $this->Number->currency( $product['0']['total'], 'EUR' ); ?> </td>
 				<td class="date">
 				<?php
 					if (!date_is_empty($product['Hamper']['delivery_date_on'])) {
@@ -85,7 +85,7 @@
 				<table cellpadding="0" cellspacing="0">
 					<tr>
 						<th><?php __('Data di consegna'); ?></th>
-						<th><?php __('Totale'); ?></th>
+						<th class="value"><?php __('Totale'); ?></th>
 					</tr>
 		<?php foreach ($totalsByHamper as $id => $data): ?>
 						<tr class="total">
@@ -98,7 +98,7 @@
 						}
 				?>
 					</td>
-					<td class="value"><?php echo $data['total']; ?> &euro;</td>
+					<td class="value"><?php echo $this->Number->currency($data['total'], 'EUR'); ?> </td>
 				</tr>
 		<?php endforeach; ?>
 					</table>
@@ -115,7 +115,7 @@
 							<th><?php __('Prodotto'); ?></th>
 							<th><?php __('Codice'); ?></th>
 							<th><?php __('Quantità'); ?></th>
-							<th><?php __('Totale'); ?></th>
+							<th class="value"><?php __('Totale'); ?></th>
 							<th class="actions"><?php __('Pagato'); ?></th>
 							<th class="actions"><?php __('Ritirato'); ?></th>
 							<th class="actions"><?php __('Azioni') ?></th>
@@ -159,7 +159,7 @@
 							&nbsp;
 				<?php echo $orderedProduct['Product']['units']; ?>
 						</td>
-						<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+						<td class="value"><?php echo $this->Number->currency($orderedProduct['OrderedProduct']['value'], 'EUR'); ?></td>
 						<td class="actions"><?php
 							if ($orderedProduct['OrderedProduct']['paid']) {
 								echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $orderedProduct['OrderedProduct']['id'])));

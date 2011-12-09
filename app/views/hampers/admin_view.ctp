@@ -46,7 +46,7 @@
 					<th><?php __('Categoria'); ?></th>
 					<th><?php __('Quantità'); ?></th>
                                         <th><?php __('Colli'); ?></th>
-					<th><?php __('Totale'); ?></th>
+					<th class="value"><?php __('Totale'); ?></th>
 				</tr>
 
 		<?php foreach ($totals as $product): ?>
@@ -98,7 +98,7 @@
 
                                 ?>
                                 <td class="quantity" <?php echo $class; ?>><?php echo $boxes; ?> </td>
-                                <td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
+                                <td class="value"><?php echo $this->Number->currency($product['0']['total'], 'EUR'); ?> </td>
 			</tr>
 		<?php endforeach; ?>
 					<tr>
@@ -106,8 +106,8 @@
 							<strong><?php __('Totale') ?></strong>
 						</td>
 						<td></td>
-						<td>
-							<strong><?php echo $total; ?> &euro;</strong>
+						<td class="value">
+							<strong><?php echo $this->Number->currency($total, 'EUR'); ?> </strong>
 						</td>
 					</tr>
 				</table>
@@ -138,8 +138,8 @@
 					<table cellpadding="0" cellspacing="0">
 						<tr>
 							<th><?php __('Utente'); ?></th>
-							<th class="small-w"><?php __('Quantità'); ?></th>
-							<th class="small-w"><?php __('Totale'); ?></th>
+							<th class="small-w"><?php __($products['Product']['units']); ?></th>
+							<th class="small-w value"><?php __('Totale'); ?></th>
 							<th class="actions small-w"><?php __('Pagato'); ?></th>
 							<th class="actions small-w"><?php __('Ritirato'); ?></th>
 							<th class="actions"><?php __('Azioni') ?></th>
@@ -165,9 +165,9 @@
 						
 						<td>
 				<?php echo clean_number($product['OrderedProduct']['quantity']); ?>&nbsp;
-				<?php echo $product['Product']['units']; ?>
+				
 						</td>
-						<td><?php echo $product['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+						<td class="value"><?php echo $this->Number->currency($product['OrderedProduct']['value'], 'EUR'); ?></td>
 						<td class="actions"><?php
 							if ($product['OrderedProduct']['paid']) {
 								echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $product['OrderedProduct']['id'])));
@@ -192,8 +192,8 @@
 									<strong><?php __('Totale'); ?></strong>
 								</td>
 								<td></td>
-								<td>
-									<strong><?php echo $products['Total']; ?> &euro;</strong>
+								<td class="value">
+									<strong><?php echo $this->Number->currency( $products['Total'], 'EUR'); ?> </strong>
 								</td>
 								<td colspan="3"></td>
 							</tr>

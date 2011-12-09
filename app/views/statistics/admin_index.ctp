@@ -19,7 +19,7 @@
 	<?php
 	foreach($totalBySellerThisYear as $seller) {
 		$return = $this->Html->tag('td', $seller['Seller']['name']);
-		$return .= $this->Html->tag('td', $seller['0']['total'] . ' &euro;');
+		$return .= $this->Html->tag('td', $this->Number->currency($seller['0']['total'], 'EUR'));
 		$return .= $this->Html->tag('td', $seller['0']['orders']);
 		echo $this->Html->tag('tr', $return);
 	}
@@ -37,7 +37,7 @@
 	<?php
 	foreach($totalBySellerLastYear as $seller) {
 		$return = $this->Html->tag('td', $seller['Seller']['name']);
-		$return .= $this->Html->tag('td', $seller['0']['total'] . ' &euro;');
+		$return .= $this->Html->tag('td', $this->Number->currency($seller['0']['total'], 'EUR') );
 		$return .= $this->Html->tag('td', $seller['0']['orders']);
 		echo $this->Html->tag('tr', $return);
 	}
@@ -54,7 +54,7 @@
 			foreach($seller['months'] as $month => $value): ?>
 
 			<div class="item-name"><?php echo monthToString($month); ?></div>
-			<div class="item-value"><?php echo $value; ?> &euro;</div>
+			<div class="item-value"><?php echo $this->Number->currency($value, 'EUR'); ?> </div>
 			
 		<?php 
 			endforeach;

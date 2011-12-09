@@ -34,10 +34,10 @@
 				echo $product['weight'];
 				?>
             </td>          
-            <td>
+            <td class="value">
 				<?php
-				echo $product['value'];
-				?> &euro;
+				echo $this->Number->currency($product['value'], 'EUR');
+				?> 
             </td>
 
 			<td>

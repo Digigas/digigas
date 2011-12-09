@@ -129,8 +129,8 @@ $this->Layout->blockEnd();
 							<div class="value">
 				<?php
 							__('Prezzo unitario: ');
-							echo $product['value'];
-				?>&euro;
+							echo $this->Number->currency($product['value'], 'EUR');
+				?>
 						</div>
 			<?php endif; ?>
 

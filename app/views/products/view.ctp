@@ -45,7 +45,7 @@
         __('Prezzo');
         echo ': ';
         ?></h4>
-        <?php echo $product['Product']['value']; ?> &euro;
+        <?php echo $this->Number->currency($product['Product']['value'], 'EUR'); ?> 
     </div>
 
 	<div class="comments">

@@ -27,7 +27,7 @@
 	?>
 </head>
 <body>
-	<div id="container">
+    	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->element('logo'); ?></h1>
 		</div>

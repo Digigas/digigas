@@ -54,7 +54,7 @@
                 text-align:left;"><?php echo $values['0']['quantity']; ?></td>
         <td class="value" style="border-bottom:1px solid #ccc;
                 padding:3px;
-                text-align:left;"><?php echo $values['0']['total']; ?> &euro;</td>
+                text-align:left;"><?php echo $this->Number->currency($values['0']['total'], 'EUR'); ?> </td>
     </tr>
     <?php endforeach; ?>
 </table>
