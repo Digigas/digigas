@@ -74,7 +74,7 @@ if(empty($hamper_user_id)){
             else
                 $pdf->Cell(12,6);
             
-            $pdf->Cell(28,6, $product['OrderedProduct']['total'] . EURO, '', '',  'R');
+            $pdf->Cell(28,6, EURO." ".money_format('%.2n',$product['OrderedProduct']['total']), '', '',  'R');
             if($product['OrderedProduct']['option_1'].$product['OrderedProduct']['option_2'])
             {
 
@@ -105,7 +105,7 @@ if(empty($hamper_user_id)){
         $pdf->Cell(30,6, '');
         // $pdf->Cell(40,6, $this->Number->currency($total, 'EUR', array('escape' => true)));
             $cat_total = array_sum(Set::extract('/Product/OrderedProduct/total', $category));
-        $pdf->Cell(28,6, money_format('%.2n', $cat_total) . EURO, '', '',  'R');
+        $pdf->Cell(28,6, EURO." ".money_format('%.2n', $cat_total), '', '',  'R');
 
         $pdf->Ln();
 
@@ -116,7 +116,7 @@ if(empty($hamper_user_id)){
     $pdf->Cell(130,6, __('Totale', true));
     $pdf->Cell(30,6, '');
     // $pdf->Cell(40,6, $this->Number->currency($total, 'EUR', array('escape' => true)));
-    $pdf->Cell(28,6, money_format('%.2n', $total) . EURO, '', '',  'R');
+    $pdf->Cell(28,6, EURO." ".money_format('%.2n', $total), '', '',  'R');
 
     $pdf->Ln();
     $h = $pdf->GetY();
@@ -156,7 +156,7 @@ foreach($orderedProducts as $products) {
         $name = $orderedProduct['Product']['name'];
         $pdf->Cell(110,6, $name);
 		$pdf->Cell(30,6, clean_number($orderedProduct['OrderedProduct']['quantity']) . ' ' . $orderedProduct['Product']['units']);
-		$pdf->Cell(28,6, $orderedProduct['OrderedProduct']['value'], '', '',  'R');
+		$pdf->Cell(28,6, EURO." ".money_format('%.2n',$orderedProduct['OrderedProduct']['value']), '', '',  'R');
 
 		if($orderedProduct['OrderedProduct']['option_1'].$orderedProduct['OrderedProduct']['option_2'])
         {
@@ -193,7 +193,7 @@ foreach($orderedProducts as $products) {
 	$pdf->SetFont('Arial','B',9);
 	$pdf->Cell(130,6, __('Totale ', true).$products['User']['fullname']);
 	$pdf->Cell(30,6, '');
-	$pdf->Cell(28,6, money_format('%.2n', $products['Total']) . EURO, '', '',  'R');
+	$pdf->Cell(28,6, EURO." ".money_format('%.2n', $products['Total']), '', '',  'R');
 	$pdf->Ln();
 	$h = $pdf->GetY();
 	$pdf->Line(10,$h, 200,$h);
