@@ -47,7 +47,7 @@
                 text-align:left;"><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
 		<td style="border-bottom:1px solid #ccc;
                 padding:3px;
-                text-align:left;"><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+                text-align:left;"><?php echo $this->Number->currency($orderedProduct['OrderedProduct']['value'], 'EUR'); ?></td>
 		<td class="actions" style="border-bottom:1px solid #ccc;
                 padding:3px;
                 text-align:left;"><?php

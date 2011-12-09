@@ -99,7 +99,8 @@
 
                                 ?>
                                 <td class="quantity" <?php echo $class; ?>><?php echo $boxes; ?> </td>
-                                <td class="value"><?php echo $product['0']['total']; ?> &euro;</td>
+                                <td class="value"><?php echo $this->Number->currency( $product['0']['total'], 'EUR' ); ?> </td>
+                                
 			</tr>
 		<?php endforeach; ?>
 					<tr>
@@ -107,9 +108,8 @@
 							<strong><?php __('Totale') ?></strong>
 						</td>
 						<td></td>
-						<td>
-							<strong><?php echo $total; ?> &euro;</strong>
-						</td>
+						
+                                                <td class="value"><strong><?php echo $this->Number->currency( $total, 'EUR' ); ?></strong> </td>
 					</tr>
 				</table>
 
@@ -173,7 +173,7 @@
 				<?php echo clean_number($product['OrderedProduct']['quantity']); ?>&nbsp;
 				<?php echo $product['Product']['units']; ?>
 						</td>
-						<td><?php echo $product['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+						<td class="value"><?php echo $this->Number->currency($product['OrderedProduct']['value'], 'EUR' ); ?> </td>
 						<td class="actions"><?php
 							if ($product['OrderedProduct']['paid']) {
 								echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $product['OrderedProduct']['id'])));
@@ -198,9 +198,7 @@
 									<strong><?php __('Totale'); ?></strong>
 								</td>
 								<td></td>
-								<td>
-									<strong><?php echo $products['Total']; ?> &euro;</strong>
-								</td>
+								<td class="value"><strong><?php echo $this->Number->currency( $products['Total'], 'EUR' ); ?> </strong></td>
 								<td colspan="3"></td>
 							</tr>
 						</table>

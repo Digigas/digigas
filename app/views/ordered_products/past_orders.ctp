@@ -29,7 +29,7 @@
 			<?php echo $this->Html->link($orderedProduct['Product']['name'], array('controller' => 'products', 'action' => 'view', $orderedProduct['Product']['id'])); ?>
 		</td>
 		<td><?php echo rtrim($orderedProduct['OrderedProduct']['quantity'], '.0'); ?>&nbsp;</td>
-		<td><?php echo $orderedProduct['OrderedProduct']['value']; ?> &euro;</td>
+		<td class="value"><?php echo $this->Number->currency($orderedProduct['OrderedProduct']['value'], 'EUR'); ?> </td>
 		<td class="actions"><?php
         if($orderedProduct['OrderedProduct']['paid']) {
             echo $this->Html->image('oxygen/16x16/actions/apply.png', array('title' => __('Pagato', true)));

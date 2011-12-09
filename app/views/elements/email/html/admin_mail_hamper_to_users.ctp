@@ -50,7 +50,7 @@ Devi ritirare i prodotti ordinati presso  <?php echo $hamper['Hamper']['delivery
                 text-align:left;"><?php echo $orderedProduct['OrderedProduct']['quantity']; ?>&nbsp;</td>
 		<td style="border-bottom:1px solid #ccc;
                 padding:3px;
-                text-align:left;"><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+                text-align:left;"><?php echo $this->Number->currency($orderedProduct['OrderedProduct']['value'], 'EUR'); ?></td>
 		<td class="actions" style="border-bottom:1px solid #ccc;
                 padding:3px;
                 text-align:left;"><?php
@@ -83,7 +83,7 @@ Devi ritirare i prodotti ordinati presso  <?php echo $hamper['Hamper']['delivery
 		<td style="border-bottom:1px solid #ccc;
                 padding:3px;
                 text-align:left;">
-			<?php echo $total; ?>&nbsp;&euro;
+			<?php echo $this->Number->currency($total, 'EUR'); ?>
 		</td>
 		<td style="border-bottom:1px solid #ccc;
                 padding:3px;

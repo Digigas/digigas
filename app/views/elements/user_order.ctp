@@ -39,8 +39,8 @@
         <div class="value">
             <?php
             __('Costo totale: ');
-            echo $order['OrderedProduct']['value'];
-            echo '&euro;';
+            echo $this->Number->currency($order['OrderedProduct']['value'], 'EUR');
+            
             ?>
         </div>
         <div class="delete">

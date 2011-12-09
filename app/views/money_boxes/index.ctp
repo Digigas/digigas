@@ -31,7 +31,7 @@
 <?php endforeach; ?>
     <tr>
         <td colspan="2"><strong><?php __('Totale'); ?></strong></td>
-        <td><strong><?php echo $total; ?> &euro;</strong></td>
+        <td><strong><?php echo $this->Number->currency($total, 'EUR'); ?> </strong></td>
     </tr>
 	</table>
 	<p>

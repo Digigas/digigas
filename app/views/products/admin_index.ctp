@@ -34,7 +34,7 @@
 		</td>		
 		<td><?php echo $product['Product']['code']; ?>&nbsp;</td>
 		<td><?php echo $product['Product']['name']; ?>&nbsp;</td>
-                <td class="value"><?php echo $product['Product']['value']; ?> &euro;</td>
+                <td class="value"><?php echo $this->Number->currency($product['Product']['value'], 'EUR' ); ?> </td>
         <td>
 			<?php echo $this->Html->link($product['Seller']['name'], array('seller' => $product['Seller']['id']), array('title' => __('Visualizza solo prodotti di questo produttore', true))); ?>
 		</td>

@@ -323,7 +323,20 @@ dl
 {
     color:#999;
     font-size:11px;
+    
 }
+
+table tr td.value {
+
+    font-family:  monospace;
+    text-align: right;
+}
+
+table tr th.value {
+
+    text-align: right;
+}
+
 .userorder .orderedproduct .delete
 {
     position:absolute;

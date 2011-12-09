@@ -69,7 +69,7 @@
 				&nbsp;
 				<?php echo $orderedProduct['Product']['units']; ?>
 			</td>
-			<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+			<td class="value"><?php echo $this->Number->currency($orderedProduct['OrderedProduct']['value'], 'EUR'); ?></td>
 			<td>
 				<?php
 				if (!date_is_empty($orderedProduct['Hamper']['delivery_date_on'])) {
@@ -99,18 +99,16 @@
 		</tr>
 		<?php endforeach; ?>
 				<tr>
-					<td colspan="4">&nbsp;</td>
-					<td class="total">
+					<td colspan="3"><strong><?php __('Totale'); ?></strong></td>
+					<td class="value">
 						<strong>
 					<?php
-					__('Totale');
-					echo ': ';
-					echo $total;
-					echo '&euro;';
+					
+					echo $this->Number->currency($total, 'EUR');
 					?>
 				</strong>
 			</td>
-			<td colspan="3">&nbsp;</td>
+			<td colspan="4">&nbsp;</td>
 		</tr>
 	</table>
 

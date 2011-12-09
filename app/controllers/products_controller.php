@@ -3,7 +3,7 @@ class ProductsController extends AppController {
 
 	var $name = 'Products';
 	var $components = array('UserComment');
-	var $helpers = array('Html', 'Form', 'UserComment');
+	var $helpers = array('Html', 'Form', 'UserComment', 'Number');
 
     function beforeFilter()
     {

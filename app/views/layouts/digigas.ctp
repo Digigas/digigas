@@ -12,6 +12,7 @@
 
 		echo $this->Html->css('cake.generic');
         echo $this->Html->css('cake.admin');
+        echo $this->Html->css('cake.website');
         echo $this->Html->css('digigas.print', null, array('media' => 'print'));
         echo $this->Html->css('jquery.lightbox');
         echo $this->Html->css('digigas/jquery.treeTable');

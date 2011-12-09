@@ -20,7 +20,7 @@
         <div class="value">
                 <?php
                 __('Prezzo totale: ');
-                echo $orderedProduct['OrderedProduct']['value'] . '&euro;';
+                echo $this->Number->currency($orderedProduct['OrderedProduct']['value'], 'EUR');
                 ?>
         </div>
         <div class="paid">

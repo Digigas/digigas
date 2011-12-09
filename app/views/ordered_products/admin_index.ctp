@@ -87,7 +87,7 @@
 				&nbsp;
 				<?php echo $orderedProduct['Product']['units']; ?>
 			</td>
-            <td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+            <td class="value"><?php echo $this->Number->currency($orderedProduct['OrderedProduct']['value'], 'EUR' ); ?></td>
             <td>
 				<?php
 				if (!date_is_empty($orderedProduct['Hamper']['delivery_date_on'])) {
@@ -168,7 +168,7 @@
 					&nbsp;
 					<?php echo $orderedProduct['Product']['units']; ?>
 				</td>
-				<td><?php echo $orderedProduct['OrderedProduct']['value']; ?>&nbsp;&euro;</td>
+				<td class="value"><?php echo $this->Number->currency($orderedProduct['OrderedProduct']['value'], 'EUR' ); ?></td>
 				<td class="actions"><?php
 					if ($orderedProduct['OrderedProduct']['paid']) {
 						echo $this->Html->image('oxygen/16x16/actions/apply.png', array('url' => array('action' => 'set_not_paid', $orderedProduct['OrderedProduct']['id'])));
