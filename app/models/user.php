@@ -128,7 +128,7 @@ class User extends AppModel {
 		return $return;
 	}
 
-	/*
+		/*
 		 * Funzioni per accedere a $controller->Auth->user() anche nei modelli
 		 *	in AppController::beforeFilter:
 			App::import('Model', 'User');
