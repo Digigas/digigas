@@ -17,7 +17,7 @@ class UserCommentHelper extends Helper {
 		$return .= $this->Html->tag('h3', __($title, true), array('class' => 'expander'));
 
 		$return .= '<div class="accordion">';
-		$return .= $this->Form->create('Comment', array('url' => $this->url()));
+		$return .= $this->Form->create('Comment', array('url' => $this->url(null, true)));
 		$return .= $this->Form->hidden('Comment.add', array('value' => 1)); //serve nel component
 		$return .= $this->Form->hidden('Comment.pagetitle', array('value' => $pagetitle));
 		$return .= $this->Form->hidden('Comment.model', array('value' => $model));
