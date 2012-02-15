@@ -6,7 +6,7 @@
 
     
     <div class="image">
-        <?php echo$this->Image->resize('/documents/image/product/' . $product['Product']['image'], 400, 400); ?>
+        <?php echo $this->Image->resize('/documents/image/product/' . $product['Product']['image'], 230, 230); ?>
     </div>
 
     <div class="category detail">
