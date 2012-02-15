@@ -9,6 +9,8 @@
 
     <table cellpadding="0" cellspacing="0">
         <tr>
+            <th><?php __('Immagine'); ?></th>
+            <th><?php __('Codice'); ?></th>
             <th><?php __('Prodotto'); ?></th>
             <th><?php __('Peso'); ?></th>
             <th><?php __('Prezzo unitario'); ?></th>
@@ -24,7 +26,18 @@
 			}
 		?>
 			<tr>
-				<td>
+             <td>
+				<?php
+					if ($product['image'])
+					echo $this->Image->resize('/documents/image/product/' . $product['image'], '80', '60');
+				?>
+             </td>
+             <td>
+				<?php
+				echo $product['code'];
+				?>
+            </td>
+  			    <td>
 				<?php
 				echo $product['name'];
 				?>
