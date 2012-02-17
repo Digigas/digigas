@@ -15,42 +15,45 @@ $objPHPExcel->setActiveSheetIndex(0)->setTitle("Paniere");
 // debug($totals); 
 // die();
 
-$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'Descrizione');
-$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', 'Opzione 1');
-$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', 'Opzione 2');
-$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', 'UM');
-$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1', 'Prezzo');
+$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'Codice');
+$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', 'Descrizione');
+$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', 'Opzione 1');
+$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', 'Opzione 2');
+$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1', 'UM');
+$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', 'Prezzo');
 
-$objPHPExcel->setActiveSheetIndex(0)->getStyle('A1:E1')->getFont()->setBold("true");
+$objPHPExcel->setActiveSheetIndex(0)->getStyle('A1:Z1')->getFont()->setBold("true");
 
 
 
 $rownum = 2;
 foreach($totals as $product)
 {
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("A$rownum", $product['Product']['name']);
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("A$rownum", $product['Product']['code']);
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("B$rownum", $product['Product']['name']);
     if(!empty($product['Product']['option_1'])) {
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue("B$rownum", $product['Product']['option_1'].': '.$product['OrderedProduct']['option_1']);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue("C$rownum", $product['Product']['option_1'].': '.$product['OrderedProduct']['option_1']);
 	}
     if(!empty($product['Product']['option_2'])) {
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue("C$rownum", $product['Product']['option_2'].': '.$product['OrderedProduct']['option_2']);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue("D$rownum", $product['Product']['option_2'].': '.$product['OrderedProduct']['option_2']);
 	}
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("D$rownum", $product['Product']['units']);
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("E$rownum", $product['Product']['value']);
-    $objPHPExcel->setActiveSheetIndex(0)->getStyle("E$rownum")->getNumberFormat()->setFormatCode( '[$€ ]#,##0.00_-');
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("E$rownum", $product['Product']['units']);
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue("F$rownum", $product['Product']['value']);
+    $objPHPExcel->setActiveSheetIndex(0)->getStyle("F$rownum")->getNumberFormat()->setFormatCode( '[$€ ]#,##0.00_-');
 
-    $colnum = 5;
+    $colnum = 6;
     foreach($product['Users'] as $user)
     {
         if(!empty($user))
             $objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($colnum, $rownum, $user[0]['quantity']);
         $colnum++;
     }
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($colnum, $rownum, "=SUM(F$rownum:".getCol($colnum-1)."$rownum)");
-//     echo "=SUM(E$rownum:".getCol($colnum)."$rownum)";
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($colnum, $rownum, "=SUM(G$rownum:".getCol($colnum-1)."$rownum)");
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($colnum, 1, 'Totale');
+//     echo "=SUM(F$rownum:".getCol($colnum)."$rownum)";
     $rownum++;
 }
-$colnum = 5;
+$colnum = 6;
 foreach($users as $user)
 {
     $objPHPExcel->setActiveSheetIndex(0)->setCellValueByColumnAndRow($colnum, 1, $user['User']['last_name']);
