@@ -835,10 +835,10 @@ class OrderedProductsController extends AppController {
         
         $totals = $this->OrderedProduct->find('all', array(
             'conditions' => array('OrderedProduct.hamper_id' => $hamper_id),
-            'fields' => array('hamper_id', 'product_id', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
+            'fields' => array('hamper_id', 'product_id', 'Product.code', 'option_1', 'option_2', 'SUM(OrderedProduct.value) as total', 'SUM(OrderedProduct.quantity) as quantity'),
             'group' => array('hamper_id', 'product_id', 'OrderedProduct.option_1', 'OrderedProduct.option_2'),
             'order' => array('hamper_id desc', 'Product.name'),
-            'contain' => array('Product.name','Product.option_1', 'Product.option_2', 'Product.units', 'Product.value' ,'Hamper.delivery_date_on')
+            'contain' => array('Product.name', 'Product.code', 'Product.option_1', 'Product.option_2', 'Product.units', 'Product.value' ,'Hamper.delivery_date_on')
         ));
         
         foreach($totals as $key => $product)
