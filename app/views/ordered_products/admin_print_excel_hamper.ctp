@@ -15,16 +15,14 @@ $objPHPExcel->setActiveSheetIndex(0)->setTitle("Paniere");
 // debug($totals); 
 // die();
 
+$objPHPExcel->setActiveSheetIndex(0)->getStyle('1')->getFont()->setBold("true");
+
 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'Codice');
 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', 'Descrizione');
 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', 'Opzione 1');
 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', 'Opzione 2');
 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1', 'UM');
 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', 'Prezzo');
-
-$objPHPExcel->setActiveSheetIndex(0)->getStyle('A1:Z1')->getFont()->setBold("true");
-
-
 
 $rownum = 2;
 foreach($totals as $product)
@@ -62,6 +60,12 @@ foreach($users as $user)
     $colnum++;
     
 }
+
+$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('A')->setAutoSize(true);
+$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('B')->setAutoSize(true);
+$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('C')->setAutoSize(true);
+$objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('D')->setAutoSize(true);
+
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter->save('php://output');
 ?>
