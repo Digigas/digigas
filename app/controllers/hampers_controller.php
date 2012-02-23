@@ -43,7 +43,7 @@ class HampersController extends AppController {
 			'conditions' => array('Hamper.id' => $id),
 			'contain' => array(
 				'Seller',
-				'Product' => array('order' => 'product_category_id asc'),
+				'Product' => array('order' => 'product_category_id asc, name'),
 				'Product.ProductCategory.name')
 		));
 
