@@ -90,6 +90,16 @@ class Hamper extends AppModel {
             'Hamper.end_date > ' => $now);
         return $conditions;
     }
+    
+    //dayana 12/06/2012 aggiunta funzione per ottenere gli ordini attivi di un produttore
+    function getActiveConditionsForSeller($id) {
+        $now = date('Y:m:d H:i');
+        $conditions = array(
+            'Hamper.start_date < ' => $now,
+            'Hamper.seller_id = ' => $id,
+            'Hamper.end_date > ' => $now);
+        return $conditions;
+    }
 
     function isActive($id) {
         if($id != $this->id) {
