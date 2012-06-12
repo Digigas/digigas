@@ -19,7 +19,18 @@ class HampersController extends AppController {
     }
 
     function index() {
-        $this->paginate = array('conditions' => $this->Hamper->getActiveConditions(), 'order' => array('Hamper.end_date asc'));
+        //dayana 12/06/2012 se mi viene passato il produttore, apro direttamente la pagina con l'ordine attivo per quel produttore
+        $seller_id = $_GET['seller'];
+        if (is_null($seller_id))
+            $this->paginate = array('conditions' => $this->Hamper->getActiveConditions(), 'order' => array('Hamper.end_date asc'));
+        else
+        {
+            $this->paginate = array('conditions' => $this->Hamper->getActiveConditionsForSeller($seller_id), 'order' => array('Hamper.end_date asc'));
+            $hampers = $this->paginate();
+            $id = $hampers[0]['Hamper']['id'];
+            if (!is_null($id))
+                $this->redirect(array('controller' => 'hampers', 'action' => 'view', $id));
+        }
         $this->Hamper->recursive = 0;
         $hampers = $this->paginate();
         $this->set('hampers', $hampers);
@@ -27,7 +38,7 @@ class HampersController extends AppController {
 
 		//ultimi messaggi nel forum
 		$this->ForumMessages->getLastMessages();
-		
+                
         if(empty($hampers)) {
             $this->set('title_for_layout', __('Nessun paniere disponibile in questo momento', true).' - '.Configure::read('GAS.name'));
             $this->render('index_closed');
