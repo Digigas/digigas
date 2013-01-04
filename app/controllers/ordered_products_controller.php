@@ -376,7 +376,7 @@ class OrderedProductsController extends AppController {
 				//mail error
 				$failed = true;
 			}
-
+      }
 			if($failed) {
 				$this->Session->setFlash('Si sono verificati degli errori');
 			} else {
@@ -384,7 +384,7 @@ class OrderedProductsController extends AppController {
 			}
 
 			$this->redirect($this->referer());
-		}
+		
     }
 
     function admin_mass_mail_orders_to_users() {
