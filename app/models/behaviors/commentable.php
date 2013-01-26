@@ -71,30 +71,35 @@ class CommentableBehavior extends ModelBehavior {
             }
 
             $ret =  $Model->Comment->save($data);
+//                        die('prova');
+
             $last_comment_id = $Model->Comment->getLastInsertId();
+            
             $thread_id = null;
             $tempModel = $Model;
             $field = 'Comment.item_id';
             if($Model->name == 'Forum')
             {
                 if(isset($data['Comment']['parent_id']))
+                {
                     $thread_id =  $data['Comment']['parent_id'];
                 # Aggiorno il Modello con i dati sull'ultimo commento
-                $Model->Comment->save(
-                    array('Comment' => array (
-                        'id' => $data['Comment']['parent_id'],
-                        'last_comment_user_id' => $data['Comment']['user_id'],
-                        'comments_count' => $Model->Comment->find(
-                            'count', array(
-                                'conditions' => array(
-                                    'Comment.parent_id' => $thread_id,
-                                    'Comment.model' => $Model->name
-                                ))),
-                        'last_comment_id' => $last_comment_id
-                        )
-                    )
-                );
                 
+                    $Model->Comment->save(
+                        array('Comment' => array (
+                            'id' => $data['Comment']['parent_id'],
+                            'last_comment_user_id' => $data['Comment']['user_id'],
+                            'comments_count' => $Model->Comment->find(
+                                'count', array(
+                                    'conditions' => array(
+                                        'Comment.parent_id' => $thread_id,
+                                        'Comment.model' => $Model->name
+                                    ))),
+                            'last_comment_id' => $last_comment_id
+                            )
+                        )
+                    );
+                }
             }
             else
             {
