@@ -39,7 +39,6 @@ class UserCommentHelper extends Helper {
      *
      */
     function view($data, $element = false, $paginate = false) {
-        
         $this->View = ClassRegistry::getObject('view');
         $return = '';
         

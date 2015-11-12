@@ -6,8 +6,8 @@ class DATABASE_CONFIG {
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'root',
-		'password' => 'orwell84',
-		'database' => 'digigas',
+		'password' => 'root',
+		'database' => 'digigas3',
 		'prefix' => '',
 	);
 }

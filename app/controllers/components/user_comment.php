@@ -35,7 +35,6 @@ class UserCommentComponent extends Object {
             $model = Inflector::singularize($controller->name);
             if(($controller->params['action'] == 'view' && $model != "Forum") || $controller->params['action'] == 'view_topic'  )
             {
-                
                 $id = $controller->params['pass'][0];
                 $controller->{$model}->commentsReaded($id);
             }

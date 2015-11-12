@@ -11,17 +11,17 @@
 	
 	
 	<?php
-    $date = $this->Html->div('comment-date', digi_date($topic['Comment']['created']));
-                    $text = $this->Html->div('comment-body', $topic['Comment']['text']);
-                    $author = $this->Html->div('comment-author', $topic['User']['fullname']);
-                    $meta =  $this->Html->tag('span', $author.$date, array('class' => 'comment-metadata'));
-                    $avatar = $this->Html->image('avatars/empty.png', array('class'=>'avatar'));
-                    $comment_topic = $this->Html->div('comment-topic first' , $meta.$text  );
-                    $st = $this->Html->div('comment', $avatar.$comment_topic );
+	$date = $this->Html->div('comment-date', digi_date($topic['Comment']['created']));
+	$text = $this->Html->div('comment-body', $topic['Comment']['text']);
+	$author = $this->Html->div('comment-author', $topic['User']['fullname']);
+	$meta =  $this->Html->tag('span', $author.$date, array('class' => 'comment-metadata'));
+	$avatar = $this->Html->image('avatars/empty.png', array('class'=>'avatar'));
+	$comment_topic = $this->Html->div('comment-topic first' , $meta.$text  );
+	$st = $this->Html->div('comment', $avatar.$comment_topic );
 
-                    echo $st;
-                    echo "<br/>";
-                    echo $this->UserComment->view($comments, false , true);
+	echo $st;
+	echo "<br/>";
+	echo $this->UserComment->view($comments, false , true);
 		
 	?>	
 	<br/>

@@ -46,7 +46,6 @@
 					<th><?php __('Codice'); ?></th>
 					<th><?php __('Categoria'); ?></th>
 					<th><?php __('Quantità'); ?></th>
-                                        <th><?php __('Pezzi<br>collo'); ?></th>
                                         <th><?php __('Colli'); ?></th>
 					<th><?php __('Totale'); ?></th>
 				</tr>
@@ -99,14 +98,13 @@
                                 }
 
                                 ?>
-                                <td class="quantity" ><?php echo $items_in_a_box>1?$items_in_a_box:''; ?> </td>
-                                <td class="quantity" <?php echo $class; ?>><?php echo $items_in_a_box>1?$boxes:'';  ?> </td>
+                                <td class="quantity" <?php echo $class; ?>><?php echo $boxes; ?> </td>
                                 <td class="value"><?php echo $this->Number->currency( $product['0']['total'], 'EUR' ); ?> </td>
                                 
 			</tr>
 		<?php endforeach; ?>
 					<tr>
-						<td colspan="5">
+						<td colspan="4">
 							<strong><?php __('Totale') ?></strong>
 						</td>
 						<td></td>
