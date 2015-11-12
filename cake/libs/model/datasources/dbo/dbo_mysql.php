@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.model.datasources.dbo
@@ -218,12 +218,21 @@ class DboMysqlBase extends DboSource {
 		if (empty($conditions)) {
 			$alias = $joins = false;
 		}
-		$conditions = $this->conditions($this->defaultConditions($model, $conditions, $alias), true, true, $model);
+		$complexConditions = false;
+		foreach ((array)$conditions as $key => $value) {
+			if (strpos($key, $model->alias) === false) {
+				$complexConditions = true;
+				break;
+			}
+		}
+		if (!$complexConditions) {
+			$joins = false;
+		}
 
+		$conditions = $this->conditions($this->defaultConditions($model, $conditions, $alias), true, true, $model);
 		if ($conditions === false) {
 			return false;
 		}
-
 		if ($this->execute($this->renderStatement('delete', compact('alias', 'table', 'joins', 'conditions'))) === false) {
 			$model->onError();
 			return false;
@@ -555,6 +564,10 @@ class DboMysql extends DboMysqlBase {
 			$this->connection = mysql_pconnect($config['host'] . ':' . $config['port'], $config['login'], $config['password']);
 		}
 
+		if (!$this->connection) {
+			return false;
+		}
+
 		if (mysql_select_db($config['database'], $this->connection)) {
 			$this->connected = true;
 		}
@@ -659,7 +672,7 @@ class DboMysql extends DboMysqlBase {
 					return 'NULL';
 				}
 				if (is_float($data)) {
-					return sprintf('%F', $data);
+					return str_replace(',', '.', strval($data));
 				}
 				if ((is_int($data) || $data === '0') || (
 					is_numeric($data) && strpos($data, ',') === false &&

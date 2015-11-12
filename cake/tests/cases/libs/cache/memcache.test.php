@@ -4,14 +4,14 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <http://book.cakephp.org/1.3/en/The-Manual/Common-Tasks-With-CakePHP/Testing.html>
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://book.cakephp.org/1.3/en/The-Manual/Common-Tasks-With-CakePHP/Testing.html CakePHP(tm) Tests
  * @package       cake
  * @subpackage    cake.tests.cases.libs.cache
  * @since         CakePHP(tm) v 1.2.0.5434
@@ -33,7 +33,13 @@ class TestMemcacheEngine extends MemcacheEngine {
 	function parseServerString($server) {
 		return $this->_parseServerString($server);
 	}
+	
+	function setMemcache(&$memcache) {
+		$this->__Memcache = $memcache;
+	}
 }
+
+Mock::generate('Memcache', 'MemcacheMockMemcache');
 
 /**
  * MemcacheEngineTest class
@@ -100,7 +106,8 @@ class MemcacheEngineTest extends CakeTestCase {
 			'probability' => 100,
 			'servers' => array('127.0.0.1'),
 			'compress' => false,
-			'engine' => 'Memcache'
+			'engine' => 'Memcache',
+			'persistent' => true,
 		);
 		$this->assertEqual($settings, $expecting);
 	}
@@ -179,6 +186,17 @@ class MemcacheEngineTest extends CakeTestCase {
 		$result = $Memcache->parseServerString('sülül:1111');
 		$this->assertEqual($result, array('sülül', '1111'));
 	}
+
+/**
+ * test unix sockets.
+ *
+ * @return void
+ */
+    function testParseServerStringUnix() {
+        $Memcache =& new TestMemcacheEngine();
+        $result = $Memcache->parseServerString('unix:///path/to/memcached.sock');
+        $this->assertEqual($result, array('unix:///path/to/memcached.sock', 0));
+    }
 
 /**
  * testReadAndWriteCache method
@@ -361,7 +379,23 @@ class MemcacheEngineTest extends CakeTestCase {
 		$this->assertTrue($result, 'Could not write with duration 0');
 		$result = Cache::read('test_key', 'memcache');
 		$this->assertEqual($result, 'written!');
-		
+	}
+
+/**
+ * test that durations greater than 30 days never expire
+ *
+ * @return void
+ */
+	function testLongDurationEqualToZero() {
+		$memcache =& new TestMemcacheEngine();
+		$memcache->settings['compress'] = false;
+
+		$mock = new MemcacheMockMemcache();
+		$memcache->setMemcache($mock);
+		$mock->expectAt(0, 'set', array('key', 'value', false, 0));
+
+		$value = 'value';
+		$memcache->write('key', $value, 50 * DAY);
 	}
 
 }

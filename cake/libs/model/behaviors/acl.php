@@ -7,12 +7,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP :  Rapid Development Framework (http://cakephp.org)
- * Copyright 2006-2010, Cake Software Foundation, Inc.
+ * Copyright 2005-2012, Cake Software Foundation, Inc.
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2006-2010, Cake Software Foundation, Inc.
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc.
  * @link          http://cakephp.org CakePHP Project
  * @package       cake
  * @subpackage    cake.cake.libs.model.behaviors
@@ -25,7 +25,7 @@
  *
  * @package       cake
  * @subpackage    cake.cake.libs.model.behaviors
- * @link http://book.cakephp.org/view/1320/ACL
+ * @link http://book.cakephp.org/1.3/en/The-Manual/Core-Behaviors/ACL.html#ACL
  */
 class AclBehavior extends ModelBehavior {
 
@@ -71,7 +71,7 @@ class AclBehavior extends ModelBehavior {
  * @param mixed $ref
  * @return array
  * @access public
- * @link http://book.cakephp.org/view/1322/node
+ * @link http://book.cakephp.org/1.3/en/The-Manual/Core-Behaviors/ACL.html#node
  */
 	function node(&$model, $ref = null) {
 		$type = $this->__typeMaps[$this->settings[$model->name]['type']];
@@ -96,7 +96,7 @@ class AclBehavior extends ModelBehavior {
 		}
 		$data = array(
 			'parent_id' => isset($parent[0][$type]['id']) ? $parent[0][$type]['id'] : null,
-			'model' => $model->alias,
+			'model' => $model->name,
 			'foreign_key' => $model->id
 		);
 		if (!$created) {

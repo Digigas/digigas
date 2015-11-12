@@ -4,14 +4,14 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) Tests <http://book.cakephp.org/1.3/en/The-Manual/Common-Tasks-With-CakePHP/Testing.html>
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *  Licensed under The Open Group Test Suite License
  *  Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://book.cakephp.org/1.3/en/The-Manual/Common-Tasks-With-CakePHP/Testing.html CakePHP(tm) Tests
  * @package       cake
  * @subpackage    cake.cake.tests.libs
  * @since         CakePHP(tm) v 1.2.0.4667
@@ -69,7 +69,7 @@ class CakeTestFixture extends Object {
 	function init() {
 		if (isset($this->import) && (is_string($this->import) || is_array($this->import))) {
 			$import = array_merge(
-				array('connection' => 'default', 'records' => false), 
+				array('connection' => 'default', 'records' => false),
 				is_array($this->import) ? $this->import : array('model' => $this->import)
 			);
 
@@ -153,6 +153,9 @@ class CakeTestFixture extends Object {
  * @access public
  */
 	function drop(&$db) {
+		if (empty($this->fields)) {
+			return false;
+		}
 		$this->Schema->_build(array($this->table => $this->fields));
 		return (
 			$db->execute($db->dropSchema($this->Schema), array('log' => false)) !== false
@@ -172,15 +175,25 @@ class CakeTestFixture extends Object {
 			$values = array();
 
 			if (isset($this->records) && !empty($this->records)) {
+				$fields = array();
+				foreach($this->records as $record) {
+					$fields = array_merge($fields, array_keys(array_intersect_key($record, $this->fields)));
+				}
+				$fields = array_unique($fields);
+				$default = array_fill_keys($fields, null);
 				foreach ($this->records as $record) {
-					$fields = array_keys($record);
-					$values[] = '(' . implode(', ', array_map(array(&$db, 'value'), array_values($record))) . ')';
+					$recordValues = array();
+					foreach(array_merge($default, array_map(array(&$db, 'value'), $record)) as $value) {
+						$recordValues[] = is_null($value) ? 'NULL' : $value;
+					}
+					$values[] = '(' . implode(', ', $recordValues) . ')';
 				}
 				return $db->insertMulti($this->table, $fields, $values);
 			}
 			return true;
 		}
 	}
+
 
 /**
  * Truncates the current fixture. Can be overwritten by classes extending CakeFixture to trigger other events before / after

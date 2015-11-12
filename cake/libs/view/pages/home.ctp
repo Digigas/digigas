@@ -4,12 +4,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view.templates.pages
@@ -20,13 +20,31 @@ if (Configure::read() == 0):
 	$this->cakeError('error404');
 endif;
 ?>
+<iframe src="http://cakephp.org/bake-banner" width="830" height="160" style="overflow:hidden; border:none;">
+	<p>For updates and important announcements, visit http://cakefest.org</p>
+</iframe>
 <h2><?php echo sprintf(__('Release Notes for CakePHP %s.', true), Configure::version()); ?></h2>
-<a href="http://cakephp.org/changelogs/1.3.6"><?php __('Read the changelog'); ?> </a>
+<a href="http://cakephp.org/changelogs/1.3.21"><?php __('Read the changelog'); ?> </a>
 <?php
 if (Configure::read() > 0):
 	Debugger::checkSecurityKeys();
 endif;
 ?>
+<div id="url-rewriting-warning" style="background-color:#e32; color:#fff; padding:3px; margin: 20px 0">
+	<?php __('URL rewriting is not properly configured on your server. '); ?>
+	<ol style="padding-left:20px">
+		<li>
+			<a target="_blank" href="http://book.cakephp.org/view/917/Apache-and-mod_rewrite-and-htaccess" style="color:#fff;">
+				<?php __('Help me configure it')?>
+			</a>
+		</li>
+		<li>
+			<a target="_blank" href="http://book.cakephp.org/view/931/CakePHP-Core-Configuration-Variables" style="color:#fff;">
+				<?php __('I don\'t / can\'t use URL rewriting')?>
+			</a>
+		</li>
+	</ol>
+</div>
 <p>
 	<?php
 		if (is_writable(TMP)):

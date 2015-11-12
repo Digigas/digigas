@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -220,6 +220,7 @@ class DboPostgresTest extends CakeTestCase {
  */
 	var $fixtures = array('core.user', 'core.binary_test', 'core.comment', 'core.article',
 		'core.tag', 'core.articles_tag', 'core.attachment', 'core.person', 'core.post', 'core.author',
+		'core.datatype',
 	);
 /**
  * Actual DB connection used in testing
@@ -438,6 +439,17 @@ class DboPostgresTest extends CakeTestCase {
 	}
 
 /**
+ * test that default -> false in schemas works correctly.
+ *
+ * @return void
+ */
+	function testBooleanDefaultFalseInSchema() {
+		$model = new Model(array('name' => 'Datatype', 'table' => 'datatypes', 'ds' => 'test_suite'));
+		$model->create();
+		$this->assertIdentical(false, $model->data['Datatype']['bool']);
+	}
+
+/**
  * testLastInsertIdMultipleInsert method
  *
  * @access public
@@ -446,23 +458,15 @@ class DboPostgresTest extends CakeTestCase {
 	function testLastInsertIdMultipleInsert() {
 		$db1 = ConnectionManager::getDataSource('test_suite');
 
-		if (PHP5) {
-			$db2 = clone $db1;
-		} else {
-			$db2 = $db1;
-		}
-
-		$db2->connect();
-		$this->assertNotEqual($db1->connection, $db2->connection);
-
 		$table = $db1->fullTableName('users', false);
 		$password = '5f4dcc3b5aa765d61d8327deb882cf99';
 		$db1->execute(
 			"INSERT INTO {$table} (\"user\", password) VALUES ('mariano', '{$password}')"
 		);
-		$db2->execute("INSERT INTO {$table} (\"user\", password) VALUES ('hoge', '{$password}')");
 		$this->assertEqual($db1->lastInsertId($table), 1);
-		$this->assertEqual($db2->lastInsertId($table), 2);
+
+		$db1->execute("INSERT INTO {$table} (\"user\", password) VALUES ('hoge', '{$password}')");
+		$this->assertEqual($db1->lastInsertId($table), 2);
 	}
 
 /**
@@ -582,7 +586,7 @@ class DboPostgresTest extends CakeTestCase {
 		$db1 =& ConnectionManager::getDataSource('test_suite');
 		$db1->cacheSources = false;
 		$db1->reconnect(array('persistent' => false));
-		$db1->query('CREATE TABLE ' .  $db1->fullTableName('datatypes') . ' (
+		$db1->query('CREATE TABLE ' .  $db1->fullTableName('datatype_tests') . ' (
 			id serial NOT NULL,
 			"varchar" character varying(40) NOT NULL,
 			"full_length" character varying NOT NULL,
@@ -590,31 +594,30 @@ class DboPostgresTest extends CakeTestCase {
 			date date,
 			CONSTRAINT test_suite_data_types_pkey PRIMARY KEY (id)
 		)');
-		$model = new Model(array('name' => 'Datatype', 'ds' => 'test_suite'));
+		$model = new Model(array('name' => 'DatatypeTest', 'ds' => 'test_suite'));
 		$schema = new CakeSchema(array('connection' => 'test_suite'));
 		$result = $schema->read(array(
 			'connection' => 'test_suite',
-			'models' => array('Datatype')
 		));
-		$schema->tables = array('datatypes' => $result['tables']['datatypes']);
-		$result = $db1->createSchema($schema, 'datatypes');
+		$schema->tables = array('datatype_tests' => $result['tables']['missing']['datatype_tests']);
+		$result = $db1->createSchema($schema, 'datatype_tests');
 
 		$this->assertNoPattern('/timestamp DEFAULT/', $result);
 		$this->assertPattern('/\"full_length\"\s*text\s.*,/', $result);
 		$this->assertPattern('/timestamp\s*,/', $result);
 
-		$db1->query('DROP TABLE ' . $db1->fullTableName('datatypes'));
+		$db1->query('DROP TABLE ' . $db1->fullTableName('datatype_tests'));
 
 		$db1->query($result);
 		$result2 = $schema->read(array(
 			'connection' => 'test_suite',
-			'models' => array('Datatype')
+			'models' => array('DatatypeTest')
 		));
-		$schema->tables = array('datatypes' => $result2['tables']['datatypes']);
-		$result2 = $db1->createSchema($schema, 'datatypes');
+		$schema->tables = array('datatype_tests' => $result2['tables']['missing']['datatype_tests']);
+		$result2 = $db1->createSchema($schema, 'datatype_tests');
 		$this->assertEqual($result, $result2);
 
-		$db1->query('DROP TABLE ' . $db1->fullTableName('datatypes'));
+		$db1->query('DROP TABLE ' . $db1->fullTableName('datatype_tests'));
 	}
 
 /**
@@ -696,6 +699,22 @@ class DboPostgresTest extends CakeTestCase {
 		$this->assertEqual($result['title']['null'], false);
 
 		$this->db->query($this->db->dropSchema($New));
+
+		$New =& new CakeSchema(array(
+			'connection' => 'test_suite',
+			'name' => 'AlterPosts',
+			'alter_posts' => array(
+				'id' => array('type' => 'string', 'length' => 36, 'key' => 'primary'),
+				'author_id' => array('type' => 'integer', 'null' => false),
+				'title' => array('type' => 'string', 'null' => true),
+				'body' => array('type' => 'text'),
+				'published' => array('type' => 'string', 'length' => 1, 'default' => 'N'),
+				'created' => array('type' => 'datetime'),
+				'updated' => array('type' => 'datetime'),
+			)
+		));
+		$result = $this->db->alterSchema($New->compare($Old), 'alter_posts');
+		$this->assertNoPattern('/varchar\(36\) NOT NULL/i', $result);
 	}
 
 /**
@@ -793,6 +812,25 @@ class DboPostgresTest extends CakeTestCase {
 		$this->assertEqual($result['Article']['complex'], $result['Article']['title'] . $result['Article']['body']);
 		$this->assertEqual($result['Article']['functional'], $result['Article']['title']);
 		$this->assertEqual($result['Article']['subquery'], 6);
+	}
+
+/**
+ * Test that virtual fields work with SQL constants
+ *
+ * @return void
+ */
+	function testVirtualFieldAsAConstant() {
+		$this->loadFixtures('Article', 'Comment');
+		$Article =& ClassRegistry::init('Article');
+		$Article->virtualFields = array(
+			'empty' => "NULL",
+			'number' => 43,
+			'truth' => 'TRUE'
+		);
+		$result = $Article->find('first');
+		$this->assertNull($result['Article']['empty']);
+		$this->assertTrue($result['Article']['truth']);
+		$this->assertIdentical('43', $result['Article']['number']);
 	}
 
 /**
