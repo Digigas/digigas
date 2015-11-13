@@ -3,6 +3,7 @@
 class UsersController extends AppController {
 
     var $name = 'Users';
+    
     var $paginate = array('order' => array('User.Last_name asc', 'User.first_name Asc'));
 
     function beforeFilter() {
